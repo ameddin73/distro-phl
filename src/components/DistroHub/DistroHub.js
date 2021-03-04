@@ -30,7 +30,7 @@ const DistroHub = ({user}) => {
             <Typography variant="h6" gutterBottom>
                 Welcome to the Distro Hub, {user.displayName}!
             </Typography>
-            <FirestoreCollection path="/distro_hub/" limit={1000}>
+            <FirestoreCollection path={process.env.REACT_APP_FIREBASE_FIRESTORE_COLLECTION} orderBy={[{field: 'created', type: 'asc'}]} limit={1000}>
                 {({isLoading, value}) => {
                     return isLoading ? "Loading" : (
                         <List
