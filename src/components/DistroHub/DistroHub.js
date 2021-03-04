@@ -3,6 +3,7 @@ import {Collapse, List, ListItem, ListItemIcon, ListItemText, ListSubheader, Typ
 import {FirestoreCollection} from "@react-firebase/firestore";
 import {ExpandLess, ExpandMore, Fastfood} from "@material-ui/icons";
 import {makeStyles} from "@material-ui/styles";
+import {IfFirebaseAuthed} from "@react-firebase/auth";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,9 +28,13 @@ const DistroHub = ({user}) => {
 
     return (
         <div>
-            <Typography variant="h6" gutterBottom>
-                Welcome to the Distro Hub, {user.displayName}!
-            </Typography>
+            <IfFirebaseAuthed>
+                {({user}) => (
+                    <Typography variant="h6" gutterBottom>
+                        Welcome to the Distro Hub, {user.displayName}!
+                    </Typography>
+                )}
+            </IfFirebaseAuthed>
             <FirestoreCollection path={process.env.REACT_APP_FIREBASE_FIRESTORE_COLLECTION} orderBy={[{field: 'created', type: 'asc'}]} limit={1000}>
                 {({isLoading, value}) => {
                     return isLoading ? "Loading" : (
