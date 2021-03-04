@@ -16,8 +16,6 @@ const firebaseConfig = {
 // Use your config values here.
 firebase.initializeApp(firebaseConfig);
 
-console.log(firebase);
-
 ReactDOM.render(
   <React.StrictMode>
     <App config={firebaseConfig}/>
