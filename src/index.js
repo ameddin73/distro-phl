@@ -20,7 +20,7 @@ console.log(firebase);
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App config={firebaseConfig}/>
   </React.StrictMode>,
   document.getElementById('root')
 );
