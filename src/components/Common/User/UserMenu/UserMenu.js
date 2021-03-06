@@ -2,10 +2,9 @@ import React, {useState} from 'react';
 import {IfFirebaseAuthed, IfFirebaseUnAuthed} from "@react-firebase/auth";
 import {Button, Menu, MenuItem} from "@material-ui/core";
 import firebase from "firebase/app";
+import {navigate} from 'hookrouter';
 
-const UserMenu = ({theme}) => {
-    const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
-
+const UserMenu = () => {
     const [anchorEl, setAnchorEl] = useState();
 
     const menuClick = (event) => (setAnchorEl(event.currentTarget));
@@ -15,9 +14,7 @@ const UserMenu = ({theme}) => {
         <div>
             <IfFirebaseUnAuthed>
                 {({...rest}) => (
-                    <Button color="inherit" onClick={() => {
-                        firebase.auth().signInWithRedirect(googleAuthProvider)
-                    }}>Sign In</Button>
+                    <Button color="inherit" onClick={() => navigate('/login')}>Login</Button>
                 )}
             </IfFirebaseUnAuthed>
             <IfFirebaseAuthed>

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Collapse, List, ListItem, ListItemIcon, ListItemText, ListSubheader, Typography} from "@material-ui/core";
+import {Collapse, Container, List, ListItem, ListItemIcon, ListItemText, ListSubheader, Typography} from "@material-ui/core";
 import {FirestoreCollection} from "@react-firebase/firestore";
 import {ExpandLess, ExpandMore, Fastfood} from "@material-ui/icons";
 import {makeStyles} from "@material-ui/styles";
@@ -28,37 +28,38 @@ const DistroHub = ({user}) => {
 
     return (
         <div>
-            <IfFirebaseAuthed>
-                {({user}) => (
-                    <Typography variant="h6" gutterBottom>
-                        Welcome to the Distro Hub, {user.displayName}!
-                    </Typography>
-                )}
-            </IfFirebaseAuthed>
-            <FirestoreCollection path={process.env.REACT_APP_FIREBASE_FIRESTORE_COLLECTION} orderBy={[{field: 'created', type: 'asc'}]} limit={1000}>
-                {({isLoading, value}) => {
-                    return isLoading ? "Loading" : (
-                        <List
-                            component="nav"
-                            aria-labelledby="nested-list-subheader"
-                            subheader={
-                                <ListSubheader component="div" id="nested-list-subheader">
-                                    Available from the Hub
-                                </ListSubheader>
-                            }
-                            className={classes.root}>
-                            {value.map(({name, ...rest}) => {
-                                return (
-                                    <div key={name}>
-                                        <ListItem button onClick={() => handleClick(name)}>
-                                            <ListItemIcon>
-                                                <Fastfood/>
-                                            </ListItemIcon>
-                                            <ListItemText primary={name}/>
-                                            {open[name] ? <ExpandLess/> : <ExpandMore/>}
-                                        </ListItem>
-                                        <Collapse in={open[name]} timeout="auto" unmountOnExit>
-                                            <List component="div" disablePadding>
+            <Container maxWidth="md">
+                <IfFirebaseAuthed>
+                    {({user}) => (
+                        <Typography variant="h6" gutterBottom>
+                            Welcome to the Distro Hub, {user.displayName}!
+                        </Typography>
+                    )}
+                </IfFirebaseAuthed>
+                <FirestoreCollection path={process.env.REACT_APP_FIREBASE_FIRESTORE_COLLECTION} orderBy={[{field: 'created', type: 'asc'}]} limit={1000}>
+                    {({isLoading, value}) => {
+                        return isLoading ? "Loading" : (
+                            <List
+                                component="nav"
+                                aria-labelledby="nested-list-subheader"
+                                subheader={
+                                    <ListSubheader component="div" id="nested-list-subheader">
+                                        Available from the Hub
+                                    </ListSubheader>
+                                }
+                                className={classes.root}>
+                                {value.map(({name, ...rest}) => {
+                                    return (
+                                        <div key={name}>
+                                            <ListItem button onClick={() => handleClick(name)}>
+                                                <ListItemIcon>
+                                                    <Fastfood/>
+                                                </ListItemIcon>
+                                                <ListItemText primary={name}/>
+                                                {open[name] ? <ExpandLess/> : <ExpandMore/>}
+                                            </ListItem>
+                                            <Collapse in={open[name]} timeout="auto" unmountOnExit>
+                                                <List component="div" disablePadding>
                                                     {Object.keys(rest).map((key) => {
                                                         return (
                                                             <div key={key}>
@@ -68,17 +69,18 @@ const DistroHub = ({user}) => {
                                                             </div>
                                                         )
                                                     })}
-                                            </List>
-                                        </Collapse>
-                                    </div>
-                                )
-                            })}
-                                </List>
-                                )
-                            }}
-                    </FirestoreCollection>
-                    </div>
-                    );
-                }
+                                                </List>
+                                            </Collapse>
+                                        </div>
+                                    )
+                                })}
+                            </List>
+                        )
+                    }}
+                </FirestoreCollection>
+            </Container>
+        </div>
+    );
+}
 
 export default DistroHub;
