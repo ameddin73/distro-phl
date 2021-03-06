@@ -1,5 +1,5 @@
 import React from 'react';
-import {AppBar, Button, Container, IconButton, Link, Toolbar, Typography} from "@material-ui/core";
+import {AppBar, Button, Container, IconButton, Toolbar, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/styles";
 import {Menu} from "@material-ui/icons";
 import UserMenu from "./User/UserMenu/UserMenu.lazy";
@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         flexGrow: 1,
+        fontFamily: "Wallpoet",
     },
 }));
 

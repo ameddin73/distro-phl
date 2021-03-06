@@ -17,9 +17,9 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 ReactDOM.render(
-    <React.StrictMode>
+    <div>
         <App config={firebaseConfig}/>
-    </React.StrictMode>,
+    </div>,
     document.getElementById('root')
 );
 
