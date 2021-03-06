@@ -1,4 +1,4 @@
-import React, from 'react';
+import React from 'react';
 import {Button, Card, Container, Divider, FormControl, Grid, Input, InputLabel, Typography} from "@material-ui/core";
 import {IfFirebaseUnAuthed} from "@react-firebase/auth";
 import {navigate} from 'hookrouter';
