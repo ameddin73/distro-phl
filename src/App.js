@@ -9,9 +9,11 @@ import theme from "./theme";
 import Common from "./components/Common/Common.lazy";
 import DistroHub from "./components/DistroHub/DistroHub.lazy";
 import {useRoutes} from "hookrouter";
+import Login from "./components/Common/User/Login/Login.lazy";
 
 const routes = {
     '/': () => <DistroHub/>,
+    '/login': () => <Login/>,
 }
 
 function App({config}) {
