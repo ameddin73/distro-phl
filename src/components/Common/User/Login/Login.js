@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Card, Container, Divider, FormControl, FormHelperText, Grid, Input, InputLabel, TextField, Typography} from "@material-ui/core";
+import {Button, Card, Container, Divider, FormControl, Grid, Input, InputLabel, Typography} from "@material-ui/core";
 import {IfFirebaseUnAuthed} from "@react-firebase/auth";
 import {navigate} from 'hookrouter';
 import firebase from "firebase/app";
@@ -31,10 +31,8 @@ const Login = ({user}) => {
     const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
     const classes = useStyles();
 
-    const [username, setUsername] = useState();
-    const [password, setPassword] = useState();
-
-
+    // const [username, setUsername] = useState();
+    // const [password, setPassword] = useState();
 
     if (Boolean(user)) navigate('/', true);
     return (
