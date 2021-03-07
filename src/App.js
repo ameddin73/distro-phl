@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {ThemeProvider} from '@material-ui/core';
 import firebase from "firebase/app";
 import 'firebase/auth';
@@ -9,7 +9,7 @@ import theme from "./theme";
 import Common from "./components/Common/Common.lazy";
 import DistroHub from "./components/DistroHub/DistroHub.lazy";
 import {useRoutes} from "hookrouter";
-import Login from "./components/Common/User/Login/Login.lazy";
+import Login from "./components/Login/Login.lazy";
 
 const routes = {
     '/': () => <DistroHub/>,
@@ -17,7 +17,13 @@ const routes = {
 }
 
 function App({config}) {
-    const routeResult = useRoutes(routes);
+    const routeResult = useRoutes(routes) || routes['/'];
+
+    const [component, setComponent] = useState(<div/>);
+
+    useEffect(() => {
+        setComponent(routeResult);
+    });
 
     return (
         <div>
@@ -25,7 +31,7 @@ function App({config}) {
                 <FirestoreProvider {...config} firebase={firebase}>
                     <FirebaseAuthProvider {...config} firebase={firebase}>
                         <Common/>
-                        {routeResult || routes['/']}
+                        {component}
                     </FirebaseAuthProvider>
                 </FirestoreProvider>
             </ThemeProvider>
