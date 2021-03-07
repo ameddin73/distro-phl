@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {ThemeProvider} from '@material-ui/core';
 import firebase from "firebase/app";
 import 'firebase/auth';
@@ -19,19 +19,13 @@ const routes = {
 function App({config}) {
     const routeResult = useRoutes(routes) || routes['/'];
 
-    const [component, setComponent] = useState(<div/>);
-
-    useEffect(() => {
-        setComponent(routeResult);
-    });
-
     return (
         <div>
             <ThemeProvider theme={theme}>
                 <FirestoreProvider {...config} firebase={firebase}>
                     <FirebaseAuthProvider {...config} firebase={firebase}>
                         <Common/>
-                        {component}
+                        {routeResult}
                     </FirebaseAuthProvider>
                 </FirestoreProvider>
             </ThemeProvider>

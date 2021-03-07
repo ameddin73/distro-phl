@@ -16,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
     },
     container: {
         maxWidth: 'sm',
-        justify: 'center',
         padding: theme.spacing(2),
     },
     card: {
@@ -31,6 +30,7 @@ const DistroHub = () => {
         <div>
             <Container className={classes.container} maxWidth="md">
                 <Grid container
+                      alignItems="center"
                       justify="center"
                       spacing={2}
                       className={classes.container}>
@@ -39,9 +39,7 @@ const DistroHub = () => {
                             return isLoading ? "Loading" : (
                                 value.map((item) => {
                                     return (
-                                        <div key={item.name}>
-                                            <DistroItem item={item}/>
-                                        </div>
+                                        <DistroItem key={item.name} item={item}/>
                                     )
                                 })
                             )
