@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
     container: {
         maxWidth: 'sm',
         padding: theme.spacing(2),
+        alignItems: 'flex-start',
     },
     card: {
         display: "inline-block",
@@ -27,9 +28,7 @@ const DistroHub = () => {
     const classes = useStyles();
 
     // Assign ids to value objects and reduce on user+name
-    const unMarshall = ({ids, value, ...rest}) => {
-        console.dir(rest)
-        console.dir(value)
+    const unMarshall = ({ids, value}) => {
         value.forEach((item, index) => {
             item.id = ids[index]
             item.count = item.expiries.length;
