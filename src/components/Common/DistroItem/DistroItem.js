@@ -1,5 +1,10 @@
 import React from 'react';
-import {Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Grid, makeStyles, Typography} from "@material-ui/core";
+import {Card, CardActionArea, CardContent, CardMedia, Grid, makeStyles, Typography} from "@material-ui/core";
+import {ExpandMore} from "@material-ui/icons";
+import {withStyles} from "@material-ui/styles";
+import MuiAccordion from '@material-ui/core/Accordion';
+import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
+import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -10,15 +15,60 @@ const useStyles = makeStyles((theme) => ({
     },
     card: {
         display: "inline-block",
+        maxWidth: 340,
     },
     media: {
         height: 140,
         objectFit: 'fill',
-    }
+    },
+    content: {
+        maxHeight: 100,
+        textOverflow: 'ellipsis',
+    },
 }));
 
+const Accordion = withStyles({
+  root: {
+    border: '1px solid rgba(0, 0, 0, .125)',
+    boxShadow: 'none',
+    '&:not(:last-child)': {
+      borderBottom: 0,
+    },
+    '&:before': {
+      display: 'none',
+    },
+    '&$expanded': {
+      margin: 'auto',
+    },
+  },
+  expanded: {},
+})(MuiAccordion);
 
-const DistroItem = ({item: {id, name, type, description, imgUrl, created, expires, uid, ...item}}) => {
+const AccordionSummary = withStyles({
+  root: {
+    backgroundColor: 'rgba(0, 0, 0, .03)',
+    borderBottom: '1px solid rgba(0, 0, 0, .125)',
+    marginBottom: -1,
+    minHeight: 56,
+    '&$expanded': {
+      minHeight: 56,
+    },
+  },
+  content: {
+    '&$expanded': {
+      margin: '12px 0',
+    },
+  },
+  expanded: {},
+})(MuiAccordionSummary);
+
+const AccordionDetails = withStyles((theme) => ({
+  root: {
+    padding: theme.spacing(2),
+  },
+}))(MuiAccordionDetails);
+
+const DistroItem = ({item: {id, name, type, description, imgUrl, created, expiresFirst, expiresLast, count, uid, ...item}}) => {
     const classes = useStyles();
 
     return (
@@ -27,21 +77,33 @@ const DistroItem = ({item: {id, name, type, description, imgUrl, created, expire
                 <CardActionArea>
                     <CardMedia
                         className={classes.media}
-                        // TODO dynamic image
-                        image="https://firebasestorage.googleapis.com/v0/b/pheeding-philly.appspot.com/o/soup4fam.jpg?alt=media&token=7628582c-0ac2-4a79-a8d0-837b04b34a69"
+                        image={imgUrl}
                         title={name}/>
-                    <CardContent>
+                    <CardContent className={classes.content}>
                         <Typography gutterBottom variant="h5" component="h2">
                             {name}
                         </Typography>
-                        <Typography variant="body2" color="textSecondary" component="p">
+                        <Typography
+                            variant="body2"
+                            color="textSecondary"
+                            component="p">
                             {description}
                         </Typography>
                     </CardContent>
+                    <Accordion className={classes.accordion}>
+                        <AccordionSummary
+                            expandIcon={<ExpandMore/>}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header">
+                            <Typography className={classes.heading}>Add to Cart</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <Typography>
+                                Count: {count}
+                            </Typography>
+                        </AccordionDetails>
+                    </Accordion>
                 </CardActionArea>
-                <CardActions>
-                    <Button variant="contained" fullWidth>Add to Cart</Button>
-                </CardActions>
             </Card>
         </Grid>
     );

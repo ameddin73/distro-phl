@@ -26,6 +26,17 @@ const useStyles = makeStyles((theme) => ({
 const DistroHub = () => {
     const classes = useStyles();
 
+    // Assign ids to value objects and reduce on user+name
+    const unMarshall = ({ids, value, ...rest}) => {
+        console.dir(rest)
+        console.dir(value)
+        value.forEach((item, index) => {
+            item.id = ids[index]
+            item.count = item.expiries.length;
+        });
+        return value;
+    }
+
     return (
         <div>
             <Container className={classes.container} maxWidth="md">
@@ -34,10 +45,10 @@ const DistroHub = () => {
                       justify="center"
                       spacing={2}
                       className={classes.container}>
-                    <FirestoreCollection path={process.env.REACT_APP_FIREBASE_FIRESTORE_COLLECTION} orderBy={[{field: 'created', type: 'asc'}]} limit={1000}>
-                        {({isLoading, value}) => {
+                    <FirestoreCollection path={process.env.REACT_APP_FIREBASE_FIRESTORE_COLLECTION} orderBy={[{field: 'expiries', type: 'asc'}]} limit={25}>
+                        {({isLoading, ...rest}) => {
                             return isLoading ? "Loading" : (
-                                value.map((item) => {
+                                unMarshall(rest).map((item) => {
                                     return (
                                         <DistroItem key={item.name} item={item}/>
                                     )
