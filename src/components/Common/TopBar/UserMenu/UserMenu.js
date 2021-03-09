@@ -7,10 +7,14 @@ import {navigate} from 'hookrouter';
 import {paths} from "../../config";
 
 const UserMenu = () => {
-    const [anchorEl, setAnchorEl] = useState();
+    const [anchorEl, setAnchorEl] = useState(null);
 
     const menuClick = (event) => (setAnchorEl(event.currentTarget));
     const menuClose = () => (setAnchorEl(null))
+    const closeAndAction = (action) => {
+        menuClose();
+        action();
+    }
 
     return (
         <div>
@@ -34,8 +38,8 @@ const UserMenu = () => {
                             keepMounted
                             open={Boolean(anchorEl)}
                             onClose={menuClose}>
-                            <MenuItem onClick={() => navigate('/items')}>My Items</MenuItem>
-                            <MenuItem onClick={() => firebase.auth().signOut()}>Sign Out</MenuItem>
+                            <MenuItem onClick={() => closeAndAction(() => navigate(paths.userItems))}>My Items</MenuItem>
+                            <MenuItem onClick={() => closeAndAction(() => firebase.auth().signOut())}>Sign Out</MenuItem>
                         </Menu>
                     </div>
                 )}

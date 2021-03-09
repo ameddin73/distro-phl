@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const HubAction = ({item: {id, count, path}, fullWidth}) => {
+const HubAction = ({id, count, path}) => {
     const classes = useStyles();
 
     const {value: select, bind: bindSelect, setValue: setSelect} = useInput(0);
