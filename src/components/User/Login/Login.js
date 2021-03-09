@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import {Button, Card, Container, Divider, FormControl, Grid, Input, InputLabel, Link, Typography} from "@material-ui/core";
 import {FirebaseAuthConsumer} from "@react-firebase/auth";
-import {navigate} from 'hookrouter';
+import {navigate, useQueryParams} from 'hookrouter';
 import firebase from "firebase/app";
 import GoogleButton from "react-google-button";
 import {makeStyles} from "@material-ui/styles";
 import {useInput} from "../../Common/hooks";
+import {paths} from "../../Common/config";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -43,6 +44,9 @@ const Login = () => {
     const {value: confirmPassword, bind: bindConfirmPassword, reset: resetConfirmPassword} = useInput('');
     const [error, setError] = useState('');
     const [registerOpen, setRegisterOpen] = useState(false);
+    const [queryParams] = useQueryParams();
+
+    const redirect = queryParams.hasOwnProperty('redirect') ? queryParams.redirect : paths.distro;
 
     const submit = (event) => {
         event.preventDefault();
@@ -81,7 +85,7 @@ const Login = () => {
             <FirebaseAuthConsumer>
                 {({isSignedIn}) => {
                     if (isSignedIn === true) {
-                        navigate('/', true);
+                        navigate(redirect, true);
                     } else {
                         return (
                             <div>

@@ -2,6 +2,7 @@ import React from 'react';
 import ItemList from "../../Common/ItemList/ItemList.lazy";
 import {FirebaseAuthConsumer} from "@react-firebase/auth";
 import {navigate} from 'hookrouter';
+import {paths} from "../../Common/config";
 
 const UserItems = () => {
     const path = process.env.REACT_APP_DISTRO_HUB_COLLECTION;
@@ -20,7 +21,7 @@ const UserItems = () => {
             <FirebaseAuthConsumer>
                 {({isSignedIn, user}) => {
                     if (isSignedIn !== true) {
-                        navigate('/login', true, {return: '/items'});
+                        navigate(paths.login, true, {redirect: paths.userItems});
                     } else {
                         const where = {field: 'uid', operator: '==', value: user.uid}
                         return (

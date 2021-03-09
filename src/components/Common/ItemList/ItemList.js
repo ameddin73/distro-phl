@@ -52,7 +52,7 @@ const ItemList = ({path, where, orderBy, unmarshal, itemAction}) => {
                                     ) : (
                                         unmarshal(rest).map((item) => {
                                             return (
-                                                <Item key={item.name} item={item} itemAction={itemAction}/>
+                                                <Item key={item.id} item={item} itemAction={itemAction}/>
                                             )
                                         }))
                             )
