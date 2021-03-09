@@ -1,7 +1,6 @@
 import React from 'react';
-import {AppBar, Button, Container, IconButton, Toolbar, Typography} from "@material-ui/core";
+import {AppBar, Button, Container, Toolbar, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/styles";
-import {Menu} from "@material-ui/icons";
 import UserMenu from "./UserMenu/UserMenu.lazy";
 import {navigate} from 'hookrouter';
 
@@ -25,9 +24,6 @@ const TopBar = () => {
         <div>
             <AppBar position="static">
                 <Toolbar>
-                    <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                        <Menu/>
-                    </IconButton>
                     <Container className={classes.title}>
                         <Button onClick={() => navigate('/')}>
                             <Typography variant="h6">

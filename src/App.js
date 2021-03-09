@@ -10,10 +10,12 @@ import TopBar from "./components/Common/TopBar/TopBar.lazy";
 import DistroHub from "./components/DistroHub/DistroHub.lazy";
 import {useRoutes} from "hookrouter";
 import Login from "./components/User/Login/Login.lazy";
+import UserItems from "./components/User/UserItems/UserItems.lazy";
 
 const routes = {
     '/': () => <DistroHub/>,
     '/login': () => <Login/>,
+    '/items': () => <UserItems/>
 }
 
 function App({config}) {
