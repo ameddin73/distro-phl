@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {Card, CardActionArea, CardContent, CardMedia, ClickAwayListener, Collapse, Divider, Grid, Link, makeStyles, Typography} from "@material-ui/core";
-import HubAction from "../../DistroHub/HubAction/HubAction.lazy";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -20,10 +19,13 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const DistroItem = ({item}) => {
-    const {name, description, imgUrl} = item;
+const Item = ({item, itemAction}) => {
     const classes = useStyles();
+
+    const {name, description, imgUrl} = item;
     const [openDesc, setOpenDesc] = useState(false);
+
+    if (itemAction === undefined) (itemAction = (() => (<div/>)))
 
     const clickCard = () => {
         setOpenDesc(!openDesc);
@@ -61,11 +63,11 @@ const DistroItem = ({item}) => {
                         </CardContent>
                         <Divider/>
                     </CardActionArea>
-                    <HubAction item={item}/>
+                    {itemAction(item)}
                 </Card>
             </ClickAwayListener>
         </Grid>
     );
 }
 
-export default DistroItem;
+export default Item;

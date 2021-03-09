@@ -6,7 +6,7 @@ const UserItems = () => {
     const path = process.env.REACT_APP_DISTRO_HUB_COLLECTION;
     const orderBy = [{field: 'created', type: 'asc'}]
 
-    const unmarshall = ({ids, value}) => {
+    const unmarshal = ({ids, value}) => {
         value.forEach((item, index) => {
             item.id = ids[index]
             item.count = item.count - item.reserved;
@@ -17,10 +17,10 @@ const UserItems = () => {
     return (
         <div>
             <IfFirebaseAuthed>
-                {({isSignedIn, user}) => {
+                {({user}) => {
                     const where = {field: 'uid', operator: '==', value: user.uid}
                     return (
-                        <ItemList path={path} where={where} orderBy={orderBy} unmarshall={unmarshall}/>
+                        <ItemList path={path} where={where} orderBy={orderBy} unmarshal={unmarshal}/>
                     );
                 }}
             </IfFirebaseAuthed>

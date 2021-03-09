@@ -2,7 +2,7 @@ import React from 'react';
 import {CircularProgress, Container, Grid} from "@material-ui/core";
 import {FirestoreCollection} from "@react-firebase/firestore";
 import {makeStyles} from "@material-ui/styles";
-import DistroItem from "../DistroItem/DistroItem";
+import Item from "../Item/Item.lazy";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const ItemList = ({path, where, orderBy, unmarshall}) => {
+const ItemList = ({path, where, orderBy, unmarshal, itemAction}) => {
     const classes = useStyles();
 
     return (
@@ -50,9 +50,9 @@ const ItemList = ({path, where, orderBy, unmarshall}) => {
                                     (
                                         <div/>
                                     ) : (
-                                        unmarshall(rest).map((item) => {
+                                        unmarshal(rest).map((item) => {
                                             return (
-                                                <DistroItem key={item.name} item={item}/>
+                                                <Item key={item.name} item={item} itemAction={itemAction}/>
                                             )
                                         }))
                             )
