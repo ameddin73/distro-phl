@@ -6,10 +6,10 @@ import 'firebase/firestore';
 import {FirebaseAuthProvider} from "@react-firebase/auth";
 import {FirestoreProvider} from "@react-firebase/firestore";
 import theme from "./theme";
-import Common from "./components/Common/Common.lazy";
+import TopBar from "./components/Common/TopBar/TopBar.lazy";
 import DistroHub from "./components/DistroHub/DistroHub.lazy";
 import {useRoutes} from "hookrouter";
-import Login from "./components/Login/Login.lazy";
+import Login from "./components/User/Login/Login.lazy";
 
 const routes = {
     '/': () => <DistroHub/>,
@@ -24,7 +24,7 @@ function App({config}) {
             <ThemeProvider theme={theme}>
                 <FirestoreProvider {...config} firebase={firebase}>
                     <FirebaseAuthProvider {...config} firebase={firebase}>
-                        <Common/>
+                        <TopBar/>
                         {routeResult}
                     </FirebaseAuthProvider>
                 </FirestoreProvider>

@@ -5,7 +5,7 @@ import {navigate} from 'hookrouter';
 import firebase from "firebase/app";
 import GoogleButton from "react-google-button";
 import {makeStyles} from "@material-ui/styles";
-import {useInput} from "../Common/hooks";
+import {useInput} from "../../Common/hooks";
 
 const useStyles = makeStyles((theme) => ({
     root: {

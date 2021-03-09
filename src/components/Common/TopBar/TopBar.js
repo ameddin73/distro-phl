@@ -2,7 +2,7 @@ import React from 'react';
 import {AppBar, Button, Container, IconButton, Toolbar, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/styles";
 import {Menu} from "@material-ui/icons";
-import UserMenu from "./User/UserMenu/UserMenu.lazy";
+import UserMenu from "./UserMenu/UserMenu.lazy";
 import {navigate} from 'hookrouter';
 
 const useStyles = makeStyles((theme) => ({
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Common = () => {
+const TopBar = () => {
     const classes = useStyles();
 
     return (
@@ -41,4 +41,4 @@ const Common = () => {
         </div>
     );
 }
-export default Common;
+export default TopBar;

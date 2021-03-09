@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 
-const LazyCommon = lazy(() => import('./Common'));
+const LazyCommon = lazy(() => import('./TopBar'));
 
 const Common = props => (
   <Suspense fallback={null}>
