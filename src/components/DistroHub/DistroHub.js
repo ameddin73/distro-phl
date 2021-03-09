@@ -10,14 +10,13 @@ const DistroHub = () => {
     // Assign ids to value objects and reduce on user+name
     //TODO subtract reservations
     const unmarshal = (uid) => (
-        ({ids, value}) => {
-            value.forEach((item, index) => {
+        ({ids, value}) => (
+            value.map((item, index) => {
                 item.id = ids[index]
                 item.count = item.count - item.reserved;
-                if (item.uid === uid) value.splice(index, 1);
-            });
-            return value;
-        })
+                return item;
+            }).filter((item) => (item.uid !== uid))
+        ));
 
     return (
         <div>

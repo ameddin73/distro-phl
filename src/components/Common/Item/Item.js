@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Card, CardActionArea, CardContent, CardMedia, ClickAwayListener, Collapse, Divider, Grid, Link, makeStyles, Typography} from "@material-ui/core";
+import {Card, CardActionArea, CardContent, CardMedia, ClickAwayListener, Collapse, Divider, Grid, makeStyles, Typography} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -50,14 +50,21 @@ const Item = ({item, itemAction}) => {
                             </Typography>
                             <Collapse in={openDesc} collapsedHeight={100}>
                                 <Grid container direction="column">
-                                    <Grid item>
+                                    <Grid item xs>
                                         <Typography gutterBottom
                                                     variant="body2"
                                                     color="textSecondary">
                                             {description}
                                         </Typography>
                                     </Grid>
-                                    <Link>click me!</Link>
+                                    <Grid item xs>
+                                        <Typography variant="body2">
+                                            Supplied by:
+                                        </Typography>
+                                        <Typography variant="button">
+                                            {item.uid}
+                                        </Typography>
+                                    </Grid>
                                 </Grid>
                             </Collapse>
                         </CardContent>

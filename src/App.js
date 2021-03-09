@@ -11,15 +11,17 @@ import DistroHub from "./components/DistroHub/DistroHub.lazy";
 import {useRoutes} from "hookrouter";
 import Login from "./components/User/Login/Login.lazy";
 import UserItems from "./components/User/UserItems/UserItems.lazy";
+import {useRedirect} from 'hookrouter';
+import {paths} from "./components/Common/config";
 
-const routes = {
-    '/': () => <DistroHub/>,
-    '/login': () => <Login/>,
-    '/items': () => <UserItems/>
-}
+const routes = {};
+routes[paths.distro] = () => <DistroHub/>;
+routes[paths.login] = () => <Login/>;
+routes[paths.userItems] = () => <UserItems/>
 
 function App({config}) {
-    const routeResult = useRoutes(routes) || routes['/'];
+    useRedirect(paths.base, paths.distro);
+    const routeResult = useRoutes(routes) || routes[paths.distro];
 
     return (
         <div>

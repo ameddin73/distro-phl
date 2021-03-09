@@ -4,6 +4,7 @@ import {Button, Menu, MenuItem} from "@material-ui/core";
 import {Menu as MenuIcon} from "@material-ui/icons";
 import firebase from "firebase/app";
 import {navigate} from 'hookrouter';
+import {paths} from "../../config";
 
 const UserMenu = () => {
     const [anchorEl, setAnchorEl] = useState();
@@ -15,11 +16,11 @@ const UserMenu = () => {
         <div>
             <IfFirebaseUnAuthed>
                 {({...rest}) => (
-                    <Button color="inherit" onClick={() => navigate('/login')}>Login</Button>
+                    <Button color="inherit" onClick={() => navigate(paths.login)}>Login</Button>
                 )}
             </IfFirebaseUnAuthed>
             <IfFirebaseAuthed>
-                {({user, ...rest}) => (
+                {({user}) => (
                     <div>
                         <Button aria-controls="simple-menu"
                                 aria-haspopup="true"

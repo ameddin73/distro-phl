@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     },
     loading: {
         position: 'absolute',
-        top: '45%',
+        top: '25%',
     },
 }));
 
