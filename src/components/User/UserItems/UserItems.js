@@ -9,7 +9,6 @@ import {Loading} from "../../Common/loading";
 const UserItems = () => {
     const path = process.env.REACT_APP_DISTRO_HUB_COLLECTION;
     const orderBy = [{field: 'created', type: 'asc'}]
-    const loaded = useEffect(() => (true));
 
     const unmarshal = ({ids, value}) => {
         value.forEach((item, index) => {

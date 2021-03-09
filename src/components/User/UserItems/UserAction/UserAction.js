@@ -12,8 +12,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const UserAction = ({}) => {
-    const classes = useStyles();
+const UserAction = () => {
+    // const classes = useStyles();
 
     return (
         <div>
