@@ -1,7 +1,7 @@
 import React from 'react';
 import {paths} from "../Common/config";
 import Login from "./Login/Login.lazy";
-import {navigate, useRoutes, useQueryParams, usePath} from "hookrouter";
+import {navigate, useRoutes, useQueryParams} from "hookrouter";
 import UserItems from "./UserItems/UserItems.lazy";
 import {FirebaseAuthConsumer} from "@react-firebase/auth";
 import {Loading} from "../Common/loading";
