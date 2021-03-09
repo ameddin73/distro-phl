@@ -9,19 +9,17 @@ import theme from "./theme";
 import TopBar from "./components/Common/TopBar/TopBar.lazy";
 import DistroHub from "./components/DistroHub/DistroHub.lazy";
 import {useRoutes} from "hookrouter";
-import Login from "./components/User/Login/Login.lazy";
-import UserItems from "./components/User/UserItems/UserItems.lazy";
 import {useRedirect} from 'hookrouter';
 import {paths} from "./components/Common/config";
+import User from "./components/User/User.lazy";
 
 const routes = {};
-routes[paths.distro] = () => <DistroHub/>;
-routes[paths.login] = () => <Login/>;
-routes[paths.userItems] = () => <UserItems/>
+routes[paths.public.distro] = () => <DistroHub/>;
+routes[paths.public.user] = () => <User/>
 
 function App({config}) {
-    useRedirect(paths.base, paths.distro);
-    const routeResult = useRoutes(routes) || routes[paths.distro];
+    useRedirect(paths.public.base, paths.public.distro);
+    const routeResult = useRoutes(routes) || routes[paths.public.distro];
 
     return (
         <div>

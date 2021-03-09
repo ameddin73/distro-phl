@@ -46,7 +46,7 @@ const Login = () => {
     const [registerOpen, setRegisterOpen] = useState(false);
     const [queryParams] = useQueryParams();
 
-    const redirect = queryParams.hasOwnProperty('redirect') ? queryParams.redirect : paths.distro;
+    const redirect = queryParams.hasOwnProperty('redirect') ? queryParams.redirect : paths.public.distro;
 
     const submit = (event) => {
         event.preventDefault();

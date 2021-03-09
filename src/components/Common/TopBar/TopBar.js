@@ -26,7 +26,7 @@ const TopBar = () => {
             <AppBar position="static">
                 <Toolbar>
                     <Container className={classes.title}>
-                        <Button onClick={() => navigate(paths.base)}>
+                        <Button onClick={() => navigate(paths.public.base)}>
                             <Typography variant="h6">
                                 Distro PHL
                             </Typography>

@@ -8,8 +8,15 @@ export const firebaseConfig = {
 };
 
 export const paths = {
-    base: '/',
-    distro: '/distro',
-    login: '/login',
-    userItems: '/items',
+    public: {
+        base: '/',
+        distro: '/distro',
+        user: '/user*',
+        login: '/user/login',
+        userItems: '/user/items',
+    },
+    user: {
+        login: '/login',
+        items: '/items',
+    },
 }

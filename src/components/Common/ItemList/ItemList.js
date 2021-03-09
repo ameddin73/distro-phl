@@ -1,5 +1,5 @@
 import React from 'react';
-import {CircularProgress, Container, Grid} from "@material-ui/core";
+import {Container, Grid} from "@material-ui/core";
 import {FirestoreCollection} from "@react-firebase/firestore";
 import {makeStyles} from "@material-ui/styles";
 import Item from "../Item/Item.lazy";

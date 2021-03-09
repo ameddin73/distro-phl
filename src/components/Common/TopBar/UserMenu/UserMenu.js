@@ -20,7 +20,7 @@ const UserMenu = () => {
         <div>
             <IfFirebaseUnAuthed>
                 {({...rest}) => (
-                    <Button color="inherit" onClick={() => navigate(paths.login)}>Login</Button>
+                    <Button color="inherit" onClick={() => navigate(paths.public.login)}>Login</Button>
                 )}
             </IfFirebaseUnAuthed>
             <IfFirebaseAuthed>
@@ -38,7 +38,7 @@ const UserMenu = () => {
                             keepMounted
                             open={Boolean(anchorEl)}
                             onClose={menuClose}>
-                            <MenuItem onClick={() => closeAndAction(() => navigate(paths.userItems))}>My Items</MenuItem>
+                            <MenuItem onClick={() => closeAndAction(() => navigate(paths.public.login))}>My Items</MenuItem>
                             <MenuItem onClick={() => closeAndAction(() => firebase.auth().signOut())}>Sign Out</MenuItem>
                         </Menu>
                     </div>
