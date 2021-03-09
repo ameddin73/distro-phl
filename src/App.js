@@ -14,7 +14,7 @@ import {paths} from "./components/Common/config";
 import User from "./components/User/User.lazy";
 
 const routes = {};
-routes[paths.public.distro] = () => <DistroHub/>;
+routes[paths.public.distro] = ()  => <DistroHub/>;
 routes[paths.public.user] = () => <User/>
 
 function App({config}) {

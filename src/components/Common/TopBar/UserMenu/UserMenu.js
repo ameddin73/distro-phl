@@ -3,11 +3,13 @@ import {IfFirebaseAuthed, IfFirebaseUnAuthed} from "@react-firebase/auth";
 import {Button, Menu, MenuItem} from "@material-ui/core";
 import {Menu as MenuIcon} from "@material-ui/icons";
 import firebase from "firebase/app";
-import {navigate} from 'hookrouter';
+import {navigate, usePath} from 'hookrouter';
 import {paths} from "../../config";
 
 const UserMenu = () => {
     const [anchorEl, setAnchorEl] = useState(null);
+
+    const path = usePath();
 
     const menuClick = (event) => (setAnchorEl(event.currentTarget));
     const menuClose = () => (setAnchorEl(null))
@@ -20,7 +22,8 @@ const UserMenu = () => {
         <div>
             <IfFirebaseUnAuthed>
                 {({...rest}) => (
-                    <Button color="inherit" onClick={() => navigate(paths.public.login)}>Login</Button>
+                    <Button color="inherit"
+                    onClick={() => navigate(paths.public.login, {redirect: path})}>Login</Button>
                 )}
             </IfFirebaseUnAuthed>
             <IfFirebaseAuthed>
@@ -38,7 +41,7 @@ const UserMenu = () => {
                             keepMounted
                             open={Boolean(anchorEl)}
                             onClose={menuClose}>
-                            <MenuItem onClick={() => closeAndAction(() => navigate(paths.public.login))}>My Items</MenuItem>
+                            <MenuItem onClick={() => closeAndAction(() => navigate(paths.public.userItems))}>My Items</MenuItem>
                             <MenuItem onClick={() => closeAndAction(() => firebase.auth().signOut())}>Sign Out</MenuItem>
                         </Menu>
                     </div>
