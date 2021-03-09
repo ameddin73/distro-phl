@@ -14,6 +14,11 @@ const theme = createMuiTheme({
         h6: {
             fontFamily: font
         }
-    }
+    },
+    link: {
+        '&:hover': {
+            cursor: "pointer",
+        },
+    },
 })
 export default theme;

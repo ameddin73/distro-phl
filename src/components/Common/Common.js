@@ -31,7 +31,7 @@ const Common = () => {
                     <Container className={classes.title}>
                         <Button onClick={() => navigate('/')}>
                             <Typography variant="h6">
-                                Pheed Philly
+                                Distro PHL
                             </Typography>
                         </Button>
                     </Container>

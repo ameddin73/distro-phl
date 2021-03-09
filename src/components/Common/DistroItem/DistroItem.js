@@ -11,7 +11,8 @@ const useStyles = makeStyles((theme) => ({
     },
     card: {
         display: "inline-block",
-        maxWidth: 340,
+        maxWidth: 440,
+        minWidth: 220,
     },
     media: {
         height: 140,
@@ -35,8 +36,8 @@ const DistroItem = ({item}) => {
     return (
         <Grid item xs>
             <ClickAwayListener onClickAway={clickAway}>
-                <Card className={classes.card} onClick={clickCard}>
-                    <CardActionArea>
+                <Card className={classes.card}>
+                    <CardActionArea onClick={clickCard}>
                         <CardMedia
                             className={classes.media}
                             image={imgUrl}
@@ -59,8 +60,8 @@ const DistroItem = ({item}) => {
                             </Collapse>
                         </CardContent>
                         <Divider/>
-                        <HubAction item={item}/>
                     </CardActionArea>
+                    <HubAction item={item}/>
                 </Card>
             </ClickAwayListener>
         </Grid>

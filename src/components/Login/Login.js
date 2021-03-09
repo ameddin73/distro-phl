@@ -31,11 +31,6 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(1),
         maxWidth: '240px',
     },
-    link: {
-        '&:hover': {
-            cursor: "pointer",
-        },
-    },
 }));
 
 const Login = () => {

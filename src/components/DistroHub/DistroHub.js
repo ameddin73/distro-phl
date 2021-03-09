@@ -28,10 +28,11 @@ const DistroHub = () => {
     const classes = useStyles();
 
     // Assign ids to value objects and reduce on user+name
+    //TODO subtract reservations
     const unMarshall = ({ids, value}) => {
         value.forEach((item, index) => {
             item.id = ids[index]
-            item.count = item.expiries.length;
+            item.count = item.count - item.reserved;
         });
         return value;
     }
@@ -44,7 +45,7 @@ const DistroHub = () => {
                       justify="center"
                       spacing={2}
                       className={classes.container}>
-                    <FirestoreCollection path={process.env.REACT_APP_FIREBASE_FIRESTORE_COLLECTION} orderBy={[{field: 'expiries', type: 'asc'}]} limit={25}>
+                    <FirestoreCollection path={process.env.REACT_APP_FIREBASE_FIRESTORE_COLLECTION} orderBy={[{field: 'created', type: 'asc'}]} limit={25}>
                         {({isLoading, ...rest}) => {
                             return isLoading ? "Loading" : (
                                 unMarshall(rest).map((item) => {
