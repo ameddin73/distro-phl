@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import ItemList from "../../Common/ItemList/ItemList.lazy";
 import {FirebaseAuthConsumer} from "@react-firebase/auth";
 import {navigate} from 'hookrouter';

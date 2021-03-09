@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Card, CardActionArea, CardContent, CardMedia, ClickAwayListener, Collapse, Divider, Grid, makeStyles, Typography} from "@material-ui/core";
+import {Card, CardActionArea, CardContent, CardMedia, ClickAwayListener, Collapse, Grid, makeStyles, Typography} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -68,7 +68,6 @@ const Item = ({item, itemAction}) => {
                                 </Grid>
                             </Collapse>
                         </CardContent>
-                        <Divider/>
                     </CardActionArea>
                     {itemAction(item)}
                 </Card>
