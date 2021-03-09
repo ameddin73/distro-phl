@@ -5,9 +5,6 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import firebase from "firebase/app";
 
-console.log(process.env.REACT_APP_FIREBASE_API_KEY)
-console.log(process.env.REACT_APP_FIREBASE_AUTH_DOMAIN)
-
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
     authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,

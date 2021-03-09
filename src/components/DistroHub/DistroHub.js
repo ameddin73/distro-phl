@@ -26,6 +26,8 @@ const useStyles = makeStyles((theme) => ({
 
 const DistroHub = () => {
     const classes = useStyles();
+    const path = process.env.REACT_APP_DISTRO_HUB_COLLECTION;
+    console.log(path)
 
     // Assign ids to value objects and reduce on user+name
     //TODO subtract reservations
@@ -45,7 +47,7 @@ const DistroHub = () => {
                       justify="center"
                       spacing={2}
                       className={classes.container}>
-                    <FirestoreCollection path={process.env.REACT_APP_FIREBASE_FIRESTORE_COLLECTION} orderBy={[{field: 'created', type: 'asc'}]} limit={25}>
+                    <FirestoreCollection path={path} orderBy={[{field: 'created', type: 'asc'}]} limit={25}>
                         {({isLoading, ...rest}) => {
                             return isLoading ? "Loading" : (
                                 unMarshall(rest).map((item) => {
