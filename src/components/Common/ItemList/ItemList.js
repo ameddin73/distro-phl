@@ -3,6 +3,7 @@ import {CircularProgress, Container, Grid} from "@material-ui/core";
 import {FirestoreCollection} from "@react-firebase/firestore";
 import {makeStyles} from "@material-ui/styles";
 import Item from "../Item/Item.lazy";
+import {Loading} from "../loading";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -22,10 +23,6 @@ const useStyles = makeStyles((theme) => ({
     card: {
         display: "inline-block",
     },
-    loading: {
-        position: 'absolute',
-        top: '25%',
-    },
 }));
 
 const ItemList = ({path, where, orderBy, unmarshal, itemAction}) => {
@@ -42,9 +39,7 @@ const ItemList = ({path, where, orderBy, unmarshal, itemAction}) => {
                     <FirestoreCollection path={path} where={where} orderBy={orderBy} limit={25}>
                         {({isLoading, ...rest}) => {
                             return isLoading ? (
-                                <div>
-                                    <CircularProgress className={classes.loading}/>
-                                </div>
+                                <Loading/>
                             ) : (
                                 (rest.value === null) ?
                                     (
