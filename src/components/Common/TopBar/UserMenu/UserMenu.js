@@ -41,8 +41,12 @@ const UserMenu = () => {
                             keepMounted
                             open={Boolean(anchorEl)}
                             onClose={menuClose}>
+                            <MenuItem onClick={() => closeAndAction(() => navigate(paths.public.createItem))}>New Item</MenuItem>
                             <MenuItem onClick={() => closeAndAction(() => navigate(paths.public.userItems))}>My Items</MenuItem>
-                            <MenuItem onClick={() => closeAndAction(() => firebase.auth().signOut())}>Sign Out</MenuItem>
+                            <MenuItem onClick={() => closeAndAction(() => {
+                                firebase.auth().signOut();
+                                navigate(paths.public.distro);
+                            })}>Sign Out</MenuItem>
                         </Menu>
                     </div>
                 )}

@@ -14,9 +14,11 @@ export const paths = {
         user: '/user*',
         login: '/user/login',
         userItems: '/user/items',
+        createItem: '/user/add',
     },
     user: {
         login: '/login',
         items: '/items',
+        create: '/add',
     },
 }

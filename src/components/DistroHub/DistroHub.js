@@ -1,7 +1,7 @@
 import React from 'react';
-import ItemList from "../Common/ItemList/ItemList";
 import {FirebaseAuthConsumer} from "@react-firebase/auth";
 import HubAction from "./HubAction/HubAction";
+import ItemList from "../Common/ItemList/ItemList.lazy";
 
 const DistroHub = () => {
     const path = process.env.REACT_APP_DISTRO_HUB_COLLECTION;

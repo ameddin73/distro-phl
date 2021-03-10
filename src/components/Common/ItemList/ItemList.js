@@ -29,7 +29,7 @@ const ItemList = ({path, where, orderBy, unmarshal, itemAction}) => {
     const classes = useStyles();
 
     return (
-        <div>
+        <>
             <Container className={classes.container} maxWidth="md">
                 <Grid container
                       alignItems="center"
@@ -55,7 +55,7 @@ const ItemList = ({path, where, orderBy, unmarshal, itemAction}) => {
                     </FirestoreCollection>
                 </Grid>
             </Container>
-        </div>
+        </>
     );
 }
 

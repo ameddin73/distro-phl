@@ -1,26 +1,9 @@
 import React, {useState} from 'react';
-import {Card, CardActionArea, CardContent, CardMedia, ClickAwayListener, Collapse, Grid, makeStyles, Typography} from "@material-ui/core";
-
-const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-    },
-    pad: {
-        padding: theme.spacing(2),
-    },
-    card: {
-        display: "inline-block",
-        maxWidth: 440,
-        minWidth: 220,
-    },
-    media: {
-        height: 140,
-        objectFit: 'fill',
-    },
-}));
+import {Card, CardActionArea, CardContent, CardMedia, ClickAwayListener, Collapse, Grid, Typography} from "@material-ui/core";
+import {itemStyle} from "../styles";
 
 const Item = ({item, itemAction}) => {
-    const classes = useStyles();
+    const classes = itemStyle();
 
     const {name, description, imgUrl} = item;
     const [openDesc, setOpenDesc] = useState(false);
