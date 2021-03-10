@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {itemStyle} from "../../../Common/styles";
-import {Card, CardContent, CardMedia, Grid, IconButton, Typography} from "@material-ui/core";
+import {Card, CardContent, CardMedia, Grid, IconButton, TextField, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/styles";
 import {CameraAlt} from "@material-ui/icons";
 import {grey} from "@material-ui/core/colors";
@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
     upload: {
         color: grey[200],
         fontSize: 100,
+    },
+    title: {
+        fontSize: theme.typography.h6.fontSize,
     }
 }));
 
@@ -60,9 +63,14 @@ const AddItem = ({user}) => {
                             </Grid>
                         }
                         <CardContent>
-                            <Typography gutterBottom variant="h5" component="h2">
-                                Title
-                            </Typography>
+                            <TextField inputProps={{className: classes.title}}
+                                       margin="dense"
+                                       fullWidth
+                                       required
+                                       id="outlined-required"
+                                       placeholder="Title"
+                                       variant="outlined"
+                            />
                             <Grid container direction="column">
                                 <Grid item xs>
                                     <Typography gutterBottom
