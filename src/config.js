@@ -9,7 +9,7 @@ export const firebaseConfig = {
 
 export const collections = {
     items: '/items/',
-    types: '/item_types',
+    types: '/item_types/',
     reservations: '/reservations/',
     confirmations: '/confirmations',
     completed: '/completed_items',

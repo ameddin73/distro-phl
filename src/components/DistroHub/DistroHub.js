@@ -2,9 +2,10 @@ import React from 'react';
 import {FirebaseAuthConsumer} from "@react-firebase/auth";
 import HubAction from "./HubAction/HubAction";
 import ItemList from "../Common/ItemList/ItemList.lazy";
+import {collections} from "../../config";
 
 const DistroHub = () => {
-    const path = process.env.REACT_APP_DISTRO_HUB_COLLECTION;
+    const path = collections.items;
     const orderBy = [{field: 'created', type: 'asc'}]
 
     // Assign ids to value objects and reduce on user+name

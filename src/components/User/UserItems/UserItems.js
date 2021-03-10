@@ -2,14 +2,15 @@ import React from 'react';
 import ItemList from "../../Common/ItemList/ItemList.lazy";
 import {FirebaseAuthConsumer} from "@react-firebase/auth";
 import {navigate} from 'hookrouter';
-import {paths} from "../../../config";
+import {collections, paths} from "../../../config";
 import UserAction from "./UserAction/UserAction.lazy";
 import {Loading} from "../../Common/loading";
 
 const UserItems = () => {
-    const path = process.env.REACT_APP_DISTRO_HUB_COLLECTION;
-    const orderBy = [{field: 'created', type: 'asc'}]
+    const path = collections.items;
+    const orderBy = [{field: 'created', type: 'asc'}];
 
+    //TODO replace with bindId hook
     const unmarshal = ({ids, value}) => {
         value.forEach((item, index) => {
             item.id = ids[index]
