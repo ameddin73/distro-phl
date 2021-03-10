@@ -3,7 +3,7 @@ import React from "react";
 import {makeStyles} from "@material-ui/styles";
 
 const useStyles = makeStyles({
-    loading: {
+    body: {
         position: 'absolute',
         left: '50%',
         top: '25%',
@@ -14,7 +14,7 @@ export const Loading = () => {
     const classes = useStyles();
 
     return (
-        <div>
+        <div className={classes.body} >
             <CircularProgress className={classes.loading}/>
         </div>
     )

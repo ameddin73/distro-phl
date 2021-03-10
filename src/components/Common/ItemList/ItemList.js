@@ -4,6 +4,7 @@ import {FirestoreCollection} from "@react-firebase/firestore";
 import {makeStyles} from "@material-ui/styles";
 import Item from "../Item/Item.lazy";
 import {Loading} from "../loading";
+import {EmptyList} from "../emptyList";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,12 +39,13 @@ const ItemList = ({path, where, orderBy, unmarshal, itemAction}) => {
                       className={classes.container}>
                     <FirestoreCollection path={path} where={where} orderBy={orderBy} limit={25}>
                         {({isLoading, ...rest}) => {
+                            console.dir(rest)
                             return isLoading ? (
                                 <Loading/>
                             ) : (
-                                (rest.value === null) ?
+                                (rest.value === null || rest.value.length === 0) ?
                                     (
-                                        <div/>
+                                        <EmptyList/>
                                     ) : (
                                         unmarshal(rest).map((item) => {
                                             return (
