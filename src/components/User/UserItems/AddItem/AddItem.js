@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
         flexGrow: 1
     },
     container: {
-        padding: theme.spacing(4),
+        padding: theme.spacing(2),
     },
     mediaBox: {
         background: grey[500],
@@ -22,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         fontSize: theme.typography.h6.fontSize,
+    },
+    body: {
+        fontSize: theme.typography.body2.fontSize,
     }
 }));
 
@@ -46,6 +49,11 @@ const AddItem = ({user}) => {
                   alignItems="center"
                   className={classes.container}>
                 <Grid item xs>
+                    <Typography variant="h5" color="primary" justify="center" gutterBottom>
+                        Post a new item.
+                    </Typography>
+                </Grid>
+                <Grid item xs>
                     <Card className={itemClasses.card}>
                         {imgFile ?
                             <CardMedia
@@ -67,9 +75,19 @@ const AddItem = ({user}) => {
                                        margin="dense"
                                        fullWidth
                                        required
-                                       id="outlined-required"
+                                       id="title"
                                        placeholder="Title"
                                        variant="outlined"
+                            />
+                            <TextField inputProps={{className: classes.body}}
+                                       margin="dense"
+                                       fullWidth
+                                       required
+                                       multiline
+                                       id="description"
+                                       placeholder="Description"
+                                       variant="outlined"
+                                       label={"Characters remaining: " + 250}
                             />
                             <Grid container direction="column">
                                 <Grid item xs>
@@ -84,7 +102,7 @@ const AddItem = ({user}) => {
                                         Supplied by:
                                     </Typography>
                                     <Typography variant="button">
-                                        {user.uid}
+                                        {/*{user.uid}*/}
                                     </Typography>
                                 </Grid>
                             </Grid>

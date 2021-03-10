@@ -10,7 +10,7 @@ import TopBar from "./components/Common/TopBar/TopBar.lazy";
 import DistroHub from "./components/DistroHub/DistroHub.lazy";
 import {useRoutes} from "hookrouter";
 import {useRedirect} from 'hookrouter';
-import {paths} from "./components/Common/config";
+import {paths} from "./config";
 import User from "./components/User/User.lazy";
 
 const routes = {};

@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import firebase from "firebase/app";
-import {firebaseConfig} from "./components/Common/config";
+import {firebaseConfig} from "./config";
 
 // Use your config values here.
 firebase.initializeApp(firebaseConfig);

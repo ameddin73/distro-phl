@@ -2,7 +2,7 @@ import React from 'react';
 import ItemList from "../../Common/ItemList/ItemList.lazy";
 import {FirebaseAuthConsumer} from "@react-firebase/auth";
 import {navigate} from 'hookrouter';
-import {paths} from "../../Common/config";
+import {paths} from "../../../config";
 import UserAction from "./UserAction/UserAction.lazy";
 import {Loading} from "../../Common/loading";
 

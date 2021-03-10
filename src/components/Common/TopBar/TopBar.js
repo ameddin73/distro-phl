@@ -3,7 +3,7 @@ import {AppBar, Button, Container, Toolbar, Typography} from "@material-ui/core"
 import {makeStyles} from "@material-ui/styles";
 import UserMenu from "./UserMenu/UserMenu.lazy";
 import {navigate} from 'hookrouter';
-import {paths} from "../config";
+import {paths} from "../../../config";
 
 const useStyles = makeStyles((theme) => ({
     root: {

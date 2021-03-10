@@ -1,5 +1,5 @@
 import React from 'react';
-import {paths} from "../Common/config";
+import {paths} from "../../config";
 import Login from "./Login/Login.lazy";
 import {navigate, useRoutes, useQueryParams} from "hookrouter";
 import UserItems from "./UserItems/UserItems.lazy";
