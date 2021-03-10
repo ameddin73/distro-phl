@@ -20,10 +20,6 @@ jobs:
           REACT_APP_FIREBASE_STORAGE_BUCKET: pheeding-philly.appspot.com
           REACT_APP_FIREBASE_MESSAGING_SENDER_ID: 833270415161
           REACT_APP_FIREBASE_APP_ID: 1:833270415161:web:2f4981e372384d4addf2e8
-          REACT_APP_DISTRO_HUB_COLLECTION: '/distro_hub/'
-          REACT_APP_RESERVATION_COLLECTION: '/reservations/'
-          REACT_APP_CONFIRMATION_COLLECTION: '/confirmations/'
-          REACT_APP_COMPLETED_COLLECTION: '/completed_items/'
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'

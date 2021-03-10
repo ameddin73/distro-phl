@@ -7,6 +7,14 @@ export const firebaseConfig = {
     appId: process.env.REACT_APP_FIREBASE_APP_ID
 };
 
+export const collections = {
+    items: '/items/',
+    types: '/item_types',
+    reservations: '/reservations/',
+    confirmations: '/confirmations',
+    completed: '/completed_items',
+}
+
 export const paths = {
     public: {
         base: '/',
@@ -21,4 +29,6 @@ export const paths = {
         items: '/items',
         create: '/add',
     },
-}
+};
+
+export const descriptionLength = 250;
