@@ -10,7 +10,7 @@ import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers"
 import 'date-fns';
 import DateFnsUtils from "@date-io/date-fns";
 import {FirestoreCollection} from "@react-firebase/firestore";
-import {Loading} from "../../../Common/loading";
+import {Loading} from "../../../Common/Loading";
 
 const useStyles = makeStyles((theme) => ({
     root: {

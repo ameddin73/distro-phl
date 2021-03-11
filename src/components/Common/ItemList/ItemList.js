@@ -3,8 +3,8 @@ import {Container, Grid} from "@material-ui/core";
 import {FirestoreCollection} from "@react-firebase/firestore";
 import {makeStyles} from "@material-ui/styles";
 import Item from "../Item/Item.lazy";
-import {Loading} from "../loading";
-import {EmptyList} from "../emptyList";
+import {Loading} from "../Loading";
+import NothingHere from "../NothingHere/NothingHere.lazy";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -45,7 +45,7 @@ const ItemList = ({path, where, orderBy, unmarshal, itemAction}) => {
                             ) : (
                                 (rest.value === null || rest.value.length === 0) ?
                                     (
-                                        <EmptyList/>
+                                        <NothingHere/>
                                     ) : (
                                         unmarshal(rest).map((item) => {
                                             return (
