@@ -3,7 +3,7 @@ import {Container, Grid} from "@material-ui/core";
 import {FirestoreCollection} from "@react-firebase/firestore";
 import {makeStyles} from "@material-ui/styles";
 import Item from "../Item/Item.lazy";
-import {Loading} from "../Loading";
+import Loading from "../Loading";
 import NothingHere from "../NothingHere/NothingHere.lazy";
 
 const useStyles = makeStyles((theme) => ({

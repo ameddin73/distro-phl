@@ -10,7 +10,7 @@ const useStyles = makeStyles({
     },
 });
 
-export const Loading = () => {
+const Loading = () => {
     const classes = useStyles();
 
     return (
@@ -19,3 +19,5 @@ export const Loading = () => {
         </div>
     )
 };
+
+export default Loading;

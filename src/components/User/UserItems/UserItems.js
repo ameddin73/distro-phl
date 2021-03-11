@@ -4,7 +4,7 @@ import {FirebaseAuthConsumer} from "@react-firebase/auth";
 import {navigate} from 'hookrouter';
 import {collections, paths} from "../../../config";
 import UserAction from "./UserAction/UserAction.lazy";
-import {Loading} from "../../Common/Loading";
+import Loading from "../../Common/Loading";
 
 const UserItems = () => {
     const path = collections.items;

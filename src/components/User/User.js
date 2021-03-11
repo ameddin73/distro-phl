@@ -5,7 +5,7 @@ import {navigate, useRoutes, useQueryParams} from "hookrouter";
 import UserItems from "./UserItems/UserItems.lazy";
 import {FirebaseAuthConsumer} from "@react-firebase/auth";
 import AddItem from "./UserItems/AddItem/AddItem.lazy";
-import {Loading} from "../Common/Loading";
+import Loading from "../Common/Loading";
 
 const routes = {};
 routes[paths.user.login] = () => ({redirect}) => (navigate(redirect, true));
