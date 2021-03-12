@@ -15,7 +15,7 @@ const theme = createMuiTheme({
         }
     },
     title: {
-        fontFamily: font
+        fontFamily: font,
     },
     link: {
         '&:hover': {
