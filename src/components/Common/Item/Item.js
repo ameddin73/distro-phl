@@ -4,8 +4,6 @@ import {itemStyle} from "../styles";
 
 const Item = ({item, types, itemAction}) => {
     const classes = itemStyle();
-    console.dir(types)
-    console.dir(item)
 
     const {name, description, imgUrl} = item;
     const [openDesc, setOpenDesc] = useState(false);
@@ -30,11 +28,11 @@ const Item = ({item, types, itemAction}) => {
                             image={imgUrl}
                             title={name}/>
                         <CardContent>
-                            <Typography gutterBottom variant="h5" component="h2">
+                            <Typography variant="h5" component="h2">
                                 {name}
                             </Typography>
                             <Collapse in={openDesc} collapsedHeight={100}>
-                                <Typography variant="subtitle1" color="textSecondary">
+                                <Typography variant="subtitle2" color="textSecondary" gutterBottom >
                                     {types[item.type].displayName}
                                 </Typography>
                                 <Typography gutterBottom

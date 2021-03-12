@@ -1,5 +1,5 @@
 import {createMuiTheme} from '@material-ui/core/styles'
-import {orange} from "@material-ui/core/colors";
+import {orange, red} from "@material-ui/core/colors";
 import './App.css';
 
 const font =  "'Wallpoet', sans-serif";
@@ -9,6 +9,10 @@ const theme = createMuiTheme({
         primary: {
             main: orange[500]
         },
+        error: {
+            main: red[700],
+            secondary: red[200],
+        }
     },
     title: {
         fontFamily: font

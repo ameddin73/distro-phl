@@ -31,7 +31,7 @@ const UserItems = () => {
                         const where = {field: 'uid', operator: '==', value: user.uid}
                         return (
                             <ItemList path={path} where={where} orderBy={orderBy}
-                                      itemAction={(item) => (<UserAction item={item}/>)}
+                                      itemAction={({id}) => (<UserAction id={id}/>)}
                                       unmarshal={unmarshal}/>
                         );
                     }

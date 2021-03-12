@@ -51,15 +51,14 @@ const ItemList = ({path, where, orderBy, unmarshal, itemAction}) => {
                                         return isLoading ? (
                                             <Loading/>
                                         ) : (
-                                            (rest.value === null || rest.value.length === 0) ?
+                                            (rest.value === null || rest.value.length === 0 || !rest.value.some((item) => item.active)) ?
                                                 (
                                                     <NothingHere/>
                                                 ) : (
-                                                    unmarshal(rest).map((item) => {
-                                                        return (
-                                                            <Item key={item.id} item={item} types={types} itemAction={itemAction}/>
+                                                    unmarshal(rest).map((item) => (
+                                                            item.active && <Item key={item.id} item={item} types={types} itemAction={itemAction}/>
                                                         )
-                                                    }))
+                                                    ))
                                         )
                                     }}
                                 </FirestoreCollection>
