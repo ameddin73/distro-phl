@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         flexGrow: 1,
-        fontFamily: "Wallpoet",
+        font: theme.title.font,
     },
 }));
 
@@ -27,7 +27,7 @@ const TopBar = () => {
                 <Toolbar>
                     <Container className={classes.title}>
                         <Button onClick={() => navigate(paths.public.base)}>
-                            <Typography variant="h6">
+                            <Typography variant="h6" className={classes.title}>
                                 Distro PHL
                             </Typography>
                         </Button>

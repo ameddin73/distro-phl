@@ -10,10 +10,8 @@ const theme = createMuiTheme({
             main: orange[500]
         },
     },
-    typography: {
-        h6: {
-            fontFamily: font
-        }
+    title: {
+        fontFamily: font
     },
     link: {
         '&:hover': {
