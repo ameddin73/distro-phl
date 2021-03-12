@@ -45,7 +45,7 @@ const Item = ({item, itemAction}) => {
                                             Supplied by:
                                         </Typography>
                                         <Typography variant="button">
-                                            {item.uid}
+                                            {item.userName}
                                         </Typography>
                                     </Grid>
                                 </Grid>

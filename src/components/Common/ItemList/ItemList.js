@@ -39,7 +39,6 @@ const ItemList = ({path, where, orderBy, unmarshal, itemAction}) => {
                       className={classes.container}>
                     <FirestoreCollection path={path} where={where} orderBy={orderBy} limit={25}>
                         {({isLoading, ...rest}) => {
-                            console.dir(rest)
                             return isLoading ? (
                                 <Loading/>
                             ) : (
