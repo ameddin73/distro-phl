@@ -16,8 +16,9 @@ export const useInput = initialValue => {
 };
 
 export const bindIds = ({ids, value}) => {
-    value.forEach((item, index) => (item.id = ids[index]));
-    return value;
+    const object = {};
+    value.forEach((item, index) => (object[ids[index]] = item));
+    return object;
 };
 
 export const getFileWithUUID = (file) => {

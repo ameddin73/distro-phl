@@ -5,6 +5,8 @@ import {makeStyles} from "@material-ui/styles";
 import Item from "../Item/Item.lazy";
 import Loading from "../Loading";
 import NothingHere from "../NothingHere/NothingHere.lazy";
+import {bindIds} from "../hooks";
+import {collections} from "../../../config";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ItemList = ({path, where, orderBy, unmarshal, itemAction}) => {
     const classes = useStyles();
+    const typesPath = collections.types;
 
     return (
         <>
@@ -37,20 +40,29 @@ const ItemList = ({path, where, orderBy, unmarshal, itemAction}) => {
                       justify="center"
                       spacing={2}
                       className={classes.container}>
-                    <FirestoreCollection path={path} where={where} orderBy={orderBy} limit={25}>
-                        {({isLoading, ...rest}) => {
+                    <FirestoreCollection path={typesPath}>
+                        {({isLoading, ids, value}) => {
+                            const types = value ? bindIds({ids, value}) : [];
                             return isLoading ? (
                                 <Loading/>
                             ) : (
-                                (rest.value === null || rest.value.length === 0) ?
-                                    (
-                                        <NothingHere/>
-                                    ) : (
-                                        unmarshal(rest).map((item) => {
-                                            return (
-                                                <Item key={item.id} item={item} itemAction={itemAction}/>
-                                            )
-                                        }))
+                                <FirestoreCollection path={path} where={where} orderBy={orderBy} limit={25}>
+                                    {({isLoading, ...rest}) => {
+                                        return isLoading ? (
+                                            <Loading/>
+                                        ) : (
+                                            (rest.value === null || rest.value.length === 0) ?
+                                                (
+                                                    <NothingHere/>
+                                                ) : (
+                                                    unmarshal(rest).map((item) => {
+                                                        return (
+                                                            <Item key={item.id} item={item} types={types} itemAction={itemAction}/>
+                                                        )
+                                                    }))
+                                        )
+                                    }}
+                                </FirestoreCollection>
                             )
                         }}
                     </FirestoreCollection>

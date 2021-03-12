@@ -89,10 +89,10 @@ const ItemForm = ({runMutation, types, user}) => {
             runMutation({
                 created: firebase.firestore.FieldValue.serverTimestamp(),
                 description: description,
-                expires: types[types.findIndex(({id}) => id === type)].expires ? expires : null,
+                expires: types[type].expires ? expires : null,
                 imgUrl: imgUrl,
                 name: title,
-                type: collections.types + type,
+                type: type,
                 userName: user.displayName,
                 uid: user.uid,
             }).then(() => navigate(paths.public.userItems, {addSuccess: true}))
@@ -162,14 +162,14 @@ const ItemForm = ({runMutation, types, user}) => {
                                             fullWidth
                                             required
                                     >
-                                        {types.map((type) => {
+                                        {Object.keys(types).map((type) => {
                                             return (
-                                                <MenuItem key={type.id} value={type.id}>{type.displayName}</MenuItem>
+                                                <MenuItem key={type} value={type}>{types[type].displayName}</MenuItem>
                                             )
                                         })}
                                     </Select>
                                 </FormControl>
-                                {types.findIndex(({id}) => id === type) >= 0 && types[types.findIndex(({id}) => id === type)].expires && (
+                                {types[type] >= 0 && types[type].expires && (
                                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                         <KeyboardDatePicker value={expires}
                                                             onChange={changeExpires}
@@ -241,7 +241,7 @@ const AddItem = ({user}) => {
                 {({runMutation}) => (
                     <FirestoreCollection path={typesPath} orderBy={orderBy}>
                         {({isLoading, ids, value}) => {
-                            const types = value ? bindIds({ids, value}) : [];
+                            const types = value ? bindIds({ids, value}) : {};
                             return isLoading ? (
                                 <Loading/>
                             ) : (

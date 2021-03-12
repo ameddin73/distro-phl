@@ -2,8 +2,10 @@ import React, {useState} from 'react';
 import {Card, CardActionArea, CardContent, CardMedia, ClickAwayListener, Collapse, Grid, Typography} from "@material-ui/core";
 import {itemStyle} from "../styles";
 
-const Item = ({item, itemAction}) => {
+const Item = ({item, types, itemAction}) => {
     const classes = itemStyle();
+    console.dir(types)
+    console.dir(item)
 
     const {name, description, imgUrl} = item;
     const [openDesc, setOpenDesc] = useState(false);
@@ -32,23 +34,20 @@ const Item = ({item, itemAction}) => {
                                 {name}
                             </Typography>
                             <Collapse in={openDesc} collapsedHeight={100}>
-                                <Grid container direction="column">
-                                    <Grid item xs>
-                                        <Typography gutterBottom
-                                                    variant="body2"
-                                                    color="textSecondary">
-                                            {description}
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs>
-                                        <Typography variant="body2">
-                                            Supplied by:
-                                        </Typography>
-                                        <Typography variant="button">
-                                            {item.userName}
-                                        </Typography>
-                                    </Grid>
-                                </Grid>
+                                <Typography variant="subtitle1" color="textSecondary">
+                                    {types[item.type].displayName}
+                                </Typography>
+                                <Typography gutterBottom
+                                            variant="body2"
+                                            color="textPrimary">
+                                    {description}
+                                </Typography>
+                                <Typography variant="body2">
+                                    Supplied by:
+                                </Typography>
+                                <Typography variant="button">
+                                    {item.userName}
+                                </Typography>
                             </Collapse>
                         </CardContent>
                     </CardActionArea>
