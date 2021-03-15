@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "public",
+    "public": "build",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -15,7 +15,6 @@
   },
   "emulators": {
     "hosting": {
-      "site": "distro-phl",
       "port": 5000
     },
     "ui": {
