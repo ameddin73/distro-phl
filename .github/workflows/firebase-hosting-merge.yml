@@ -3,10 +3,9 @@
 
 name: Deploy to Firebase Hosting on merge
 'on':
-  workflow_dispatch:
   push:
     branches:
-      - main
+      - develop
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
@@ -14,12 +13,12 @@ jobs:
       - uses: actions/checkout@v2
       - run: npm ci && npm run build
         env:
-          REACT_APP_FIREBASE_API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY }}
-          REACT_APP_FIREBASE_AUTH_DOMAIN: pheeding-philly.firebaseapp.com
-          REACT_APP_FIREBASE_PROJECT_ID: pheeding-philly
-          REACT_APP_FIREBASE_STORAGE_BUCKET: pheeding-philly.appspot.com
-          REACT_APP_FIREBASE_MESSAGING_SENDER_ID: 833270415161
-          REACT_APP_FIREBASE_APP_ID: 1:833270415161:web:2f4981e372384d4addf2e8
+          REACT_APP_FIREBASE_API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY_DEV }}
+          REACT_APP_FIREBASE_AUTH_DOMAIN: distro-phl-2a16a.firebaseapp.com
+          REACT_APP_FIREBASE_PROJECT_ID: distro-phl-2a16a
+          REACT_APP_FIREBASE_STORAGE_BUCKET: distro-phl-2a16a.appspot.com
+          REACT_APP_FIREBASE_MESSAGING_SENDER_ID: 663261428018
+          REACT_APP_FIREBASE_APP_ID: 1:663261428018:web:832445e410cb63da62ff2b
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
