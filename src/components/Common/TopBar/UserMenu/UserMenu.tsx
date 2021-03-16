@@ -1,19 +1,21 @@
-import React, {useState} from 'react';
+import React, {SyntheticEvent, useState} from 'react';
 import {IfFirebaseAuthed, IfFirebaseUnAuthed} from "@react-firebase/auth";
 import {Button, Menu, MenuItem} from "@material-ui/core";
 import {Menu as MenuIcon} from "@material-ui/icons";
 import firebase from "firebase/app";
+// @ts-ignore
 import {navigate, usePath} from 'hookrouter';
 import {paths} from "../../../../config";
 
 const UserMenu = () => {
-    const [anchorEl, setAnchorEl] = useState(null);
+    const [anchorEl, setAnchorEl] = useState<Element | null>(null);
 
     const path = usePath();
 
-    const menuClick = (event) => (setAnchorEl(event.currentTarget));
+    // const menuClick = (event: Event) => (setAnchorEl(event.currentTarget));
+    const menuClick = (event: SyntheticEvent) => (setAnchorEl(event.currentTarget));
     const menuClose = () => (setAnchorEl(null))
-    const closeAndAction = (action) => {
+    const closeAndAction = (action: () => void) => {
         menuClose();
         action();
     }
@@ -21,9 +23,9 @@ const UserMenu = () => {
     return (
         <div>
             <IfFirebaseUnAuthed>
-                {({...rest}) => (
+                {() => (
                     <Button color="inherit"
-                    onClick={() => navigate(paths.public.login, {redirect: path})}>Login</Button>
+                            onClick={() => navigate(paths.public.login, {redirect: path})}>Login</Button>
                 )}
             </IfFirebaseUnAuthed>
             <IfFirebaseAuthed>

@@ -14,8 +14,8 @@ const Loading = () => {
     const classes = useStyles();
 
     return (
-        <div className={classes.body} >
-            <CircularProgress className={classes.loading}/>
+        <div className={classes.body}>
+            <CircularProgress/>
         </div>
     )
 };
