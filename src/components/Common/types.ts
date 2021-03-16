@@ -18,3 +18,7 @@ export interface ItemTypeInterface {
     readonly id: string,
     readonly index: number,
 }
+
+export type RouteType = {
+    [key: string]: JSX.Element | (() => JSX.Element),
+}
