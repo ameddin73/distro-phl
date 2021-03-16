@@ -1,12 +1,14 @@
 import React from 'react';
 import {Container, Grid} from "@material-ui/core";
 import {FirestoreCollection} from "@react-firebase/firestore";
-import {makeStyles} from "@material-ui/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import Item from "../Item/Item.lazy";
 import Loading from "../Loading";
 import NothingHere from "../NothingHere/NothingHere.lazy";
 import {bindIds} from "../hooks";
 import {collections} from "../../../config";
+import {FirestoreQuery} from "@react-firebase/firestore/dist/types";
+import {ItemInterface} from "../types";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,7 +30,15 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const ItemList = ({path, where, orderBy, unmarshal, itemAction}) => {
+export type ItemListProps = {
+    path: string,
+    where?: FirestoreQuery['where'],
+    orderBy?: FirestoreQuery['orderBy'],
+    unmarshal: (any: any) => any[], //TODO stricter type
+    itemAction?: (item: ItemInterface) => JSX.Element,
+}
+
+const ItemList = ({path, where, orderBy, unmarshal, itemAction}: ItemListProps) => {
     const classes = useStyles();
     const typesPath = collections.types;
 
@@ -51,7 +61,7 @@ const ItemList = ({path, where, orderBy, unmarshal, itemAction}) => {
                                         return isLoading ? (
                                             <Loading/>
                                         ) : (
-                                            (rest.value === null || rest.value.length === 0 || !rest.value.some((item) => item.active)) ?
+                                            (rest.value === null || rest.value.length === 0 || !rest.value.some((item: ItemInterface) => item.active)) ?
                                                 (
                                                     <NothingHere/>
                                                 ) : (

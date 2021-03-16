@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ItemList from './ItemList';
+// import Item from './Item'; TODO testing
 
 it('It should mount', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<ItemList />, div);
+    // ReactDOM.render(<Item />, div); TODO testing
   ReactDOM.unmountComponentAtNode(div);
 });

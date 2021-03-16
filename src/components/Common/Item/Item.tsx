@@ -1,14 +1,20 @@
 import React, {useState} from 'react';
 import {Card, CardActionArea, CardContent, CardMedia, ClickAwayListener, Collapse, Grid, Typography} from "@material-ui/core";
+// @ts-ignore
 import {itemStyle} from "../styles";
+import {ItemInterface, ItemTypeInterface} from '../types';
 
-const Item = ({item, types, itemAction}) => {
+export type ItemProps = {
+    item: ItemInterface,
+    types: { [key: string]: ItemTypeInterface },
+    itemAction?: (item: ItemInterface) => JSX.Element,
+}
+
+const Item = ({item, types, itemAction = (() => (<div/>))}: ItemProps) => {
     const classes = itemStyle();
 
     const {name, description, imgUrl} = item;
     const [openDesc, setOpenDesc] = useState(false);
-
-    if (itemAction === undefined) (itemAction = (() => (<div/>)))
 
     const clickCard = () => {
         setOpenDesc(!openDesc);
