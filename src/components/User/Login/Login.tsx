@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React, {SyntheticEvent, useState} from 'react';
 import {Button, Card, Container, Divider, FormControl, Grid, Input, InputLabel, Link, Typography} from "@material-ui/core";
 import firebase from "firebase/app";
 import GoogleButton from "react-google-button";
-import {makeStyles} from "@material-ui/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import {useInput} from "../../Common/hooks";
 
 const useStyles = makeStyles((theme) => ({
@@ -42,7 +42,7 @@ const Login = () => {
     const [error, setError] = useState('');
     const [registerOpen, setRegisterOpen] = useState(false);
 
-    const submit = (event) => {
+    const submit = (event: SyntheticEvent) => {
         event.preventDefault();
         setError('')
         if (registerOpen) {
@@ -52,7 +52,9 @@ const Login = () => {
             } else {
                 firebase.auth().createUserWithEmailAndPassword(email, password)
                     .then(() => {
-                        firebase.auth().currentUser.updateProfile({displayName: name});
+                        const user = firebase.auth().currentUser;
+                        if (user) user.updateProfile({displayName: name})
+                            .then();
                     })
                     .catch((error) => {
                         setError(error.message);
@@ -119,7 +121,7 @@ const Login = () => {
                                     </Grid>
                                     }
                                     <Typography variant="subtitle2" className={classes.error} noWrap={false}>{error}</Typography>
-                                    <Link align="center" variant="subtitle2" underline="hover" className={classes.link} onClick={clickRegister}>{registerOpen ? 'Login' : 'Register'}</Link>
+                                    <Link align="center" variant="subtitle2" underline="hover" onClick={clickRegister}>{registerOpen ? 'Login' : 'Register'}</Link>
                                     <Grid item xs>
                                         <Button type="submit" className={classes.button} variant="outlined">{registerOpen ? 'Register' : 'Login'}</Button>
                                     </Grid>
@@ -138,9 +140,7 @@ const Login = () => {
                                     </Grid>
                                     <Grid item xs>
                                         <GoogleButton
-                                            onClick={() => {
-                                                firebase.auth().signInWithPopup(googleAuthProvider)
-                                            }}
+                                            onClick={() => (firebase.auth().signInWithPopup(googleAuthProvider).then())}
                                         />
                                     </Grid>
                                 </Grid>

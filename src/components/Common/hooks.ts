@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import {SyntheticEvent, useState} from "react";
 import {v4} from 'uuid';
 import {FirestoreMemberInterface} from "./types";
 
@@ -11,7 +11,7 @@ export const useInput = (initialValue?: any) => {
         reset: () => setValue(""),
         bind: {
             value,
-            onChange: (event: React.FormEvent<HTMLInputElement>) => setValue((event.target as HTMLInputElement).value),
+            onChange: (event: SyntheticEvent) => setValue((event.target as HTMLInputElement).value),
         }
     };
 };
