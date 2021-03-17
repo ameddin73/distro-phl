@@ -8,7 +8,7 @@ import NothingHere from "../NothingHere/NothingHere.lazy";
 import {bindIds} from "../hooks";
 import {collections} from "../../../config";
 import {FirestoreQuery} from "@react-firebase/firestore/dist/types";
-import {ItemInterface} from "../types";
+import {ItemInterface, ItemTypeInterface} from "../types";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -52,7 +52,7 @@ const ItemList = ({path, where, orderBy, unmarshal, itemAction}: ItemListProps) 
                       className={classes.container}>
                     <FirestoreCollection path={typesPath}>
                         {({isLoading, ids, value}) => {
-                            const types = value ? bindIds({ids, value}) : [];
+                            const types = value ? bindIds<ItemTypeInterface>(true, ids, value) : {};
                             return isLoading ? (
                                 <Loading/>
                             ) : (

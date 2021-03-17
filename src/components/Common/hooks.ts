@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {v4} from 'uuid';
+import {IdMember} from "./types";
 
 export const useInput = (initialValue?: any) => {
     const [value, setValue] = useState(initialValue);
@@ -15,11 +16,19 @@ export const useInput = (initialValue?: any) => {
     };
 };
 
-export const bindIds = ({ids, value}: { ids: string[], value: any }) => {
-    const object: { [key: string]: any } = {};
-    value.forEach((item: any, index: number) => (object[ids[index]] = item));
-    return object;
-};
+export function bindIds<T>(object: boolean, ids: string[], values: T[]): { [key: string]: T };
+export function bindIds<T>(object: boolean, ids: string[], values: T[]): T[];
+
+export function bindIds<T extends IdMember>(object: boolean, ids: string[], values: T[]): any {
+    if (object) {
+        const object: { [key: string]: T } = {};
+        values.forEach((itemType: T, index: number) => (object[ids[index]] = itemType));
+        return object;
+    } else {
+        values.map((item: T, index: number) => (item.id = ids[index]));
+        return values;
+    }
+}
 
 export const getFileWithUUID = (file: File) => {
     Object.defineProperty(file, 'name', {
