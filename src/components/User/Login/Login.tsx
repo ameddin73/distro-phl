@@ -94,27 +94,27 @@ const Login = () => {
                                       className={classes.container}>
                                     {registerOpen &&
                                     <Grid item>
-                                        <FormControl required={true}>
+                                        <FormControl required={true} fullWidth>
                                             <InputLabel htmlFor="password">Name</InputLabel>
                                             <Input id="name" {...bindName}/>
                                         </FormControl>
                                     </Grid>
                                     }
                                     <Grid item xs>
-                                        <FormControl required={true}>
+                                        <FormControl required={true} fullWidth>
                                             <InputLabel htmlFor="email">Email address</InputLabel>
                                             <Input id="email" {...bindEmail}/>
                                         </FormControl>
                                     </Grid>
                                     <Grid item xs>
-                                        <FormControl required={true}>
+                                        <FormControl required={true} fullWidth>
                                             <InputLabel htmlFor="password">Password</InputLabel>
                                             <Input type="password" id="password" {...bindPassword}/>
                                         </FormControl>
                                     </Grid>
                                     {registerOpen &&
                                     <Grid item xs>
-                                        <FormControl required={true}>
+                                        <FormControl required={true} fullWidth>
                                             <InputLabel htmlFor="confirmPassword">Confirm Password</InputLabel>
                                             <Input type="password" id="confirmPassword" {...bindConfirmPassword}/>
                                         </FormControl>
