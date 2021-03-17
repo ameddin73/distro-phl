@@ -2,12 +2,12 @@ import React, {useState} from 'react';
 import {Card, CardActionArea, CardContent, CardMedia, ClickAwayListener, Collapse, Grid, Typography} from "@material-ui/core";
 // @ts-ignore
 import {itemStyle} from "../styles";
-import {ItemInterface, ItemTypeInterface} from '../types';
+import {Item, ItemTypes} from '../types';
 
 export type ItemProps = {
-    item: ItemInterface,
-    types: { [key: string]: ItemTypeInterface },
-    itemAction?: (item: ItemInterface) => JSX.Element,
+    item: Item,
+    types: ItemTypes,
+    itemAction?: (item: Item) => JSX.Element,
 }
 
 const Item = ({item, types, itemAction = (() => (<div/>))}: ItemProps) => {

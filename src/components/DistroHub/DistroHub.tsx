@@ -4,7 +4,7 @@ import {bindIds} from "../Common/hooks";
 import HubAction from "./HubAction/HubAction";
 import ItemList from "../Common/ItemList/ItemList.lazy";
 import {collections} from "../../config";
-import {ItemInterface} from "../Common/types";
+import {Item} from "../Common/types";
 import {FirestoreQuery} from "@react-firebase/firestore/dist/types";
 
 const DistroHub = () => {
@@ -14,8 +14,8 @@ const DistroHub = () => {
     // Assign ids to value objects and reduce on user+name
     //TODO subtract reservations
     const unmarshal = (uid: string) => (
-        (ids: string[], values: ItemInterface[]) => {
-            values = bindIds<ItemInterface>(false, ids, values);
+        (ids: string[], values: Item[]) => {
+            values = bindIds<Item>(false, ids, values);
             values.filter((item) => (item.uid !== uid))
             return values;
         });

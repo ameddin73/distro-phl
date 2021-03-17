@@ -8,7 +8,7 @@ import NothingHere from "../NothingHere/NothingHere.lazy";
 import {bindIds} from "../hooks";
 import {collections} from "../../../config";
 import {FirestoreQuery} from "@react-firebase/firestore/dist/types";
-import {ItemInterface, ItemTypeInterface} from "../types";
+import {Item, ItemType} from "../types";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -34,8 +34,8 @@ export type ItemListProps = {
     path: string,
     where?: FirestoreQuery['where'],
     orderBy?: FirestoreQuery['orderBy'],
-    unmarshal: (ids: string[], values: ItemInterface[]) => ItemInterface[], //TODO stricter type
-    itemAction?: (item: ItemInterface) => JSX.Element,
+    unmarshal: (ids: string[], values: Item[]) => Item[], //TODO stricter type
+    itemAction?: (item: Item) => JSX.Element,
 }
 
 const ItemList = ({path, where, orderBy, unmarshal, itemAction}: ItemListProps) => {
@@ -52,7 +52,7 @@ const ItemList = ({path, where, orderBy, unmarshal, itemAction}: ItemListProps) 
                       className={classes.container}>
                     <FirestoreCollection path={typesPath}>
                         {({isLoading, ids, value}) => {
-                            const types = value ? bindIds<ItemTypeInterface>(true, ids, value) : {};
+                            const types = value ? bindIds<ItemType>(true, ids, value) : {};
                             return isLoading ? (
                                 <Loading/>
                             ) : (
@@ -61,7 +61,7 @@ const ItemList = ({path, where, orderBy, unmarshal, itemAction}: ItemListProps) 
                                         return isLoading ? (
                                             <Loading/>
                                         ) : (
-                                            (value === null || value.length === 0 || !value.some((item: ItemInterface) => item.active)) ?
+                                            (value === null || value.length === 0 || !value.some((item: Item) => item.active)) ?
                                                 (
                                                     <NothingHere/>
                                                 ) : (

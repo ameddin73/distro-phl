@@ -1,6 +1,6 @@
-import {SyntheticEvent, useState} from "react";
+import {ChangeEvent, SyntheticEvent, useState} from "react";
 import {v4} from 'uuid';
-import {FirestoreMemberInterface} from "./types";
+import {FirestoreMember} from "./types";
 
 export const useInput = (initialValue?: any) => {
     const [value, setValue] = useState(initialValue);
@@ -11,7 +11,7 @@ export const useInput = (initialValue?: any) => {
         reset: () => setValue(""),
         bind: {
             value,
-            onChange: (event: SyntheticEvent) => setValue((event.target as HTMLInputElement).value),
+            onChange: (event: SyntheticEvent | ChangeEvent<{ name?: string; value: unknown }>) => setValue((event.target as HTMLInputElement).value),
         }
     };
 };
@@ -19,7 +19,7 @@ export const useInput = (initialValue?: any) => {
 export function bindIds<T>(makeObject: boolean, ids: string[], values: T[]): T[];
 export function bindIds<T>(makeObject: boolean, ids: string[], values: T[]): { [key: string]: T };
 
-export function bindIds<T extends FirestoreMemberInterface>(makeObject: boolean, ids: string[], values: T[]):
+export function bindIds<T extends FirestoreMemberType>(makeObject: boolean, ids: string[], values: T[]):
     { [key: string]: T } | T[] {
     if (makeObject) {
         const object: { [key: string]: T } = {};

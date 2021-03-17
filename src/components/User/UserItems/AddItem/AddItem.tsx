@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React, {SyntheticEvent, useState} from 'react';
 import {itemStyle} from "../../../Common/styles";
 import {Button, Card, CardContent, CardMedia, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, TextField, Typography} from "@material-ui/core";
-import {makeStyles} from "@material-ui/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import {CameraAlt} from "@material-ui/icons";
 import {grey} from "@material-ui/core/colors";
 import * as config from "../../../../config";
@@ -15,7 +15,12 @@ import Loading from "../../../Common/Loading";
 import theme from "../../../../theme";
 import firebase from "firebase/app";
 import 'firebase/storage';
+// @ts-ignore
 import {navigate} from 'hookrouter';
+import {ItemMutation, ItemTypes} from "../../../Common/types";
+import {MaterialUiPickersDate} from "@material-ui/pickers/typings/date";
+import {FirestoreQuery} from "@react-firebase/firestore/dist/types";
+import Timestamp = firebase.firestore.Timestamp;
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -43,30 +48,45 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const ItemForm = ({runMutation, types, user}) => {
+type ItemFormProps = {
+    runMutation: ItemMutation,
+    types: ItemTypes,
+    user: firebase.User,
+}
+
+interface HTMLInputEvent extends SyntheticEvent {
+    target: HTMLInputElement & EventTarget,
+}
+
+const ItemForm = ({runMutation, types, user}: ItemFormProps) => {
     const itemClasses = itemStyle();
     const classes = useStyles();
     const dLength = descriptionLength;
 
-    const [error, setError] = useState(null);
-    const [storageRef, setStorageRef] = useState();
-    const [imgLocalImgUrl, setLocalImgUrl] = useState();
-    const [imgFile, setImgFile] = useState();
-    const [uploadRef, setUploadRef] = useState(null);
-    const [expires, setExpires] = useState();
+    const [error, setError] = useState<string | null>(null);
+    const [imgLocalImgUrl, setLocalImgUrl] = useState<string>();
+    const [imgFile, setImgFile] = useState<File>();
+    const [storageRef, setStorageRef] = useState<firebase.storage.Reference>();
+    const [uploadRef, setUploadRef] = useState<HTMLInputElement | null>(null);
+    const [expires, setExpires] = useState<Date>();
     const {value: title, bind: bindTitle} = useInput('');
     const {value: description, bind: bindDescription} = useInput('');
     const {value: type, bind: bindType} = useInput('');
 
-    const changeFile = event => {
-        const file = event.target.files[0];
-        setLocalImgUrl(URL.createObjectURL(file));
-        setImgFile(getFileWithUUID(file));
-        setStorageRef(firebase.storage().ref().child(storage.itemImage + file.name));
+    const changeFile = (event: HTMLInputEvent) => {
+        if (event.target.files) {
+            const file = event.target.files[0];
+            setLocalImgUrl(URL.createObjectURL(file));
+            setImgFile(getFileWithUUID(file));
+            setStorageRef(firebase.storage().ref().child(storage.itemImage + file.name));
+        } else {
+            console.error('event.target.files[0] may be null');
+            setError('Something went wrong attaching image.');
+        }
     }
-    const changeExpires = date => setExpires(date);
+    const changeExpires = (date: MaterialUiPickersDate) => setExpires(date as Date);
     const uploadImg = async () => {
-        if (imgFile) {
+        if (imgFile && storageRef) {
             try {
                 const upload = await storageRef.put(imgFile)
                 const imgUrl = await upload.ref.getDownloadURL();
@@ -81,18 +101,18 @@ const ItemForm = ({runMutation, types, user}) => {
             return config.defaultImageUrl;
         }
     }
-    const submit = async (event) => {
+    const submit = async (event: SyntheticEvent) => {
         event.preventDefault();
-        const imgUrl = await uploadImg();
+        const imgUrl: string = await uploadImg();
         console.dir(imgUrl)
-        if (imgUrl) {
+        if (imgUrl && user.displayName) {
             runMutation({
                 active: true,
-                created: firebase.firestore.FieldValue.serverTimestamp(),
+                created: (firebase.firestore.FieldValue.serverTimestamp() as Timestamp).toDate(),
                 description: description,
-                expires: types[type].expires ? expires : null,
+                expires: types[type].expires ? expires : undefined,
                 imgUrl: imgUrl,
-                name: title,
+                displayName: title,
                 type: type,
                 userName: user.displayName,
                 uid: user.uid,
@@ -100,11 +120,11 @@ const ItemForm = ({runMutation, types, user}) => {
                 .catch(error => {
                     console.error(error);
                     setError('Something went wrong posting item.');
-                    storageRef.delete().then(() => console.warn('Image deleted successfully.'))
+                    if (storageRef) storageRef.delete().then(() => console.warn('Image deleted successfully.'))
                         .catch((error) => {
-                        console.error(error);
-                        console.error('Delete failed for: ' + imgUrl + '. File may be orphaned.');
-                    });
+                            console.error(error);
+                            console.error('Delete failed for: ' + imgUrl + '. File may be orphaned.');
+                        });
                 });
         }
     };
@@ -116,13 +136,13 @@ const ItemForm = ({runMutation, types, user}) => {
                   alignItems="center"
                   className={classes.container}>
                 <Grid item xs>
-                    <Typography variant="h5" color="primary" justify="center" gutterBottom>
+                    <Typography variant="h5" color="primary" align="center" gutterBottom>
                         Post a new item.
                     </Typography>
                 </Grid>
                 {error && (
                     <Grid item xs>
-                        <Typography variant="h5" color="primary" justify="center" gutterBottom>
+                        <Typography variant="h5" color="primary" align="center" gutterBottom>
                             {error}
                         </Typography>
                     </Grid>
@@ -140,12 +160,14 @@ const ItemForm = ({runMutation, types, user}) => {
                                       alignItems="center"
                                       direction="column"
                                       className={`${classes.mediaBox} ${itemClasses.media}`}>
-                                    <IconButton onClick={() => uploadRef.click()}>
+                                    <IconButton onClick={() => {
+                                        if (uploadRef) uploadRef.click();
+                                    }}>
                                         <CameraAlt className={classes.upload}/>
                                     </IconButton>
                                 </Grid>
                             }
-                            <CardContent className={classes.content}>
+                            <CardContent>
                                 <TextField {...bindTitle}
                                            inputProps={{className: classes.title}}
                                            margin="dense"
@@ -170,7 +192,7 @@ const ItemForm = ({runMutation, types, user}) => {
                                         })}
                                     </Select>
                                 </FormControl>
-                                {types[type] >= 0 && types[type].expires && (
+                                {types[type] && types[type].expires && (
                                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                         <KeyboardDatePicker value={expires}
                                                             onChange={changeExpires}
@@ -231,10 +253,14 @@ const ItemForm = ({runMutation, types, user}) => {
     )
 };
 
-const AddItem = ({user}) => {
+export type AddItemProps = {
+    user: firebase.User,
+}
+
+const AddItem = ({user}: AddItemProps) => {
     const typesPath = collections.types;
     const itemsPath = collections.items;
-    const orderBy = [{field: 'index', type: 'asc'}];
+    const orderBy: FirestoreQuery['orderBy'] = [{field: 'index', type: 'asc'}];
 
     return (
         <>
@@ -242,7 +268,7 @@ const AddItem = ({user}) => {
                 {({runMutation}) => (
                     <FirestoreCollection path={typesPath} orderBy={orderBy}>
                         {({isLoading, ids, value}) => {
-                            const types = value ? bindIds({ids, value}) : {};
+                            const types = value ? bindIds(true, ids, value) : {};
                             return isLoading ? (
                                 <Loading/>
                             ) : (
