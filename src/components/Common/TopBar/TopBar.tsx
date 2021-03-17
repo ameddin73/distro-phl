@@ -1,10 +1,12 @@
 import React from 'react';
 import {AppBar, Button, Container, Toolbar, Typography} from "@material-ui/core";
-import {makeStyles} from "@material-ui/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import UserMenu from "./UserMenu/UserMenu.lazy";
+// @ts-ignore
 import {navigate} from 'hookrouter';
 import {paths} from "../../../config";
 
+// @ts-ignore
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -14,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         flexGrow: 1,
+        // @ts-ignore
         fontFamily: theme.title.fontFamily,
     },
 }));
