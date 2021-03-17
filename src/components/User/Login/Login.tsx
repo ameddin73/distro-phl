@@ -1,5 +1,5 @@
 import React, {SyntheticEvent, useState} from 'react';
-import {Button, Card, Container, Divider, FormControl, Grid, Input, InputLabel, Link, Typography} from "@material-ui/core";
+import {Button, Card, Divider, FormControl, Grid, Input, InputLabel, Link, Typography} from "@material-ui/core";
 import firebase from "firebase/app";
 import GoogleButton from "react-google-button";
 import {makeStyles} from "@material-ui/core/styles";
@@ -7,18 +7,20 @@ import {useInput} from "../../Common/hooks";
 
 const useStyles = makeStyles((theme) => ({
     root: {
+        width: '100%',
         flexGrow: 1,
     },
     container: {
-        maxWidth: 'sm',
         justify: 'center',
         padding: theme.spacing(2),
     },
     card: {
+        width: '100%',
         display: "inline-block",
     },
     button: {
-        width: '240px',
+        width: '100%',
+        maxWidth: '240px',
     },
     divider: {
         padding: theme.spacing(0),
@@ -77,79 +79,77 @@ const Login = () => {
     }
 
     return (
-        <div>
-            <div>
-                <Container className={classes.container} maxWidth="sm">
-                    <Grid container
-                          direction="column"
-                          alignContent="center"
-                          spacing={2}
-                          className={classes.container}>
-                        <Card className={classes.card}>
-                            <form onSubmit={submit}>
-                                <Grid container
-                                      direction="column"
-                                      alignContent="center"
-                                      spacing={2}
-                                      className={classes.container}>
-                                    {registerOpen &&
-                                    <Grid item>
-                                        <FormControl required={true} fullWidth>
-                                            <InputLabel htmlFor="password">Name</InputLabel>
-                                            <Input id="name" {...bindName}/>
-                                        </FormControl>
-                                    </Grid>
-                                    }
-                                    <Grid item xs>
-                                        <FormControl required={true} fullWidth>
-                                            <InputLabel htmlFor="email">Email address</InputLabel>
-                                            <Input id="email" {...bindEmail}/>
-                                        </FormControl>
-                                    </Grid>
-                                    <Grid item xs>
-                                        <FormControl required={true} fullWidth>
-                                            <InputLabel htmlFor="password">Password</InputLabel>
-                                            <Input type="password" id="password" {...bindPassword}/>
-                                        </FormControl>
-                                    </Grid>
-                                    {registerOpen &&
-                                    <Grid item xs>
-                                        <FormControl required={true} fullWidth>
-                                            <InputLabel htmlFor="confirmPassword">Confirm Password</InputLabel>
-                                            <Input type="password" id="confirmPassword" {...bindConfirmPassword}/>
-                                        </FormControl>
-                                    </Grid>
-                                    }
-                                    <Typography variant="subtitle2" className={classes.error} noWrap={false}>{error}</Typography>
-                                    <Link align="center" variant="subtitle2" underline="hover" onClick={clickRegister}>{registerOpen ? 'Login' : 'Register'}</Link>
-                                    <Grid item xs>
-                                        <Button type="submit" className={classes.button} variant="outlined">{registerOpen ? 'Register' : 'Login'}</Button>
-                                    </Grid>
-                                    <Grid item xs>
-                                        <Grid container spacing={0} className={classes.divider}>
-                                            <Grid item xs>
-                                                <Divider/>
-                                            </Grid>
-                                            <Grid item xs>
-                                                <Typography align="center" variant="h6">or</Typography>
-                                            </Grid>
-                                            <Grid item xs>
-                                                <Divider/>
-                                            </Grid>
+        <>
+            <Grid container
+                  direction="column"
+                  alignContent="center"
+                  spacing={2}
+                  className={classes.container}>
+                <Grid item xs>
+                    <Card className={classes.card}>
+                        <form onSubmit={submit}>
+                            <Grid container
+                                  direction="column"
+                                  alignContent="center"
+                                  spacing={2}
+                                  className={classes.container}>
+                                {registerOpen &&
+                                <Grid item>
+                                    <FormControl required={true} fullWidth>
+                                        <InputLabel htmlFor="password">Name</InputLabel>
+                                        <Input id="name" {...bindName}/>
+                                    </FormControl>
+                                </Grid>
+                                }
+                                <Grid item xs>
+                                    <FormControl required={true} fullWidth>
+                                        <InputLabel htmlFor="email">Email address</InputLabel>
+                                        <Input id="email" {...bindEmail}/>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs>
+                                    <FormControl required={true} fullWidth>
+                                        <InputLabel htmlFor="password">Password</InputLabel>
+                                        <Input type="password" id="password" {...bindPassword}/>
+                                    </FormControl>
+                                </Grid>
+                                {registerOpen &&
+                                <Grid item xs>
+                                    <FormControl required={true} fullWidth>
+                                        <InputLabel htmlFor="confirmPassword">Confirm Password</InputLabel>
+                                        <Input type="password" id="confirmPassword" {...bindConfirmPassword}/>
+                                    </FormControl>
+                                </Grid>
+                                }
+                                <Typography variant="subtitle2" className={classes.error} noWrap={false}>{error}</Typography>
+                                <Link align="center" variant="subtitle2" underline="hover" onClick={clickRegister}>{registerOpen ? 'Login' : 'Register'}</Link>
+                                <Grid item xs>
+                                    <Button type="submit" className={classes.button} variant="outlined">{registerOpen ? 'Register' : 'Login'}</Button>
+                                </Grid>
+                                <Grid item xs>
+                                    <Grid container spacing={0} className={classes.divider}>
+                                        <Grid item xs>
+                                            <Divider/>
+                                        </Grid>
+                                        <Grid item xs>
+                                            <Typography align="center" variant="h6">or</Typography>
+                                        </Grid>
+                                        <Grid item xs>
+                                            <Divider/>
                                         </Grid>
                                     </Grid>
-                                    <Grid item xs>
-                                        <GoogleButton
-                                            onClick={() => (firebase.auth().signInWithPopup(googleAuthProvider).then())}
-                                        />
-                                    </Grid>
                                 </Grid>
-                            </form>
-                        </Card>
-                    </Grid>
-                </Container>
-            </div>
-        </div>
+                                <Grid item xs>
+                                    <GoogleButton
+                                        onClick={() => (firebase.auth().signInWithPopup(googleAuthProvider).then())}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </form>
+                    </Card>
+                </Grid>
+            </Grid>
+        </>
     );
 }
 
