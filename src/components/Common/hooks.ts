@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {v4} from 'uuid';
-import {IdMember} from "./types";
+import {FirestoreMemberInterface} from "./types";
 
 export const useInput = (initialValue?: any) => {
     const [value, setValue] = useState(initialValue);
@@ -16,11 +16,12 @@ export const useInput = (initialValue?: any) => {
     };
 };
 
-export function bindIds<T>(object: boolean, ids: string[], values: T[]): { [key: string]: T };
-export function bindIds<T>(object: boolean, ids: string[], values: T[]): T[];
+export function bindIds<T>(makeObject: boolean, ids: string[], values: T[]): T[];
+export function bindIds<T>(makeObject: boolean, ids: string[], values: T[]): { [key: string]: T };
 
-export function bindIds<T extends IdMember>(object: boolean, ids: string[], values: T[]): any {
-    if (object) {
+export function bindIds<T extends FirestoreMemberInterface>(makeObject: boolean, ids: string[], values: T[]):
+    { [key: string]: T } | T[] {
+    if (makeObject) {
         const object: { [key: string]: T } = {};
         values.forEach((itemType: T, index: number) => (object[ids[index]] = itemType));
         return object;

@@ -34,7 +34,7 @@ export type ItemListProps = {
     path: string,
     where?: FirestoreQuery['where'],
     orderBy?: FirestoreQuery['orderBy'],
-    unmarshal: (any: any) => any[], //TODO stricter type
+    unmarshal: (ids: string[], values: ItemInterface[]) => ItemInterface[], //TODO stricter type
     itemAction?: (item: ItemInterface) => JSX.Element,
 }
 
@@ -57,15 +57,15 @@ const ItemList = ({path, where, orderBy, unmarshal, itemAction}: ItemListProps) 
                                 <Loading/>
                             ) : (
                                 <FirestoreCollection path={path} where={where} orderBy={orderBy} limit={25}>
-                                    {({isLoading, ...rest}) => {
+                                    {({isLoading, ids, value}) => {
                                         return isLoading ? (
                                             <Loading/>
                                         ) : (
-                                            (rest.value === null || rest.value.length === 0 || !rest.value.some((item: ItemInterface) => item.active)) ?
+                                            (value === null || value.length === 0 || !value.some((item: ItemInterface) => item.active)) ?
                                                 (
                                                     <NothingHere/>
                                                 ) : (
-                                                    unmarshal(rest).map((item) => (
+                                                    unmarshal(ids, value).map((item) => (
                                                             item.active && <Item key={item.id} item={item} types={types} itemAction={itemAction}/>
                                                         )
                                                     ))

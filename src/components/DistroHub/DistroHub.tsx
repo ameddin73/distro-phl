@@ -1,23 +1,24 @@
 import React from 'react';
 import {FirebaseAuthConsumer} from "@react-firebase/auth";
+import {bindIds} from "../Common/hooks";
 import HubAction from "./HubAction/HubAction";
 import ItemList from "../Common/ItemList/ItemList.lazy";
 import {collections} from "../../config";
+import {ItemInterface} from "../Common/types";
+import {FirestoreQuery} from "@react-firebase/firestore/dist/types";
 
 const DistroHub = () => {
     const path = collections.items;
-    const orderBy = [{field: 'created', type: 'asc'}]
+    const orderBy: FirestoreQuery['orderBy'] = [{field: 'created', type: 'asc'}]
 
     // Assign ids to value objects and reduce on user+name
     //TODO subtract reservations
-    const unmarshal = (uid) => (
-        ({ids, value}) => (
-            value.map((item, index) => {
-                item.id = ids[index]
-                item.count = item.count - item.reserved;
-                return item;
-            }).filter((item) => (item.uid !== uid))
-        ));
+    const unmarshal = (uid: string) => (
+        (ids: string[], values: ItemInterface[]) => {
+            values = bindIds<ItemInterface>(false, ids, values);
+            values.filter((item) => (item.uid !== uid))
+            return values;
+        });
 
     return (
         <div>
@@ -26,7 +27,7 @@ const DistroHub = () => {
                     return (
                         <ItemList path={path}
                                   orderBy={orderBy}
-                                  itemAction={(item) => (<HubAction item={item}/>)}
+                                  itemAction={(item) => (<HubAction id={item.id} path={path + item.id}/>)}
                                   unmarshal={unmarshal(isSignedIn ? user.uid : null)}/>
                     )
                 }}

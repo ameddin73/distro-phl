@@ -13,7 +13,7 @@ export type ItemProps = {
 const Item = ({item, types, itemAction = (() => (<div/>))}: ItemProps) => {
     const classes = itemStyle();
 
-    const {name, description, imgUrl} = item;
+    const {displayName, description, imgUrl} = item;
     const [openDesc, setOpenDesc] = useState(false);
 
     const clickCard = () => {
@@ -32,13 +32,13 @@ const Item = ({item, types, itemAction = (() => (<div/>))}: ItemProps) => {
                         <CardMedia
                             className={classes.media}
                             image={imgUrl}
-                            title={name}/>
+                            title={displayName}/>
                         <CardContent>
                             <Typography variant="h5" component="h2">
-                                {name}
+                                {displayName}
                             </Typography>
                             <Collapse in={openDesc} collapsedHeight={100}>
-                                <Typography variant="subtitle2" color="textSecondary" gutterBottom >
+                                <Typography variant="subtitle2" color="textSecondary" gutterBottom>
                                     {types[item.type].displayName}
                                 </Typography>
                                 <Typography gutterBottom
