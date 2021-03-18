@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
-import {makeStyles} from "@material-ui/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import {Button, CardActions, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Snackbar} from "@material-ui/core";
 import {Delete, Edit} from "@material-ui/icons";
 import {FirestoreMutation} from "@react-firebase/firestore";
 import {collections} from "../../../../config";
 import Alert from '@material-ui/lab/Alert';
+import {RunMutation} from "@react-firebase/firestore/dist/components/FirestoreMutation";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -16,12 +17,17 @@ const useStyles = makeStyles((theme) => ({
     confirmDelete: {
         background: theme.palette.error.main,
         '&:hover': {
+            // @ts-ignore
             background: theme.palette.error.secondary,
         }
     },
 }));
 
-const UserAction = ({id}) => {
+export type UserActionProps = {
+    id: string,
+}
+
+const UserAction = ({id}: UserActionProps) => {
     const classes = useStyles();
     const path = collections.items + id;
 
@@ -30,7 +36,7 @@ const UserAction = ({id}) => {
     const [fail, setFail] = useState(false);
 
     const clickDelete = () => setDeleteAlert(true);
-    const closeDeleteAlert = (runMutation) => {
+    const closeDeleteAlert = (runMutation: RunMutation) => {
         setDeleteAlert(false);
         if (runMutation) {
             runMutation({
@@ -70,7 +76,7 @@ const UserAction = ({id}) => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={closeDeleteAlert} color="primary" autoFocus>
+                    <Button onClick={() => closeDeleteAlert} color="primary" autoFocus>
                         Cancel
                     </Button>
                     <FirestoreMutation type="update" path={path}>
