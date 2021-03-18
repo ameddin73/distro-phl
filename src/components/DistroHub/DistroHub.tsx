@@ -14,7 +14,7 @@ const DistroHub = () => {
     const unmarshal = (uid: string) => (
         (ids: string[], values: ItemInterface[]) => {
             values = bindIds<ItemInterface>(false, ids, values);
-            values.filter((item) => (item.uid !== uid))
+            values = values.filter(item => item.uid !== uid);
             return values;
         });
 
