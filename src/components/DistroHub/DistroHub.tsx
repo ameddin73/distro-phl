@@ -11,8 +11,6 @@ const DistroHub = () => {
     const path = collections.items;
     const orderBy: FirestoreQuery['orderBy'] = [{field: 'created', type: 'asc'}]
 
-    // Assign ids to value objects and reduce on user+name
-    //TODO subtract reservations
     const unmarshal = (uid: string) => (
         (ids: string[], values: ItemInterface[]) => {
             values = bindIds<ItemInterface>(false, ids, values);

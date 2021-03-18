@@ -107,9 +107,10 @@ const ItemForm = ({runMutation, types, user}: ItemFormProps) => {
         if (imgUrl && user.displayName) {
             runMutation({
                 active: true,
-                created: (firebase.firestore.FieldValue.serverTimestamp() as firebase.firestore.Timestamp).toDate(),
+                // @ts-ignore
+                created: firebase.firestore.FieldValue.serverTimestamp(),
                 description: description,
-                expires: types[type].expires ? expires : undefined,
+                ...(types[type].expires && {expires: expires}),
                 imgUrl: imgUrl,
                 displayName: title,
                 type: type,

@@ -1,22 +1,22 @@
 import React from 'react';
 import ItemList from "../../Common/ItemList/ItemList.lazy";
 import {FirebaseAuthConsumer} from "@react-firebase/auth";
+// @ts-ignore
 import {navigate} from 'hookrouter';
 import {collections, paths} from "../../../config";
 import UserAction from "./UserAction/UserAction.lazy";
 import Loading from "../../Common/Loading";
+import {ItemInterface} from "../../Common/types";
+import {bindIds} from "../../Common/hooks";
+import {FirestoreQuery} from "@react-firebase/firestore/dist/types";
 
 const UserItems = () => {
     const path = collections.items;
-    const orderBy = [{field: 'created', type: 'asc'}];
+    const orderBy: FirestoreQuery['orderBy'] = [{field: 'created', type: 'asc'}];
 
-    //TODO replace with bindId hook
-    const unmarshal = ({ids, value}) => {
-        value.forEach((item, index) => {
-            item.id = ids[index]
-            item.count = item.count - item.reserved;
-        });
-        return value;
+    const unmarshal = (ids: string[], values: ItemInterface[]) => {
+        values = bindIds<ItemInterface>(false, ids, values);
+        return values;
     };
 
     return (
@@ -25,12 +25,13 @@ const UserItems = () => {
                 {({isSignedIn, user, providerId}) => {
                     if (providerId === null) {
                         return (<Loading/>)
-                    } else if (isSignedIn !== true) {
+                    } else if (!isSignedIn) {
                         navigate(paths.public.login, true, {redirect: paths.public.userItems});
                     } else {
-                        const where = {field: 'uid', operator: '==', value: user.uid}
+                        const where: FirestoreQuery['where'] = {field: 'uid', operator: '==', value: user.uid}
                         return (
                             <ItemList path={path} where={where} orderBy={orderBy}
+                                // @ts-ignore
                                       itemAction={({id}) => (<UserAction id={id}/>)}
                                       unmarshal={unmarshal}/>
                         );
