@@ -19,7 +19,7 @@ export const useInput = (initialValue?: any) => {
 export function bindIds<T>(makeObject: boolean, ids: string[], values: T[]): T[];
 export function bindIds<T>(makeObject: boolean, ids: string[], values: T[]): { [key: string]: T };
 
-export function bindIds<T extends FirestoreMemberType>(makeObject: boolean, ids: string[], values: T[]):
+export function bindIds<T extends FirestoreMember>(makeObject: boolean, ids: string[], values: T[]):
     { [key: string]: T } | T[] {
     if (makeObject) {
         const object: { [key: string]: T } = {};

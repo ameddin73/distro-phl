@@ -20,7 +20,6 @@ import {navigate} from 'hookrouter';
 import {ItemMutation, ItemTypes} from "../../../Common/types";
 import {MaterialUiPickersDate} from "@material-ui/pickers/typings/date";
 import {FirestoreQuery} from "@react-firebase/firestore/dist/types";
-import Timestamp = firebase.firestore.Timestamp;
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -108,7 +107,7 @@ const ItemForm = ({runMutation, types, user}: ItemFormProps) => {
         if (imgUrl && user.displayName) {
             runMutation({
                 active: true,
-                created: (firebase.firestore.FieldValue.serverTimestamp() as Timestamp).toDate(),
+                created: (firebase.firestore.FieldValue.serverTimestamp() as firebase.firestore.Timestamp).toDate(),
                 description: description,
                 expires: types[type].expires ? expires : undefined,
                 imgUrl: imgUrl,

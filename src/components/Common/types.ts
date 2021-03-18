@@ -1,16 +1,18 @@
 import {RunMutation} from "@react-firebase/firestore/dist/components/FirestoreMutation";
 
-type FirestoreMember = {
+export type FirestoreMember = {
     id?: string,
     readonly displayName: string,
 }
 
+// This trick creates a type wrapper that allows you to strictly prohibit undefined
+// keys as per: https://stackoverflow.com/a/57117594/3434441
 type Prevent<K extends keyof any> = {
     [P in K]: never;
 }
 type NoExtraProperties<T, U extends T = T> = U & Prevent<Exclude<keyof U, keyof T>>;
 
-interface ItemInterface extends FirestoreMember {
+interface ItemKeys extends FirestoreMember {
     readonly active: boolean,
     readonly created: Date,
     readonly description: string,
@@ -21,7 +23,7 @@ interface ItemInterface extends FirestoreMember {
     readonly userName: string,
 }
 
-export type Item = NoExtraProperties<ItemInterface>;
+export type ItemInterface = NoExtraProperties<ItemKeys>;
 
 export interface ItemType extends FirestoreMember {
     readonly consumable: boolean,
@@ -30,7 +32,7 @@ export interface ItemType extends FirestoreMember {
 }
 
 export type ItemMutation = RunMutation extends (value: any, ...rest: infer U) => infer R
-    ? (value: Item, ...rest: U) => R : never;
+    ? (value: ItemInterface, ...rest: U) => R : never;
 
 export type ItemTypes = {
     [key: string]: ItemType,
