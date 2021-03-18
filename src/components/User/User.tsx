@@ -1,13 +1,15 @@
 import React from 'react';
 import {paths} from "../../config";
 import Login from "./Login/Login.lazy";
-import {navigate, useRoutes, useQueryParams} from "hookrouter";
+// @ts-ignore
+import {navigate, useQueryParams, useRoutes} from "hookrouter";
 import UserItems from "./UserItems/UserItems.lazy";
 import {FirebaseAuthConsumer} from "@react-firebase/auth";
 import AddItem from "./UserItems/AddItem/AddItem.lazy";
 import Loading from "../Common/Loading";
+import {RouteType} from "../Common/types";
 
-const routes = {};
+const routes: RouteType = {};
 routes[paths.user.login] = () => ({redirect}) => (navigate(redirect, true));
 routes[paths.user.items] = () => () => <UserItems/>;
 routes[paths.user.create] = () => ({user}) => <AddItem user={user}/>;
@@ -20,11 +22,11 @@ const User = () => {
 
     return (
         <>
-            <FirebaseAuthConsumer redirect={redirect}>
+            <FirebaseAuthConsumer>
                 {({isSignedIn, providerId, user}) => {
-                    if (providerId === null && isSignedIn === false) {
+                    if (providerId === null && !isSignedIn) {
                         return (<Loading/>)
-                    } else if (isSignedIn === true) {
+                    } else if (isSignedIn) {
                         return routeResult({redirect, user})
                     } else {
                         return <Login/>;

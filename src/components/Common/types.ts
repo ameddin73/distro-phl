@@ -39,5 +39,5 @@ export type ItemTypes = {
 }
 
 export type RouteType = {
-    [key: string]: JSX.Element | (() => JSX.Element),
+    [key: string]: JSX.Element | (() => JSX.Element) | (() => (arg0: any) => JSX.Element),
 }
