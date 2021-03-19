@@ -1,11 +1,6 @@
 import {FirestoreMember, FirestoreQuery, FirestoreQueryWhere, ItemInterface, ItemTypeInterface, ItemTypes} from "./types";
 import {v4} from "uuid";
 import firebase from "firebase";
-import CollectionReference = firebase.firestore.CollectionReference;
-import QueryDocumentSnapshot = firebase.firestore.QueryDocumentSnapshot;
-import SnapshotOptions = firebase.firestore.SnapshotOptions;
-import FirestoreDataConverter = firebase.firestore.FirestoreDataConverter;
-import DocumentData = firebase.firestore.DocumentData;
 
 export function bindIds<T>(makeObject: boolean, ids: string[], values: T[]): T[];
 export function bindIds<T>(makeObject: boolean, ids: string[], values: T[]): { [key: string]: T };
@@ -35,9 +30,9 @@ export const getFileWithUUID = (file: File): File => {
     return file;
 }
 
-export const buildFirestoreQuery = (collectionRef: CollectionReference,
+export const buildFirestoreQuery = (collectionRef: firebase.firestore.CollectionReference,
                                     query?: FirestoreQuery,
-                                    converter?: FirestoreDataConverter<unknown> | undefined): CollectionReference => {
+                                    converter?: firebase.firestore.FirestoreDataConverter<unknown> | undefined): firebase.firestore.CollectionReference => {
     if (query) {
         query.where.forEach((where: FirestoreQueryWhere) =>
             (collectionRef.where(where.fieldPath, where.opStr, where.value)));
@@ -49,7 +44,7 @@ export const buildFirestoreQuery = (collectionRef: CollectionReference,
 }
 
 export const itemConverter = {
-    toFirestore(item: ItemInterface): DocumentData {
+    toFirestore(item: ItemInterface): firebase.firestore.DocumentData {
         return {
             active: item.active,
             created: item.created,
@@ -63,7 +58,7 @@ export const itemConverter = {
             userName: item.userName,
         }
     },
-    fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): ItemInterface {
+    fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): ItemInterface {
         const data = snapshot.data(options);
         return {
             active: data.active,
@@ -81,7 +76,7 @@ export const itemConverter = {
 }
 
 export const itemTypeConverter = {
-    toFirestore(type: ItemTypeInterface): DocumentData {
+    toFirestore(type: ItemTypeInterface): firebase.firestore.DocumentData {
         return {
             consumable: type.consumable,
             displayName: type.displayName,
@@ -90,7 +85,7 @@ export const itemTypeConverter = {
             index: type.index,
         }
     },
-    fromFirestore(snapshot: QueryDocumentSnapshot, options: SnapshotOptions): ItemTypeInterface {
+    fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): ItemTypeInterface {
         const data = snapshot.data(options);
         return {
             consumable: data.consumable,

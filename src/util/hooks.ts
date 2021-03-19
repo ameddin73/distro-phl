@@ -4,7 +4,6 @@ import firebase from "firebase";
 import {ObservableStatus, useFirestore, useFirestoreCollectionData} from "reactfire";
 import {buildFirestoreQuery, buildTypesObject, itemTypeConverter} from "./utils";
 import {collections} from "./config";
-import FirestoreDataConverter = firebase.firestore.FirestoreDataConverter;
 
 export const useInput = (initialValue?: any) => {
     const [value, setValue] = useState(initialValue);
@@ -22,7 +21,7 @@ export const useInput = (initialValue?: any) => {
 
 export const useFirestoreCollectionBuilder = (path: string,
                                               query: FirestoreQuery | undefined,
-                                              converter: FirestoreDataConverter<unknown> | undefined) => {
+                                              converter: firebase.firestore.FirestoreDataConverter<unknown> | undefined) => {
     return [
         (): ObservableStatus<any[]> => {
             const firestore = useFirestore();
