@@ -1,40 +1,32 @@
 import React from 'react';
 import {ThemeProvider} from '@material-ui/core';
-import firebase from "firebase/app";
 import 'firebase/auth';
 import 'firebase/firestore';
-import {FirebaseAuthProvider} from "@react-firebase/auth";
-import {FirestoreProvider} from "@react-firebase/firestore";
-import theme from "./theme";
+import theme from "./util/theme";
 import TopBar from "./components/Common/TopBar/TopBar.lazy";
 import DistroHub from "./components/DistroHub/DistroHub.lazy";
 // @ts-ignore
-// @ts-ignore
 import {useRedirect, useRoutes} from "hookrouter";
-import {paths} from "./config";
+import {paths} from "./util/config";
 import User from "./components/User/User.lazy";
-import {RouteType} from "./components/Common/types";
-import {InitializeAppArgs} from "@react-firebase/firestore/dist/types";
+import {RouteType} from "./util/types";
+import {FirebaseAppProvider} from "reactfire";
 
 const routes: RouteType = {};
 routes[paths.public.distro] = () => <DistroHub/>;
 routes[paths.public.user] = () => <User/>
 
-function App({config}: { config: InitializeAppArgs }) {
+function App({config}: { config: Object }) {
     useRedirect(paths.public.base, paths.public.distro);
     const routeResult = useRoutes(routes) || routes[paths.public.distro];
 
     return (
-        <div>
-            <ThemeProvider theme={theme}>
-                <FirestoreProvider {...config} firebase={firebase}>
-                    <FirebaseAuthProvider {...config} firebase={firebase}>
-                        <TopBar/>
-                        {routeResult}
-                    </FirebaseAuthProvider>
-                </FirestoreProvider>
-            </ThemeProvider>
-        </div>
+        <ThemeProvider theme={theme}>
+            <FirebaseAppProvider firebaseConfig={config} suspense={true}>
+                <TopBar/>
+                {routeResult}
+            </FirebaseAppProvider>
+        </ThemeProvider>
     )
 }
 

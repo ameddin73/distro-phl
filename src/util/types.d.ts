@@ -4,12 +4,13 @@ import FieldPath = firebase.firestore.FieldPath;
 import WhereFilterOp = firebase.firestore.WhereFilterOp;
 import OrderByDirection = firebase.firestore.OrderByDirection;
 
+export type FirestoreQueryWhere = {
+    fieldPath: string | FieldPath,
+    opStr: WhereFilterOp,
+    value: any
+}
 export type FirestoreQuery = {
-    where?: {
-        fieldPath: string | FieldPath,
-        opStr: WhereFilterOp,
-        value: any
-    },
+    where: [FirestoreQueryWhere] | [],
     orderBy?: {
         fieldPath: string | FieldPath,
         directionStr?: OrderByDirection
@@ -41,9 +42,10 @@ interface ItemKeys extends FirestoreMember {
 
 export type ItemInterface = NoExtraProperties<ItemKeys>;
 
-export interface ItemType extends FirestoreMember {
+export interface ItemTypeInterface extends FirestoreMember {
     readonly consumable: boolean,
     readonly expires: boolean,
+    readonly id: string,
     readonly index: number,
 }
 
@@ -51,7 +53,7 @@ export type ItemMutation = RunMutation extends (value: any, ...rest: infer U) =>
     ? (value: ItemInterface, ...rest: U) => R : never;
 
 export type ItemTypes = {
-    [key: string]: ItemType,
+    [key: string]: ItemTypeInterface,
 }
 
 export type RouteType = {
