@@ -1,9 +1,10 @@
 import React, {lazy, Suspense} from 'react';
+import Loading from "../Loading";
 
 const LazyCommon = lazy(() => import('./TopBar'));
 
 const Common = () => (
-    <Suspense fallback={null}>
+    <Suspense fallback={<Loading/>}>
         <LazyCommon/>
     </Suspense>
 );
