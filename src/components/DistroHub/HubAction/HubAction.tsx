@@ -1,7 +1,6 @@
 import React from 'react';
 import {Grid, IconButton} from "@material-ui/core";
 import {Add} from "@material-ui/icons";
-import {FirestoreMutation} from "@react-firebase/firestore";
 
 export type ItemActionProps = {
     id: string,
@@ -27,15 +26,9 @@ const HubAction = ({id, path}: ItemActionProps) => {
                 </Grid>
                 <Grid item xs>
                     <Grid container justify="flex-end">
-                        <FirestoreMutation type={'update'} path={path + '/' + id}>
-                            {() => {
-                                return (
-                                    <IconButton color="primary" aria-label="add">
-                                        <Add/>
-                                    </IconButton>
-                                )
-                            }}
-                        </FirestoreMutation>
+                        <IconButton color="primary" aria-label="add">
+                            <Add/>
+                        </IconButton>
                     </Grid>
                 </Grid>
             </Grid>
