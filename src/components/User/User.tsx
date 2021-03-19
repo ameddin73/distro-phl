@@ -4,37 +4,34 @@ import Login from "./Login/Login.lazy";
 // @ts-ignore
 import {navigate, useQueryParams, useRoutes} from "hookrouter";
 import UserItems from "./UserItems/UserItems.lazy";
-import {FirebaseAuthConsumer} from "@react-firebase/auth";
 import AddItem from "./UserItems/AddItem/AddItem.lazy";
 import Loading from "../Common/Loading";
 import {RouteType} from "../../util/types";
+import {AuthCheck, SuspenseWithPerf, useUser} from "reactfire";
 
 const routes: RouteType = {};
 routes[paths.user.login] = () => ({redirect}) => (navigate(redirect, true));
 routes[paths.user.items] = () => () => <UserItems/>;
 routes[paths.user.create] = () => ({user}) => <AddItem user={user}/>;
 
-const User = () => {
-    const routeResult = useRoutes(routes) || routes[paths.user.items];
+const AuthedUser = () => {
     const [queryParams] = useQueryParams();
+    const {data: user} = useUser();
 
+    const routeResult = useRoutes(routes) || routes[paths.user.items];
     const redirect = queryParams.hasOwnProperty('redirect') ? queryParams.redirect : paths.public.distro;
 
-    return (
-        <>
-            <FirebaseAuthConsumer>
-                {({isSignedIn, providerId, user}) => {
-                    if (providerId === null && !isSignedIn) {
-                        return (<Loading/>)
-                    } else if (isSignedIn) {
-                        return routeResult({redirect, user})
-                    } else {
-                        return <Login/>;
-                    }
-                }}
-            </FirebaseAuthConsumer>
-        </>
-    )
-};
+    return routeResult({redirect, user})
+}
+
+const User = () => (
+    <>
+        <SuspenseWithPerf fallback={Loading} traceId="load-user-pages">
+            <AuthCheck fallback={Login}>
+                <AuthedUser/>
+            </AuthCheck>
+        </SuspenseWithPerf>
+    </>
+);
 
 export default User;
