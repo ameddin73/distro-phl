@@ -17,7 +17,7 @@ import firebase from "firebase/app";
 import 'firebase/storage';
 // @ts-ignore
 import {navigate} from 'hookrouter';
-import {ItemMutation, ItemTypes} from "../../../Common/types";
+import {ItemMutation, ItemTypes} from "../../../../types";
 import {MaterialUiPickersDate} from "@material-ui/pickers/typings/date";
 import {FirestoreQuery} from "@react-firebase/firestore/dist/types";
 

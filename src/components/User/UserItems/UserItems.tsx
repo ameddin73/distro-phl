@@ -6,7 +6,7 @@ import {navigate} from 'hookrouter';
 import {collections, paths} from "../../../config";
 import UserAction from "./UserAction/UserAction.lazy";
 import Loading from "../../Common/Loading";
-import {ItemInterface} from "../../Common/types";
+import {ItemInterface} from "../../../types";
 import {bindIds} from "../../Common/hooks";
 import {FirestoreQuery} from "@react-firebase/firestore/dist/types";
 

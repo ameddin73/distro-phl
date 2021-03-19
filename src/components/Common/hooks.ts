@@ -1,6 +1,6 @@
 import {ChangeEvent, SyntheticEvent, useState} from "react";
 import {v4} from 'uuid';
-import {FirestoreMember} from "./types";
+import {FirestoreMember} from "../../types";
 
 export const useInput = (initialValue?: any) => {
     const [value, setValue] = useState(initialValue);

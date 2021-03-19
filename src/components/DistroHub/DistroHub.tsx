@@ -4,7 +4,7 @@ import {bindIds} from "../Common/hooks";
 import HubAction from "./HubAction/HubAction";
 import ItemList from "../Common/ItemList/ItemList.lazy";
 import {collections} from "../../config";
-import {ItemInterface} from "../Common/types";
+import {ItemInterface} from "../../types";
 import {FirestoreQuery} from "@react-firebase/firestore/dist/types";
 
 const DistroHub = () => {

@@ -4,7 +4,7 @@ import {makeStyles} from "@material-ui/styles";
 // @ts-ignore
 import {navigate, useRoutes} from "hookrouter";
 import {paths} from "../../../config";
-import {RouteType} from "../types";
+import {RouteType} from "../../../types";
 
 const routes: RouteType = {};
 routes['*' + paths.public.distro] = routes['*' + paths.user.items] = () => (

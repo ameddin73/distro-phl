@@ -7,7 +7,7 @@ import UserItems from "./UserItems/UserItems.lazy";
 import {FirebaseAuthConsumer} from "@react-firebase/auth";
 import AddItem from "./UserItems/AddItem/AddItem.lazy";
 import Loading from "../Common/Loading";
-import {RouteType} from "../Common/types";
+import {RouteType} from "../../types";
 
 const routes: RouteType = {};
 routes[paths.user.login] = () => ({redirect}) => (navigate(redirect, true));
