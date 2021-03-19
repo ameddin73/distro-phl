@@ -2,11 +2,6 @@ import React from 'react';
 import {Grid, IconButton} from "@material-ui/core";
 import {Add} from "@material-ui/icons";
 
-export type ItemActionProps = {
-    id: string,
-    path: string,
-}
-
 const HubAction = ({id, path}: ItemActionProps) => {
 
     //TODO create reservation
