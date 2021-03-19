@@ -1,37 +1,58 @@
 import React from 'react';
-import {FirebaseAuthConsumer} from "@react-firebase/auth";
 import HubAction from "./HubAction/HubAction";
 import ItemList from "../Common/ItemList/ItemList.lazy";
 import {collections} from "../../util/config";
-import {ItemInterface} from "../../util/types";
-import {FirestoreQuery} from "@react-firebase/firestore/dist/types";
-import {bindIds} from "../../util/utils";
+import {FirestoreQuery, FirestoreQueryWhere, ItemInterface} from "../../util/types";
+import {AuthCheck, useUser} from "reactfire";
 
-const DistroHub = () => {
-    const path = collections.items;
-    const orderBy: FirestoreQuery['orderBy'] = [{field: 'created', type: 'asc'}]
+const path = collections.items;
+const orderBy: FirestoreQuery['orderBy'] = {
+    fieldPath: 'created',
+    directionStr: 'asc',
+};
 
-    const unmarshal = (uid: string) => (
-        (ids: string[], values: ItemInterface[]) => {
-            values = bindIds<ItemInterface>(false, ids, values);
-            values = values.filter(item => item.uid !== uid);
-            return values;
-        });
+const PublicHub = () => {
+    const query: FirestoreQuery = {
+        where: [],
+        orderBy,
+    };
 
     return (
-        <div>
-            <FirebaseAuthConsumer>
-                {({isSignedIn, user}) => {
-                    return (
-                        <ItemList path={path}
-                                  orderBy={orderBy}
-                            // @ts-ignore
-                                  itemAction={(item) => (<HubAction id={item.id} path={path + item.id}/>)}
-                                  unmarshal={unmarshal(isSignedIn ? user.uid : null)}/>
-                    )
-                }}
-            </FirebaseAuthConsumer>
-        </div>
+        <ItemList path={path}
+                  query={query}
+            // @ts-ignore
+                  itemAction={(item: ItemInterface) => (<HubAction id={item.id} path={path + item.id}/>)}/>
+    );
+};
+
+const UserHub = () => {
+    const {data: user} = useUser();
+    const where: FirestoreQueryWhere = {
+        fieldPath: 'uid',
+        opStr: '!=',
+        value: user.uid,
+    };
+    const query: FirestoreQuery = {
+        where: [where],
+        orderBy,
+    };
+
+    return (
+        <ItemList path={path}
+                  query={query}
+            // @ts-ignore
+                  itemAction={(item: ItemInterface) => (<HubAction id={item.id} path={path + item.id}/>)}/>
+    );
+};
+
+const DistroHub = () => {
+
+    return (
+        <>
+            <AuthCheck fallback={PublicHub}>
+                <UserHub/>
+            </AuthCheck>
+        </>
     );
 }
 
