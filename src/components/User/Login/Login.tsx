@@ -4,8 +4,9 @@ import firebase from "firebase/app";
 import GoogleButton from "react-google-button";
 import {makeStyles} from "@material-ui/core/styles";
 import {useInput} from "../../Common/hooks";
+import {CustomTheme} from "../../../theme";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: CustomTheme) => ({
     root: {
         width: '100%',
         flexGrow: 1,
@@ -31,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(1),
         maxWidth: '240px',
     },
+    link: theme.link,
 }));
 
 const Login = () => {
@@ -122,7 +124,7 @@ const Login = () => {
                                 </Grid>
                                 }
                                 <Typography variant="subtitle2" className={classes.error} noWrap={false}>{error}</Typography>
-                                <Link align="center" variant="subtitle2" underline="hover" onClick={clickRegister}>{registerOpen ? 'Login' : 'Register'}</Link>
+                                <Link className={classes.link} align="center" variant="subtitle2" underline="hover" onClick={clickRegister}>{registerOpen ? 'Login' : 'Register'}</Link>
                                 <Grid item xs>
                                     <Button type="submit" className={classes.button} variant="outlined">{registerOpen ? 'Register' : 'Login'}</Button>
                                 </Grid>

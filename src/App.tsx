@@ -8,16 +8,19 @@ import {FirestoreProvider} from "@react-firebase/firestore";
 import theme from "./theme";
 import TopBar from "./components/Common/TopBar/TopBar.lazy";
 import DistroHub from "./components/DistroHub/DistroHub.lazy";
-import {useRoutes} from "hookrouter";
-import {useRedirect} from 'hookrouter';
+// @ts-ignore
+// @ts-ignore
+import {useRedirect, useRoutes} from "hookrouter";
 import {paths} from "./config";
 import User from "./components/User/User.lazy";
+import {RouteType} from "./components/Common/types";
+import {InitializeAppArgs} from "@react-firebase/firestore/dist/types";
 
-const routes = {};
-routes[paths.public.distro] = ()  => <DistroHub/>;
+const routes: RouteType = {};
+routes[paths.public.distro] = () => <DistroHub/>;
 routes[paths.public.user] = () => <User/>
 
-function App({config}) {
+function App({config}: { config: InitializeAppArgs }) {
     useRedirect(paths.public.base, paths.public.distro);
     const routeResult = useRoutes(routes) || routes[paths.public.distro];
 
