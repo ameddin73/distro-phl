@@ -3,8 +3,8 @@ import {Button, Card, Divider, FormControl, Grid, Input, InputLabel, Link, Typog
 import firebase from "firebase/app";
 import GoogleButton from "react-google-button";
 import {makeStyles} from "@material-ui/core/styles";
-import {useInput} from "../../Common/hooks";
-import {CustomTheme} from "../../../theme";
+import {useInput} from "../../../util/hooks";
+import {CustomTheme} from "../../../util/theme";
 
 const useStyles = makeStyles((theme: CustomTheme) => ({
     root: {

@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {Card, CardActionArea, CardContent, CardMedia, ClickAwayListener, Collapse, Grid, Typography} from "@material-ui/core";
 // @ts-ignore
-import {itemStyle} from "../styles";
-import {ItemInterface, ItemTypes} from '../../../types';
+import {itemStyle} from "../../../util/styles";
+import {ItemInterface, ItemTypes} from '../../../util/types';
 
 export type ItemProps = {
     item: ItemInterface,

@@ -1,6 +1,6 @@
 import {createMuiTheme, Theme} from '@material-ui/core/styles'
 import {orange, red} from "@material-ui/core/colors";
-import './App.css';
+import '../App.css';
 
 const font = "'Wallpoet', sans-serif";
 

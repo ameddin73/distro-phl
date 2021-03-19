@@ -1,5 +1,5 @@
 import React from 'react';
-import {paths} from "../../config";
+import {paths} from "../../util/config";
 import Login from "./Login/Login.lazy";
 // @ts-ignore
 import {navigate, useQueryParams, useRoutes} from "hookrouter";
@@ -7,7 +7,7 @@ import UserItems from "./UserItems/UserItems.lazy";
 import {FirebaseAuthConsumer} from "@react-firebase/auth";
 import AddItem from "./UserItems/AddItem/AddItem.lazy";
 import Loading from "../Common/Loading";
-import {RouteType} from "../../types";
+import {RouteType} from "../../util/types";
 
 const routes: RouteType = {};
 routes[paths.user.login] = () => ({redirect}) => (navigate(redirect, true));

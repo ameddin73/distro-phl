@@ -3,12 +3,12 @@ import ItemList from "../../Common/ItemList/ItemList.lazy";
 import {FirebaseAuthConsumer} from "@react-firebase/auth";
 // @ts-ignore
 import {navigate} from 'hookrouter';
-import {collections, paths} from "../../../config";
+import {collections, paths} from "../../../util/config";
 import UserAction from "./UserAction/UserAction.lazy";
 import Loading from "../../Common/Loading";
-import {ItemInterface} from "../../../types";
-import {bindIds} from "../../Common/hooks";
+import {ItemInterface} from "../../../util/types";
 import {FirestoreQuery} from "@react-firebase/firestore/dist/types";
+import {bindIds} from "../../../util/utils";
 
 const UserItems = () => {
     const path = collections.items;

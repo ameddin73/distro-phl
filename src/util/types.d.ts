@@ -1,5 +1,21 @@
 import {RunMutation} from "@react-firebase/firestore/dist/components/FirestoreMutation";
+import firebase from "firebase";
+import FieldPath = firebase.firestore.FieldPath;
+import WhereFilterOp = firebase.firestore.WhereFilterOp;
+import OrderByDirection = firebase.firestore.OrderByDirection;
 
+export type FirestoreQuery = {
+    where?: {
+        fieldPath: string | FieldPath,
+        opStr: WhereFilterOp,
+        value: any
+    },
+    orderBy?: {
+        fieldPath: string | FieldPath,
+        directionStr?: OrderByDirection
+    },
+    limit?: number,
+}
 export type FirestoreMember = {
     id?: string,
     readonly displayName: string,
