@@ -11,10 +11,16 @@ import {paths} from "./util/config";
 import User from "./components/User/User.lazy";
 import {RouteType} from "./util/types";
 import {FirebaseAppProvider} from "reactfire";
+import {ErrorBoundary, FallbackProps} from "react-error-boundary";
+import ErrorMessage from "./components/Common/ErrorMessage";
 
 const routes: RouteType = {};
 routes[paths.public.distro] = () => <DistroHub/>;
 routes[paths.public.user] = () => <User/>
+
+function ErrorFallback({error}: FallbackProps) {
+    return (<ErrorMessage message={error.message}/>);
+}
 
 function App({config}: { config: Object }) {
     useRedirect(paths.public.base, paths.public.distro);
@@ -24,7 +30,9 @@ function App({config}: { config: Object }) {
         <ThemeProvider theme={theme}>
             <FirebaseAppProvider firebaseConfig={config} suspense={true}>
                 <TopBar/>
-                {routeResult}
+                <ErrorBoundary FallbackComponent={ErrorFallback}>
+                    {routeResult}
+                </ErrorBoundary>
             </FirebaseAppProvider>
         </ThemeProvider>
     )

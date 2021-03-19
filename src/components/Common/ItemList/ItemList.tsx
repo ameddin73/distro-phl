@@ -5,8 +5,6 @@ import Item from "../Item/Item.lazy";
 import Loading from "../Loading";
 import NothingHere from "../NothingHere/NothingHere.lazy";
 import {FirestoreQuery, ItemInterface} from "../../../util/types";
-import ErrorMessage from "../ErrorMessage";
-import {ErrorBoundary, FallbackProps} from "react-error-boundary";
 import {SuspenseWithPerf} from 'reactfire';
 import {itemConverter} from "../../../util/utils";
 import {useFirestoreCollectionBuilder, useItemTypes} from "../../../util/hooks";
@@ -51,10 +49,6 @@ const Data = ({props: {path, query, itemAction}}: { props: ItemListProps }) => {
     }
 }
 
-function ErrorFallback({error}: FallbackProps) {
-    return (<ErrorMessage message={error.message}/>);
-}
-
 const ItemList = (props: ItemListProps) => {
     const classes = useStyles();
 
@@ -65,11 +59,9 @@ const ItemList = (props: ItemListProps) => {
                   justify="center"
                   spacing={2}
                   className={classes.container}>
-                <ErrorBoundary FallbackComponent={ErrorFallback}>
-                    <SuspenseWithPerf fallback={Loading} traceId="load-distro-hub">
-                        <Data props={props}/>
-                    </SuspenseWithPerf>
-                </ErrorBoundary>
+                <SuspenseWithPerf fallback={Loading} traceId="load-distro-hub">
+                    <Data props={props}/>
+                </SuspenseWithPerf>
             </Grid>
         </Container>
     );
