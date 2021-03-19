@@ -59,3 +59,8 @@ export type ItemTypes = {
 export type RouteType = {
     [key: string]: JSX.Element | (() => JSX.Element) | (() => (arg0: any) => JSX.Element),
 }
+
+export type ItemActionProps = {
+    id: string,
+    path: string,
+}

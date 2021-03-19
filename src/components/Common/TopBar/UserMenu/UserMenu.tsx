@@ -36,8 +36,7 @@ const UMenu = () => {
                         <ListItemText primary="My Items"/>
                     </ListItem>
                     <ListItem button key="sign-out" onClick={() => closeAndAction(() => {
-                        auth.signOut().then();
-                        navigate(paths.public.distro);
+                        auth.signOut().then(navigate(paths.public.distro));
                     })}>
                         <ListItemText primary="Sign Out"/>
                     </ListItem>

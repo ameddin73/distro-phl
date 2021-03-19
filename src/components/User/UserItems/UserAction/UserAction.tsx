@@ -2,10 +2,10 @@ import React, {useState} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import {Button, CardActions, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Snackbar} from "@material-ui/core";
 import {Delete, Edit} from "@material-ui/icons";
-import {FirestoreMutation} from "@react-firebase/firestore";
-import {collections} from "../../../../util/config";
 import Alert from '@material-ui/lab/Alert';
-import {RunMutation} from "@react-firebase/firestore/dist/components/FirestoreMutation";
+import {ItemActionProps} from "../../../../util/types";
+import {itemConverter} from "../../../../util/utils";
+import {useFirestoreUpdate} from "../../../../util/hooks";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -23,25 +23,19 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export type UserActionProps = {
-    id: string,
-}
-
-const UserAction = ({id}: UserActionProps) => {
+const UserAction = ({id, path}: ItemActionProps) => {
     const classes = useStyles();
-    const path = collections.items + id;
 
     const [deleteAlert, setDeleteAlert] = useState(false);
     const [success, setSuccess] = useState(false);
     const [fail, setFail] = useState(false);
+    const [setInactive] = useFirestoreUpdate(path, id, itemConverter, {active: false});
 
     const clickDelete = () => setDeleteAlert(true);
-    const closeDeleteAlert = (runMutation: RunMutation) => {
+    const closeDeleteAlert = (doDelete: boolean) => {
         setDeleteAlert(false);
-        if (runMutation) {
-            runMutation({
-                active: false,
-            }).then(() => setSuccess(true))
+        if (doDelete) {
+            setInactive.then(() => setSuccess(true))
                 .catch(error => {
                     console.error(error);
                     setFail(true);
@@ -76,16 +70,12 @@ const UserAction = ({id}: UserActionProps) => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => closeDeleteAlert} color="primary" autoFocus>
+                    <Button onClick={() => closeDeleteAlert(false)} color="primary" autoFocus>
                         Cancel
                     </Button>
-                    <FirestoreMutation type="update" path={path}>
-                        {({runMutation}) => (
-                            <Button onClick={() => closeDeleteAlert(runMutation)} variant="contained" className={classes.confirmDelete}>
-                                Delete
-                            </Button>
-                        )}
-                    </FirestoreMutation>
+                    <Button onClick={() => closeDeleteAlert(true)} variant="contained" className={classes.confirmDelete}>
+                        Delete
+                    </Button>
                 </DialogActions>
             </Dialog>
             <Snackbar open={success} autoHideDuration={3000} onClose={closeSnackbar}>

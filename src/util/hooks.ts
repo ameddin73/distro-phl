@@ -53,3 +53,16 @@ export const useItemTypes = () => {
 
     return typeObj;
 }
+
+export const useFirestoreUpdate = (
+    path: string,
+    id: string,
+    converter: firebase.firestore.FirestoreDataConverter<any>,
+    update: Object) => {
+    const firestore = useFirestore();
+    const collectionRef = firestore.collection(path);
+
+    return [
+        collectionRef.doc(id).withConverter(converter).update(update)
+    ];
+};

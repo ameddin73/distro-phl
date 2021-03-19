@@ -58,7 +58,6 @@ const Login = () => {
                     .then(() => {
                         const user = firebase.auth().currentUser;
                         if (user) user.updateProfile({displayName: name})
-                            .then();
                     })
                     .catch((error) => {
                         setError(error.message);
@@ -143,7 +142,7 @@ const Login = () => {
                                 </Grid>
                                 <Grid item xs>
                                     <GoogleButton
-                                        onClick={() => (firebase.auth().signInWithPopup(googleAuthProvider).then())}
+                                        onClick={() => (firebase.auth().signInWithPopup(googleAuthProvider))}
                                     />
                                 </Grid>
                             </Grid>
