@@ -8,7 +8,7 @@ import NothingHere from "../NothingHere/NothingHere.lazy";
 import {bindIds} from "../hooks";
 import {collections} from "../../../config";
 import {FirestoreQuery} from "@react-firebase/firestore/dist/types";
-import {ItemInterface, ItemType} from "../types";
+import {ItemInterface, ItemType} from "../../../types";
 
 const useStyles = makeStyles((theme) => ({
     root: {
