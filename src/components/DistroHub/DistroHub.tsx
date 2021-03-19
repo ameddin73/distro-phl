@@ -3,7 +3,8 @@ import HubAction from "./HubAction/HubAction";
 import ItemList from "../Common/ItemList/ItemList.lazy";
 import {collections} from "../../util/config";
 import {FirestoreQuery, FirestoreQueryWhere, ItemInterface} from "../../util/types";
-import {AuthCheck, useUser} from "reactfire";
+import {AuthCheck, SuspenseWithPerf, useUser} from "reactfire";
+import Loading from "../Common/Loading";
 
 const path = collections.items;
 const orderBy: FirestoreQuery['orderBy'] = {
@@ -49,9 +50,11 @@ const DistroHub = () => {
 
     return (
         <>
-            <AuthCheck fallback={PublicHub}>
-                <UserHub/>
-            </AuthCheck>
+            <SuspenseWithPerf fallback={Loading} traceId="load-distro-hub">
+                <AuthCheck fallback={PublicHub}>
+                    <UserHub/>
+                </AuthCheck>
+            </SuspenseWithPerf>
         </>
     );
 }

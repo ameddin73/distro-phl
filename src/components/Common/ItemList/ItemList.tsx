@@ -59,7 +59,7 @@ const ItemList = (props: ItemListProps) => {
                   justify="center"
                   spacing={2}
                   className={classes.container}>
-                <SuspenseWithPerf fallback={Loading} traceId="load-distro-hub">
+                <SuspenseWithPerf fallback={Loading} traceId="load-items">
                     <Data props={props}/>
                 </SuspenseWithPerf>
             </Grid>
