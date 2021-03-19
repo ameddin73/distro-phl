@@ -1,25 +1,26 @@
 import React, {SyntheticEvent, useState} from 'react';
-import {itemStyle} from "../../../Common/styles";
+import {itemStyle} from "../../../../util/styles";
 import {Button, Card, CardContent, CardMedia, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, TextField, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import {CameraAlt} from "@material-ui/icons";
 import {grey} from "@material-ui/core/colors";
-import * as config from "../../../../config";
-import {collections, descriptionLength, paths, storage} from "../../../../config";
-import {bindIds, getFileWithUUID, useInput} from "../../../Common/hooks";
+import * as config from "../../../../util/config";
+import {collections, descriptionLength, paths, storage} from "../../../../util/config";
+import {useInput} from "../../../../util/hooks";
 import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import 'date-fns';
 import DateFnsUtils from "@date-io/date-fns";
 import {FirestoreCollection, FirestoreMutation} from "@react-firebase/firestore";
 import Loading from "../../../Common/Loading";
-import theme from "../../../../theme";
+import theme from "../../../../util/theme";
 import firebase from "firebase/app";
 import 'firebase/storage';
 // @ts-ignore
 import {navigate} from 'hookrouter';
-import {ItemMutation, ItemTypes} from "../../../../types";
+import {ItemMutation, ItemTypes} from "../../../../util/types";
 import {MaterialUiPickersDate} from "@material-ui/pickers/typings/date";
 import {FirestoreQuery} from "@react-firebase/firestore/dist/types";
+import {bindIds, getFileWithUUID} from "../../../../util/utils";
 
 const useStyles = makeStyles((theme) => ({
     root: {

@@ -3,7 +3,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import {Button, CardActions, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Snackbar} from "@material-ui/core";
 import {Delete, Edit} from "@material-ui/icons";
 import {FirestoreMutation} from "@react-firebase/firestore";
-import {collections} from "../../../../config";
+import {collections} from "../../../../util/config";
 import Alert from '@material-ui/lab/Alert';
 import {RunMutation} from "@react-firebase/firestore/dist/components/FirestoreMutation";
 

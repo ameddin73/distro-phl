@@ -5,7 +5,7 @@ import {Menu as MenuIcon} from "@material-ui/icons";
 import firebase from "firebase/app";
 // @ts-ignore
 import {navigate, usePath} from 'hookrouter';
-import {paths} from "../../../../config";
+import {paths} from "../../../../util/config";
 
 const UserMenu = () => {
     const [anchorEl, setAnchorEl] = useState<Element | null>(null);

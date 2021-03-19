@@ -1,11 +1,11 @@
 import React from 'react';
 import {FirebaseAuthConsumer} from "@react-firebase/auth";
-import {bindIds} from "../Common/hooks";
 import HubAction from "./HubAction/HubAction";
 import ItemList from "../Common/ItemList/ItemList.lazy";
-import {collections} from "../../config";
-import {ItemInterface} from "../../types";
+import {collections} from "../../util/config";
+import {ItemInterface} from "../../util/types";
 import {FirestoreQuery} from "@react-firebase/firestore/dist/types";
+import {bindIds} from "../../util/utils";
 
 const DistroHub = () => {
     const path = collections.items;

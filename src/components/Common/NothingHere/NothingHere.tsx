@@ -3,8 +3,8 @@ import {Button, Grid, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/styles";
 // @ts-ignore
 import {navigate, useRoutes} from "hookrouter";
-import {paths} from "../../../config";
-import {RouteType} from "../../../types";
+import {paths} from "../../../util/config";
+import {RouteType} from "../../../util/types";
 
 const routes: RouteType = {};
 routes['*' + paths.public.distro] = routes['*' + paths.user.items] = () => (

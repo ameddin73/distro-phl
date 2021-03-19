@@ -1,24 +1,8 @@
-import {ChangeEvent, SyntheticEvent, useState} from "react";
-import {v4} from 'uuid';
-import {FirestoreMember} from "../../types";
-
-export const useInput = (initialValue?: any) => {
-    const [value, setValue] = useState(initialValue);
-
-    return {
-        value,
-        setValue,
-        reset: () => setValue(""),
-        bind: {
-            value,
-            onChange: (event: SyntheticEvent | ChangeEvent<{ name?: string; value: unknown }>) => setValue((event.target as HTMLInputElement).value),
-        }
-    };
-};
+import {FirestoreMember} from "./types";
+import {v4} from "uuid";
 
 export function bindIds<T>(makeObject: boolean, ids: string[], values: T[]): T[];
 export function bindIds<T>(makeObject: boolean, ids: string[], values: T[]): { [key: string]: T };
-
 export function bindIds<T extends FirestoreMember>(makeObject: boolean, ids: string[], values: T[]):
     { [key: string]: T } | T[] {
     if (makeObject) {

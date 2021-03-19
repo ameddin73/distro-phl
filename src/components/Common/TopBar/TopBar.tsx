@@ -4,7 +4,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import UserMenu from "./UserMenu/UserMenu.lazy";
 // @ts-ignore
 import {navigate} from 'hookrouter';
-import {paths} from "../../../config";
+import {paths} from "../../../util/config";
 
 // @ts-ignore
 const useStyles = makeStyles((theme) => ({
