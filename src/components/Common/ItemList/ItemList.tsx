@@ -1,14 +1,15 @@
 import React from 'react';
 import {Container, Grid} from "@material-ui/core";
-import {FirestoreCollection} from "@react-firebase/firestore";
 import {makeStyles} from "@material-ui/core/styles";
 import Item from "../Item/Item.lazy";
 import Loading from "../Loading";
 import NothingHere from "../NothingHere/NothingHere.lazy";
-import {bindIds} from "../hooks";
-import {collections} from "../../../config";
-import {FirestoreQuery} from "@react-firebase/firestore/dist/types";
-import {ItemInterface, ItemType} from "../../../types";
+import {FirestoreQuery, ItemInterface} from "../../../util/types";
+import ErrorMessage from "../ErrorMessage";
+import {ErrorBoundary, FallbackProps} from "react-error-boundary";
+import {SuspenseWithPerf} from 'reactfire';
+import {itemConverter} from "../../../util/utils";
+import {useFirestoreCollectionBuilder, useItemTypes} from "../../../util/hooks";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -32,52 +33,45 @@ const useStyles = makeStyles((theme) => ({
 
 export type ItemListProps = {
     path: string,
-    where?: FirestoreQuery['where'],
-    orderBy?: FirestoreQuery['orderBy'],
-    unmarshal: (ids: string[], values: ItemInterface[]) => ItemInterface[], //TODO stricter type
+    query?: FirestoreQuery,
     itemAction?: (item: ItemInterface) => JSX.Element,
 }
 
-const ItemList = ({path, where, orderBy, unmarshal, itemAction}: ItemListProps) => {
+const Data = ({props: {path, query, itemAction}}: { props: ItemListProps }) => {
+    const [getItems] = useFirestoreCollectionBuilder(path, query, itemConverter);
+    const types = useItemTypes();
+    const {data: items} = getItems();
+
+    if (!items || items.length === 0) {
+        return (<NothingHere/>);
+    } else {
+        return (<>
+            {items.forEach((item => (<Item key={item.id} item={item} types={types} itemAction={itemAction}/>)))}
+        </>)
+    }
+}
+
+function ErrorFallback({error}: FallbackProps) {
+    return (<ErrorMessage message={error.message}/>);
+}
+
+const ItemList = (props: ItemListProps) => {
     const classes = useStyles();
-    const typesPath = collections.types;
 
     return (
-        <>
-            <Container className={classes.container} maxWidth="md">
-                <Grid container
-                      alignItems="center"
-                      justify="center"
-                      spacing={2}
-                      className={classes.container}>
-                    <FirestoreCollection path={typesPath}>
-                        {({isLoading, ids, value}) => {
-                            const types = value ? bindIds<ItemType>(true, ids, value) : {};
-                            return isLoading ? (
-                                <Loading/>
-                            ) : (
-                                <FirestoreCollection path={path} where={where} orderBy={orderBy} limit={25}>
-                                    {({isLoading, ids, value}) => {
-                                        return isLoading ? (
-                                            <Loading/>
-                                        ) : (
-                                            (value === null || value.length === 0 || !value.some((item: ItemInterface) => item.active)) ?
-                                                (
-                                                    <NothingHere/>
-                                                ) : (
-                                                    unmarshal(ids, value).map((item) => (
-                                                            item.active && <Item key={item.id} item={item} types={types} itemAction={itemAction}/>
-                                                        )
-                                                    ))
-                                        )
-                                    }}
-                                </FirestoreCollection>
-                            )
-                        }}
-                    </FirestoreCollection>
-                </Grid>
-            </Container>
-        </>
+        <Container className={classes.container} maxWidth="md">
+            <Grid container
+                  alignItems="center"
+                  justify="center"
+                  spacing={2}
+                  className={classes.container}>
+                <ErrorBoundary FallbackComponent={ErrorFallback}>
+                    <SuspenseWithPerf fallback={Loading} traceId="load-distro-hub">
+                        <Data props={props}/>
+                    </SuspenseWithPerf>
+                </ErrorBoundary>
+            </Grid>
+        </Container>
     );
 }
 
