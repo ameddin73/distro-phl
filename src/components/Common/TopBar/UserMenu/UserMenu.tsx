@@ -51,14 +51,14 @@ const UserMenu = () => {
     const path = usePath();
 
     return (
-        <div>
+        <>
             <AuthCheck fallback={
                 <Button color="inherit"
                         onClick={() => navigate(paths.public.login, {redirect: path})}>Sign In</Button>
             }>
                 <UMenu/>
             </AuthCheck>
-        </div>
+        </>
     );
 }
 
