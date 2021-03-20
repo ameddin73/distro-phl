@@ -1,44 +1,32 @@
 import React from 'react';
 import ItemList from "../../Common/ItemList/ItemList.lazy";
-import {FirebaseAuthConsumer} from "@react-firebase/auth";
 // @ts-ignore
 import {navigate} from 'hookrouter';
-import {collections, paths} from "../../../util/config";
+import {COLLECTIONS} from "../../../util/config";
 import UserAction from "./UserAction/UserAction.lazy";
-import Loading from "../../Common/Loading";
-import {ItemInterface} from "../../../util/types";
-import {FirestoreQuery} from "@react-firebase/firestore/dist/types";
-import {bindIds} from "../../../util/utils";
+import {orderByCreated} from "../../../util/utils";
+import {FirestoreQuery, FirestoreQueryWhere, ItemInterface} from "../../../util/types";
+import {useUser} from "reactfire";
 
 const UserItems = () => {
-    const path = collections.items;
-    const orderBy: FirestoreQuery['orderBy'] = [{field: 'created', type: 'asc'}];
+    const {data: user} = useUser();
 
-    const unmarshal = (ids: string[], values: ItemInterface[]) => {
-        values = bindIds<ItemInterface>(false, ids, values);
-        return values;
+    const path = COLLECTIONS.items;
+    const orderBy = orderByCreated;
+    const where: FirestoreQueryWhere = {
+        fieldPath: 'uid',
+        opStr: '==',
+        value: user.uid,
+    };
+    const query: FirestoreQuery = {
+        where: [where],
+        orderBy,
     };
 
     return (
-        <div>
-            <FirebaseAuthConsumer>
-                {({isSignedIn, user, providerId}) => {
-                    if (providerId === null) {
-                        return (<Loading/>)
-                    } else if (!isSignedIn) {
-                        navigate(paths.public.login, true, {redirect: paths.public.userItems});
-                    } else {
-                        const where: FirestoreQuery['where'] = {field: 'uid', operator: '==', value: user.uid}
-                        return (
-                            <ItemList path={path} where={where} orderBy={orderBy}
-                                // @ts-ignore
-                                      itemAction={({id}) => (<UserAction id={id}/>)}
-                                      unmarshal={unmarshal}/>
-                        );
-                    }
-                }}
-            </FirebaseAuthConsumer>
-        </div>
+        <ItemList path={path} query={query}
+            // @ts-ignore
+                  itemAction={(item: ItemInterface) => (<UserAction id={item.id} path={path + item.id}/>)}/>
     )
 };
 

@@ -3,7 +3,7 @@ import {Button, List, ListItem, ListItemText, SwipeableDrawer} from "@material-u
 import {Menu as MenuIcon} from "@material-ui/icons";
 // @ts-ignore
 import {navigate, usePath} from 'hookrouter';
-import {paths} from "../../../../util/config";
+import {PATHS} from "../../../../util/config";
 import {AuthCheck, useAuth, useUser} from "reactfire";
 
 const UMenu = () => {
@@ -29,14 +29,14 @@ const UMenu = () => {
                              onOpen={toggleDrawer(true)}
                              open={open}>
                 <List>
-                    <ListItem button key="new-item" onClick={() => closeAndAction(() => navigate(paths.public.createItem))}>
+                    <ListItem button key="new-item" onClick={() => closeAndAction(() => navigate(PATHS.public.createItem))}>
                         <ListItemText primary="New Item"/>
                     </ListItem>
-                    <ListItem button key="my-items" onClick={() => closeAndAction(() => navigate(paths.public.userItems))}>
+                    <ListItem button key="my-items" onClick={() => closeAndAction(() => navigate(PATHS.public.userItems))}>
                         <ListItemText primary="My Items"/>
                     </ListItem>
                     <ListItem button key="sign-out" onClick={() => closeAndAction(() => {
-                        auth.signOut().then(navigate(paths.public.distro));
+                        auth.signOut().then(navigate(PATHS.public.distro));
                     })}>
                         <ListItemText primary="Sign Out"/>
                     </ListItem>
@@ -53,7 +53,7 @@ const UserMenu = () => {
         <>
             <AuthCheck fallback={
                 <Button color="inherit"
-                        onClick={() => navigate(paths.public.login, {redirect: path})}>Sign In</Button>
+                        onClick={() => navigate(PATHS.public.login, {redirect: path})}>Sign In</Button>
             }>
                 <UMenu/>
             </AuthCheck>

@@ -4,7 +4,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import UserMenu from "./UserMenu/UserMenu.lazy";
 // @ts-ignore
 import {navigate} from 'hookrouter';
-import {paths} from "../../../util/config";
+import {PATHS} from "../../../util/config";
 
 // @ts-ignore
 const useStyles = makeStyles((theme) => ({
@@ -29,7 +29,7 @@ const TopBar = () => {
             <AppBar position="static">
                 <Toolbar>
                     <Container className={classes.title}>
-                        <Button onClick={() => navigate(paths.public.base)}>
+                        <Button onClick={() => navigate(PATHS.public.base)}>
                             <Typography variant="h6" className={classes.title}>
                                 Distro PHL
                             </Typography>

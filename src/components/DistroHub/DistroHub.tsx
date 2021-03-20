@@ -1,16 +1,14 @@
 import React from 'react';
 import HubAction from "./HubAction/HubAction";
 import ItemList from "../Common/ItemList/ItemList.lazy";
-import {collections} from "../../util/config";
+import {COLLECTIONS} from "../../util/config";
 import {FirestoreQuery, FirestoreQueryWhere, ItemInterface} from "../../util/types";
 import {AuthCheck, SuspenseWithPerf, useUser} from "reactfire";
 import Loading from "../Common/Loading";
+import {orderByCreated} from "../../util/utils";
 
-const path = collections.items;
-const orderBy: FirestoreQuery['orderBy'] = {
-    fieldPath: 'created',
-    directionStr: 'asc',
-};
+const path = COLLECTIONS.items;
+const orderBy = orderByCreated;
 
 const PublicHub = () => {
     const query: FirestoreQuery = {
@@ -28,6 +26,7 @@ const PublicHub = () => {
 
 const UserHub = () => {
     const {data: user} = useUser();
+
     const where: FirestoreQueryWhere = {
         fieldPath: 'uid',
         opStr: '!=',
