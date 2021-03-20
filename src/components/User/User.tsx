@@ -1,5 +1,5 @@
 import React from 'react';
-import {paths} from "../../util/config";
+import {PATHS} from "../../util/config";
 import Login from "./Login/Login.lazy";
 // @ts-ignore
 import {navigate, useQueryParams, useRoutes} from "hookrouter";
@@ -10,16 +10,16 @@ import {RouteType} from "../../util/types";
 import {AuthCheck, SuspenseWithPerf, useUser} from "reactfire";
 
 const routes: RouteType = {};
-routes[paths.user.login] = () => ({redirect}) => (navigate(redirect, true));
-routes[paths.user.items] = () => () => <UserItems/>;
-routes[paths.user.create] = () => ({user}) => <AddItem user={user}/>;
+routes[PATHS.user.login] = () => ({redirect}) => (navigate(redirect, true));
+routes[PATHS.user.items] = () => () => <UserItems/>;
+routes[PATHS.user.create] = () => ({user}) => <AddItem user={user}/>;
 
 const AuthedUser = () => {
     const [queryParams] = useQueryParams();
     const {data: user} = useUser();
 
-    const routeResult = useRoutes(routes) || routes[paths.user.items];
-    const redirect = queryParams.hasOwnProperty('redirect') ? queryParams.redirect : paths.public.distro;
+    const routeResult = useRoutes(routes) || routes[PATHS.user.items];
+    const redirect = queryParams.hasOwnProperty('redirect') ? queryParams.redirect : PATHS.public.distro;
 
     return routeResult({redirect, user})
 }

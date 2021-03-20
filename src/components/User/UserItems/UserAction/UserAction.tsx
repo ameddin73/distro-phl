@@ -29,13 +29,13 @@ const UserAction = ({id, path}: ItemActionProps) => {
     const [deleteAlert, setDeleteAlert] = useState(false);
     const [success, setSuccess] = useState(false);
     const [fail, setFail] = useState(false);
-    const [setInactive] = useFirestoreUpdate(path, id, itemConverter, {active: false});
+    const [setInactive] = useFirestoreUpdate(path, id, itemConverter);
 
     const clickDelete = () => setDeleteAlert(true);
     const closeDeleteAlert = (doDelete: boolean) => {
         setDeleteAlert(false);
         if (doDelete) {
-            setInactive.then(() => setSuccess(true))
+            setInactive({active: false}).then(() => setSuccess(true))
                 .catch(error => {
                     console.error(error);
                     setFail(true);

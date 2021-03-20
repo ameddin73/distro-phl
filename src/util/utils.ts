@@ -1,20 +1,12 @@
-import {FirestoreMember, FirestoreQuery, FirestoreQueryWhere, ItemInterface, ItemTypeInterface, ItemTypes} from "./types";
+import {FirestoreQuery, FirestoreQueryWhere, ItemInterface, ItemTypeInterface, ItemTypes} from "./types";
 import {v4} from "uuid";
 import firebase from "firebase";
 
-export function bindIds<T>(makeObject: boolean, ids: string[], values: T[]): T[];
-export function bindIds<T>(makeObject: boolean, ids: string[], values: T[]): { [key: string]: T };
-export function bindIds<T extends FirestoreMember>(makeObject: boolean, ids: string[], values: T[]):
-    { [key: string]: T } | T[] {
-    if (makeObject) {
-        const object: { [key: string]: T } = {};
-        values.forEach((itemType: T, index: number) => (object[ids[index]] = itemType));
-        return object;
-    } else {
-        values.map((item: T, index: number) => (item.id = ids[index]));
-        return values;
-    }
-}
+export const orderByCreated: FirestoreQuery['orderBy'] = {
+    fieldPath: 'created',
+    directionStr: 'asc',
+};
+
 
 export function buildTypesObject(types: ItemTypeInterface[]): ItemTypes {
     const object: { [key: string]: ItemTypeInterface } = {};
@@ -44,15 +36,14 @@ export const buildFirestoreQuery = (collectionRef: firebase.firestore.Collection
 }
 
 export const itemConverter = {
-    toFirestore(item: ItemInterface): firebase.firestore.DocumentData {
+    toFirestore(item: Pick<ItemInterface, any>): firebase.firestore.DocumentData {
         return {
             active: item.active,
-            created: item.created,
+            created: item.created ? item.created : firebase.firestore.FieldValue.serverTimestamp(),
             description: item.description,
             displayName: item.displayName,
             expires: item.expires,
-            id: item.id,
-            imgUrl: item.imgUrl,
+            image: item.imgUrl,
             type: item.type,
             uid: item.uid,
             userName: item.userName,
@@ -67,7 +58,7 @@ export const itemConverter = {
             displayName: data.displayName,
             expires: data.expires,
             id: data.id,
-            imgUrl: data.imgUrl,
+            image: data.image,
             type: data.type,
             uid: data.uid,
             userName: data.userName,
@@ -76,14 +67,8 @@ export const itemConverter = {
 }
 
 export const itemTypeConverter = {
-    toFirestore(type: ItemTypeInterface): firebase.firestore.DocumentData {
-        return {
-            consumable: type.consumable,
-            displayName: type.displayName,
-            expires: type.expires,
-            id: type.id,
-            index: type.index,
-        }
+    toFirestore(): firebase.firestore.DocumentData {
+        throw 'Cannot update item types from here.';
     },
     fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): ItemTypeInterface {
         const data = snapshot.data(options);

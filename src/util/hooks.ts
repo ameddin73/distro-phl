@@ -3,7 +3,7 @@ import {FirestoreQuery, ItemTypes} from "./types";
 import firebase from "firebase";
 import {ObservableStatus, useFirestore, useFirestoreCollectionData} from "reactfire";
 import {buildFirestoreQuery, buildTypesObject, itemTypeConverter} from "./utils";
-import {collections} from "./config";
+import {COLLECTIONS} from "./config";
 
 export const useInput = (initialValue?: any) => {
     const [value, setValue] = useState(initialValue);
@@ -34,7 +34,7 @@ export const useFirestoreCollectionBuilder = (path: string,
 }
 
 export const useItemTypes = () => {
-    const path = collections.types;
+    const path = COLLECTIONS.types;
     const converter = itemTypeConverter;
     const query: FirestoreQuery = {
         where: [],
@@ -54,15 +54,27 @@ export const useItemTypes = () => {
     return typeObj;
 }
 
-export const useFirestoreUpdate = (
+export function useFirestoreUpdate<T>(
     path: string,
     id: string,
-    converter: firebase.firestore.FirestoreDataConverter<any>,
-    update: Object) => {
+    converter: firebase.firestore.FirestoreDataConverter<T>) {
     const firestore = useFirestore();
     const collectionRef = firestore.collection(path);
 
     return [
-        collectionRef.doc(id).withConverter(converter).update(update)
+        (data: Pick<T, any>) => collectionRef.doc(id).withConverter(converter).update(data)
     ];
-};
+}
+
+export function useFirestoreAdd<T>(
+    path: string,
+    converter: firebase.firestore.FirestoreDataConverter<T>) {
+    const firestore = useFirestore();
+    const collectionRef = firestore.collection(path);
+
+    return [
+        (data: T) => collectionRef.withConverter(converter).add(data)
+    ];
+}
+
+export const uploadImage = {};

@@ -18,8 +18,8 @@ export type FirestoreQuery = {
     limit?: number,
 }
 export type FirestoreMember = {
-    id?: string,
-    readonly displayName: string,
+    readonly id: string,
+    displayName: string,
 }
 
 // This trick creates a type wrapper that allows you to strictly prohibit undefined
@@ -30,14 +30,14 @@ type Prevent<K extends keyof any> = {
 type NoExtraProperties<T, U extends T = T> = U & Prevent<Exclude<keyof U, keyof T>>;
 
 interface ItemKeys extends FirestoreMember {
-    readonly active: boolean,
+    active: boolean,
     readonly created: Date,
-    readonly description: string,
-    readonly expires?: Date,
-    readonly imgUrl: string,
-    readonly type: string,
+    description: string,
+    expires?: Date,
+    image: string,
+    type: ItemTypeInterface['id'],
     readonly uid: string,
-    readonly userName: string,
+    userName: string,
 }
 
 export type ItemInterface = NoExtraProperties<ItemKeys>;

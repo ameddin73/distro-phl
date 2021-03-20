@@ -1,4 +1,4 @@
-export const firebaseConfig = {
+export const FIREBASE_CONFIG = {
     apiKey: `${process.env.REACT_APP_FIREBASE_API_KEY}`,
     authDomain: `${process.env.REACT_APP_FIREBASE_AUTH_DOMAIN}`,
     projectId: `${process.env.REACT_APP_FIREBASE_PROJECT_ID}`,
@@ -7,7 +7,7 @@ export const firebaseConfig = {
     appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
-export const collections = {
+export const COLLECTIONS = {
     items: '/items/',
     types: '/item_types/',
     reservations: '/reservations/',
@@ -15,7 +15,7 @@ export const collections = {
     completed: '/completed_items',
 }
 
-export const paths = {
+export const PATHS = {
     public: {
         base: '/',
         distro: '/distro',
@@ -31,9 +31,9 @@ export const paths = {
     },
 };
 
-export const descriptionLength = 250;
-export const defaultImageUrl = 'https://firebasestorage.googleapis.com/v0/b/pheeding-philly.appspot.com/o/bread.JPG?alt=media&token=6532387c-9157-4f57-ac8d-82f1a8db9cfc'
+export const DESCRIPTION_LENGTH = 250;
+export const DEFAULT_IMAGE = 'gs://distro-phl-2a16a.appspot.com/images/items/8df1bb3e-15c4-4896-be46-f1a14cd5cd94.24.05_pm.png'
 
-export const storage = {
+export const STORAGE = {
     itemImage: 'images/items/',
 }
