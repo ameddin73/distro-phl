@@ -36,9 +36,8 @@ export type ItemListProps = {
 }
 
 const Data = ({props: {path, query, itemAction}}: { props: ItemListProps }) => {
-    const [getItems] = useFirestoreCollectionBuilder(path, query, itemConverter);
     const types = useItemTypes();
-    const {data: items} = getItems();
+    const {data: items} = useFirestoreCollectionBuilder(path, query, itemConverter);
 
     if (!items || items.length === 0) {
         return (<NothingHere/>);
@@ -59,7 +58,7 @@ const ItemList = (props: ItemListProps) => {
                   justify="center"
                   spacing={2}
                   className={classes.container}>
-                <SuspenseWithPerf fallback={Loading} traceId="load-items">
+                <SuspenseWithPerf fallback={<Loading/>} traceId="load-items">
                     <Data props={props}/>
                 </SuspenseWithPerf>
             </Grid>

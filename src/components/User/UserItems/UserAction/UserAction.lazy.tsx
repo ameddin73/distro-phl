@@ -1,10 +1,10 @@
 import React, {lazy, Suspense} from 'react';
-import {UserActionProps} from "./UserAction";
 import Loading from "../../../Common/Loading";
+import {ItemActionProps} from "../../../../util/types";
 
 const LazyUserAction = lazy(() => import('./UserAction'));
 
-const UserAction = (props: UserActionProps) => (
+const UserAction = (props: ItemActionProps) => (
     <Suspense fallback={<Loading/>}>
         <LazyUserAction {...props} />
     </Suspense>
