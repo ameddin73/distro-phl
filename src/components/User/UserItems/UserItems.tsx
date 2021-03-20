@@ -1,7 +1,5 @@
 import React from 'react';
 import ItemList from "../../Common/ItemList/ItemList.lazy";
-// @ts-ignore
-import {navigate} from 'hookrouter';
 import {COLLECTIONS} from "../../../util/config";
 import UserAction from "./UserAction/UserAction.lazy";
 import {orderByCreated} from "../../../util/utils";

@@ -83,7 +83,7 @@ const AddItem = () => {
     const uploadImg = () => {
         if (imgFile && storageRef) return storageRef.put(imgFile);
         setError('Something went wrong uploading image.');
-        throw 'Error uploading image. Image file or storage reference was not defined.';
+        throw new Error('Error uploading image. Image file or storage reference was not defined.');
     }
     const submit = (event: SyntheticEvent) => {
         event.preventDefault();

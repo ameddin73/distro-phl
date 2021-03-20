@@ -49,7 +49,7 @@ const DistroHub = () => {
 
     return (
         <>
-            <SuspenseWithPerf fallback={Loading} traceId="load-distro-hub">
+            <SuspenseWithPerf fallback={<Loading/>} traceId="load-distro-hub">
                 <AuthCheck fallback={PublicHub}>
                     <UserHub/>
                 </AuthCheck>

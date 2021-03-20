@@ -1,7 +1,7 @@
-import {ChangeEvent, SyntheticEvent, useEffect, useState} from "react";
-import {FirestoreQuery, ItemTypes} from "./types";
+import {ChangeEvent, SyntheticEvent, useState} from "react";
+import {FirestoreQuery} from "./types";
 import firebase from "firebase";
-import {ObservableStatus, useFirestore, useFirestoreCollectionData} from "reactfire";
+import {useFirestore, useFirestoreCollectionData} from "reactfire";
 import {buildFirestoreQuery, buildTypesObject, itemTypeConverter} from "./utils";
 import {COLLECTIONS} from "./config";
 
@@ -19,18 +19,14 @@ export const useInput = (initialValue?: any) => {
     };
 };
 
-export const useFirestoreCollectionBuilder = (path: string,
-                                              query: FirestoreQuery | undefined,
-                                              converter: firebase.firestore.FirestoreDataConverter<unknown> | undefined) => {
-    return [
-        (): ObservableStatus<any[]> => {
-            const firestore = useFirestore();
-            const collectionRef = firestore.collection(path);
-            const _query = buildFirestoreQuery(collectionRef, query, converter);
+export function useFirestoreCollectionBuilder<T>(path: string,
+                                                 query: FirestoreQuery | undefined,
+                                                 converter: firebase.firestore.FirestoreDataConverter<T> | undefined) {
+    const firestore = useFirestore();
+    const collectionRef = firestore.collection(path);
+    const _query = buildFirestoreQuery(collectionRef, query, converter);
 
-            return useFirestoreCollectionData(_query, {idField: 'id'});
-        }
-    ]
+    return useFirestoreCollectionData<T>(_query, {idField: 'id'});
 }
 
 export const useItemTypes = () => {
@@ -43,15 +39,9 @@ export const useItemTypes = () => {
             directionStr: 'asc',
         }
     };
-    const [typeObj, setTypeObj] = useState<ItemTypes>({});
-    const [getTypes] = useFirestoreCollectionBuilder(path, query, converter);
 
-    useEffect(() => {
-        const {data: types} = getTypes()
-        setTypeObj(buildTypesObject(types));
-    })
-
-    return typeObj;
+    const {data: types} = useFirestoreCollectionBuilder(path, query, converter);
+    return buildTypesObject(types);
 }
 
 export function useFirestoreUpdate<T>(

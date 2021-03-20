@@ -3,6 +3,8 @@ import {Card, CardActionArea, CardContent, CardMedia, ClickAwayListener, Collaps
 // @ts-ignore
 import {itemStyle} from "../../../util/styles";
 import {ItemInterface, ItemTypes} from '../../../util/types';
+import {DEFAULT_IMAGE} from "../../../util/config";
+import {StorageImage} from "reactfire";
 
 export type ItemProps = {
     item: ItemInterface,
@@ -13,7 +15,7 @@ export type ItemProps = {
 const Item = ({item, types, itemAction = (() => (<div/>))}: ItemProps) => {
     const classes = itemStyle();
 
-    const {displayName, description, imgUrl} = item;
+    const {displayName, description, image} = item;
     const [openDesc, setOpenDesc] = useState(false);
 
     const clickCard = () => {
@@ -31,8 +33,9 @@ const Item = ({item, types, itemAction = (() => (<div/>))}: ItemProps) => {
                     <CardActionArea onClick={clickCard}>
                         <CardMedia
                             className={classes.media}
-                            image={imgUrl}
-                            title={displayName}/>
+                            title={displayName}>
+                            <StorageImage storagePath={image || DEFAULT_IMAGE}/>
+                        </CardMedia>
                         <CardContent>
                             <Typography variant="h5" component="h2">
                                 {displayName}

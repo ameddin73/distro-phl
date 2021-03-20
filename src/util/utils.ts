@@ -35,7 +35,7 @@ export const buildFirestoreQuery = (collectionRef: firebase.firestore.Collection
     return collectionRef;
 }
 
-export const itemConverter = {
+export const itemConverter: firebase.firestore.FirestoreDataConverter<ItemInterface> = {
     toFirestore(item: Pick<ItemInterface, any>): firebase.firestore.DocumentData {
         return {
             active: item.active,
@@ -66,9 +66,9 @@ export const itemConverter = {
     }
 }
 
-export const itemTypeConverter = {
+export const itemTypeConverter: firebase.firestore.FirestoreDataConverter<ItemTypeInterface> = {
     toFirestore(): firebase.firestore.DocumentData {
-        throw 'Cannot update item types from here.';
+        throw new Error('Cannot update item types from here.');
     },
     fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): ItemTypeInterface {
         const data = snapshot.data(options);

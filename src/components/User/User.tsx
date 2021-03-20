@@ -12,7 +12,7 @@ import {AuthCheck, SuspenseWithPerf, useUser} from "reactfire";
 const routes: RouteType = {};
 routes[PATHS.user.login] = () => ({redirect}) => (navigate(redirect, true));
 routes[PATHS.user.items] = () => () => <UserItems/>;
-routes[PATHS.user.create] = () => ({user}) => <AddItem user={user}/>;
+routes[PATHS.user.create] = () => () => <AddItem/>;
 
 const AuthedUser = () => {
     const [queryParams] = useQueryParams();
@@ -26,7 +26,7 @@ const AuthedUser = () => {
 
 const User = () => (
     <>
-        <SuspenseWithPerf fallback={Loading} traceId="load-user-pages">
+        <SuspenseWithPerf fallback={<Loading/>} traceId="load-user-pages">
             <AuthCheck fallback={Login}>
                 <AuthedUser/>
             </AuthCheck>
