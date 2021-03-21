@@ -23,8 +23,7 @@ const UserItems = () => {
 
     return (
         <ItemList path={path} query={query}
-            // @ts-ignore
-                  itemAction={(item: ItemInterface) => (<UserAction id={item.id} path={path + item.id}/>)}/>
+                  itemAction={(item: ItemInterface) => (<UserAction id={item.id} path={path}/>)}/>
     )
 };
 

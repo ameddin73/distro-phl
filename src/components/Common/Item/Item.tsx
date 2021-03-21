@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
-import {Card, CardActionArea, CardContent, CardMedia, ClickAwayListener, Collapse, Grid, Typography} from "@material-ui/core";
+import {Card, CardActionArea, CardContent, ClickAwayListener, Collapse, Grid, Typography} from "@material-ui/core";
 // @ts-ignore
 import {itemStyle} from "../../../util/styles";
 import {ItemInterface, ItemTypes} from '../../../util/types';
 import {DEFAULT_IMAGE} from "../../../util/config";
 import {StorageImage} from "reactfire";
+import Loading from "../Loading";
 
 export type ItemProps = {
     item: ItemInterface,
@@ -31,11 +32,7 @@ const Item = ({item, types, itemAction = (() => (<div/>))}: ItemProps) => {
             <ClickAwayListener onClickAway={clickAway}>
                 <Card className={classes.card}>
                     <CardActionArea onClick={clickCard}>
-                        <CardMedia
-                            className={classes.media}
-                            title={displayName}>
-                            <StorageImage storagePath={image || DEFAULT_IMAGE}/>
-                        </CardMedia>
+                        <StorageImage suspense={true} placeHolder={<Loading/>} storagePath={image || DEFAULT_IMAGE} className={classes.media} alt={image ? item.displayName : 'Default Image'}/>
                         <CardContent>
                             <Typography variant="h5" component="h2">
                                 {displayName}

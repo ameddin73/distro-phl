@@ -32,7 +32,7 @@ export const PATHS = {
 };
 
 export const DESCRIPTION_LENGTH = 250;
-export const DEFAULT_IMAGE = 'gs://distro-phl-2a16a.appspot.com/images/items/8df1bb3e-15c4-4896-be46-f1a14cd5cd94.24.05_pm.png'
+export const DEFAULT_IMAGE = 'images/items/8df1bb3e-15c4-4896-be46-f1a14cd5cd94.24.05_pm.png'
 
 export const STORAGE = {
     itemImage: 'images/items/',
