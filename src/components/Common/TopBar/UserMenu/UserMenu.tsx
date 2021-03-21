@@ -22,12 +22,14 @@ const UMenu = () => {
             <Button aria-controls="simple-menu"
                     aria-haspopup="true"
                     onClick={toggleDrawer(true)}
+                    style={{whiteSpace: 'nowrap'}}
                     endIcon={<MenuIcon/>}>
                 {user.displayName}
             </Button>
             <SwipeableDrawer onClose={toggleDrawer(false)}
                              onOpen={toggleDrawer(true)}
-                             open={open}>
+                             open={open}
+                             anchor="right">
                 <List>
                     <ListItem button key="new-item" onClick={() => closeAndAction(() => navigate(PATHS.public.createItem))}>
                         <ListItemText primary="New Item"/>
@@ -53,6 +55,7 @@ const UserMenu = () => {
         <>
             <AuthCheck fallback={
                 <Button color="inherit"
+                        style={{whiteSpace: 'nowrap'}}
                         onClick={() => navigate(PATHS.public.login, {redirect: path})}>Sign In</Button>
             }>
                 <UMenu/>

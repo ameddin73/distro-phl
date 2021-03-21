@@ -4,7 +4,8 @@ import GoogleButton from "react-google-button";
 import {makeStyles} from "@material-ui/core/styles";
 import {useInput} from "../../../util/hooks";
 import {CustomTheme} from "../../../util/theme";
-import firebase from "firebase/app";
+import firebase from "firebase";
+import {useAuth} from "reactfire";
 
 const useStyles = makeStyles((theme: CustomTheme) => ({
     root: {
@@ -36,6 +37,7 @@ const useStyles = makeStyles((theme: CustomTheme) => ({
 }));
 
 const Login = () => {
+    const auth = useAuth();
     const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
     const classes = useStyles();
 
@@ -54,9 +56,9 @@ const Login = () => {
                 setError('Passwords do not match.')
                 resetConfirmPassword();
             } else {
-                firebase.auth().createUserWithEmailAndPassword(email, password)
+                auth.createUserWithEmailAndPassword(email, password)
                     .then(() => {
-                        const user = firebase.auth().currentUser;
+                        const user = auth.currentUser;
                         if (user) user.updateProfile({displayName: name})
                     })
                     .catch((error) => {
@@ -64,7 +66,7 @@ const Login = () => {
                     })
             }
         } else {
-            firebase.auth().signInWithEmailAndPassword(email, password)
+            auth.signInWithEmailAndPassword(email, password)
                 .catch((error) => {
                     setError(error.message);
                 });
@@ -97,28 +99,28 @@ const Login = () => {
                                 {registerOpen &&
                                 <Grid item>
                                     <FormControl required={true} fullWidth>
-                                        <InputLabel htmlFor="password">Name</InputLabel>
-                                        <Input id="name" {...bindName}/>
+                                        <InputLabel htmlFor="name">Name</InputLabel>
+                                        <Input id="name" autoComplete="name" {...bindName}/>
                                     </FormControl>
                                 </Grid>
                                 }
                                 <Grid item xs>
                                     <FormControl required={true} fullWidth>
                                         <InputLabel htmlFor="email">Email address</InputLabel>
-                                        <Input id="email" {...bindEmail}/>
+                                        <Input id="email" autoComplete="email" {...bindEmail}/>
                                     </FormControl>
                                 </Grid>
                                 <Grid item xs>
                                     <FormControl required={true} fullWidth>
                                         <InputLabel htmlFor="password">Password</InputLabel>
-                                        <Input type="password" id="password" {...bindPassword}/>
+                                        <Input type="password" id="password" autoComplete="new-password" {...bindPassword}/>
                                     </FormControl>
                                 </Grid>
                                 {registerOpen &&
                                 <Grid item xs>
                                     <FormControl required={true} fullWidth>
                                         <InputLabel htmlFor="confirmPassword">Confirm Password</InputLabel>
-                                        <Input type="password" id="confirmPassword" {...bindConfirmPassword}/>
+                                        <Input type="password" id="confirmPassword" autoComplete="new-password" {...bindConfirmPassword}/>
                                     </FormControl>
                                 </Grid>
                                 }
@@ -142,7 +144,7 @@ const Login = () => {
                                 </Grid>
                                 <Grid item xs>
                                     <GoogleButton
-                                        onClick={() => (firebase.auth().signInWithPopup(googleAuthProvider))}
+                                        onClick={() => (auth.signInWithPopup(googleAuthProvider))}
                                     />
                                 </Grid>
                             </Grid>

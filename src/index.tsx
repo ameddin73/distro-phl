@@ -3,11 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import firebase from "firebase/app";
 import {FIREBASE_CONFIG} from "./util/config";
-
-// Use your config values here.
-firebase.initializeApp(FIREBASE_CONFIG);
 
 ReactDOM.render(
     <div>

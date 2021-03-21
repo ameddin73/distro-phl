@@ -38,7 +38,7 @@ const Item = ({item, types, itemAction = (() => (<div/>))}: ItemProps) => {
                                 {displayName}
                             </Typography>
                             <Collapse in={openDesc} collapsedHeight={100}>
-                                <Typography variant="subtitle2" color="textSecondary" gutterBottom>
+                                <Typography variant="subtitle2" color="textSecondary" gutterBottom noWrap>
                                     {types[item.type].displayName}
                                 </Typography>
                                 <Typography gutterBottom

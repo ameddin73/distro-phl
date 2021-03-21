@@ -10,17 +10,15 @@ import {useRedirect, useRoutes} from "hookrouter";
 import {PATHS} from "./util/config";
 import User from "./components/User/User.lazy";
 import {RouteType} from "./util/types";
-import {FirebaseAppProvider} from "reactfire";
-import {ErrorBoundary, FallbackProps} from "react-error-boundary";
+import {FirebaseAppProvider, SuspenseWithPerf} from "reactfire";
+import {ErrorBoundary} from "react-error-boundary";
 import ErrorMessage from "./components/Common/ErrorMessage";
+import Loading from "./components/Common/Loading";
 
 const routes: RouteType = {};
 routes[PATHS.public.distro] = () => <DistroHub/>;
 routes[PATHS.public.user] = () => <User/>
 
-function ErrorFallback({error}: FallbackProps) {
-    return (<ErrorMessage message={error.message}/>);
-}
 
 function App({config}: { config: Object }) {
     useRedirect(PATHS.public.base, PATHS.public.distro);
@@ -29,9 +27,13 @@ function App({config}: { config: Object }) {
     return (
         <ThemeProvider theme={theme}>
             <FirebaseAppProvider firebaseConfig={config} suspense={true}>
-                <TopBar/>
-                <ErrorBoundary FallbackComponent={ErrorFallback}>
-                    {routeResult}
+                <ErrorBoundary FallbackComponent={ErrorMessage}>
+                    <TopBar/>
+                    <SuspenseWithPerf fallback={<Loading/>} traceId="app-load">
+                        <ErrorBoundary FallbackComponent={ErrorMessage}>
+                            {routeResult}
+                        </ErrorBoundary>
+                    </SuspenseWithPerf>
                 </ErrorBoundary>
             </FirebaseAppProvider>
         </ThemeProvider>

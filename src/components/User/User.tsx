@@ -5,9 +5,8 @@ import Login from "./Login/Login.lazy";
 import {navigate, useQueryParams, useRoutes} from "hookrouter";
 import UserItems from "./UserItems/UserItems.lazy";
 import AddItem from "./UserItems/AddItem/AddItem.lazy";
-import Loading from "../Common/Loading";
 import {RouteType} from "../../util/types";
-import {AuthCheck, SuspenseWithPerf, useUser} from "reactfire";
+import {AuthCheck, useUser} from "reactfire";
 
 const routes: RouteType = {};
 routes[PATHS.user.login] = () => ({redirect}) => (navigate(redirect, true));
@@ -26,11 +25,9 @@ const AuthedUser = () => {
 
 const User = () => (
     <>
-        <SuspenseWithPerf fallback={<Loading/>} traceId="load-user-pages">
-            <AuthCheck fallback={Login}>
-                <AuthedUser/>
-            </AuthCheck>
-        </SuspenseWithPerf>
+        <AuthCheck fallback={<Login/>}>
+            <AuthedUser/>
+        </AuthCheck>
     </>
 );
 

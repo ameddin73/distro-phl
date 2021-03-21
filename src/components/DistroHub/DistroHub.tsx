@@ -3,9 +3,10 @@ import HubAction from "./HubAction/HubAction";
 import ItemList from "../Common/ItemList/ItemList.lazy";
 import {COLLECTIONS} from "../../util/config";
 import {FirestoreQuery, ItemInterface} from "../../util/types";
-import {AuthCheck, SuspenseWithPerf, useUser} from "reactfire";
-import Loading from "../Common/Loading";
+import {AuthCheck, useUser} from "reactfire";
 import {orderByCreated} from "../../util/utils";
+import ErrorMessage from "../Common/ErrorMessage";
+import {ErrorBoundary} from "react-error-boundary";
 
 const path = COLLECTIONS.items;
 const orderBy = orderByCreated;
@@ -34,17 +35,14 @@ const UserHub = () => {
     );
 };
 
-const DistroHub = () => {
-
-    return (
-        <>
-            <SuspenseWithPerf fallback={<Loading/>} traceId="load-distro-hub">
-                <AuthCheck fallback={PublicHub}>
-                    <UserHub/>
-                </AuthCheck>
-            </SuspenseWithPerf>
-        </>
-    );
-}
+const DistroHub = () => (
+    <>
+        <ErrorBoundary FallbackComponent={ErrorMessage}>
+            <AuthCheck fallback={<PublicHub/>}>
+                <UserHub/>
+            </AuthCheck>
+        </ErrorBoundary>
+    </>
+);
 
 export default DistroHub;
