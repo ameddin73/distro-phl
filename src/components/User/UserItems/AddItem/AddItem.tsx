@@ -10,13 +10,13 @@ import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers"
 import 'date-fns';
 import DateFnsUtils from "@date-io/date-fns";
 import theme from "../../../../util/theme";
-import firebase from "firebase/app";
 import 'firebase/storage';
 // @ts-ignore
 import {navigate} from 'hookrouter';
 import {MaterialUiPickersDate} from "@material-ui/pickers/typings/date";
 import {getFileWithUUID, itemConverter} from "../../../../util/utils";
 import {useStorage, useUser} from "reactfire";
+import firebase from "firebase";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -103,7 +103,7 @@ const AddItem = () => {
             console.error(error);
             setError('Something went wrong posting item.');
             if (storageRef) storageRef.delete().then(() => console.warn('Image deleted successfully.'))
-                .catch((error) => {
+                .catch((error: Error) => {
                     console.error(error);
                     console.error('Delete failed for: ' + storageRef.fullPath + '. File may be orphaned.');
                 });

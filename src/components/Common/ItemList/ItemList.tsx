@@ -2,10 +2,8 @@ import React from 'react';
 import {Container, Grid} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import Item from "../Item/Item.lazy";
-import Loading from "../Loading";
 import NothingHere from "../NothingHere/NothingHere.lazy";
 import {FirestoreQuery, ItemInterface} from "../../../util/types";
-import {SuspenseWithPerf} from 'reactfire';
 import {itemConverter} from "../../../util/utils";
 import {useFirestoreCollectionBuilder, useItemTypes} from "../../../util/hooks";
 
@@ -61,9 +59,7 @@ const ItemList = (props: ItemListProps) => {
                   justify="center"
                   spacing={2}
                   className={classes.container}>
-                <SuspenseWithPerf fallback={<Loading/>} traceId="load-items">
-                    <IList props={props}/>
-                </SuspenseWithPerf>
+                <IList props={props}/>
             </Grid>
         </Container>
     );

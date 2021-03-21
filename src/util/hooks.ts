@@ -23,8 +23,7 @@ export function useFirestoreCollectionBuilder<T>(path: string,
                                                  query: FirestoreQuery | undefined,
                                                  converter: firebase.firestore.FirestoreDataConverter<T> | undefined) {
     const firestore = useFirestore();
-    const collectionRef = firestore.collection(path);
-    let _query: firebase.firestore.Query = collectionRef;
+    let _query: firebase.firestore.Query = firestore.collection(path);
 
     if (query) {
         query.where.forEach((where: FirestoreQueryWhere) =>
