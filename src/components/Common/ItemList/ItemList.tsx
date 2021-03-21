@@ -33,17 +33,20 @@ export type ItemListProps = {
     path: string,
     query?: FirestoreQuery,
     itemAction?: (item: ItemInterface) => JSX.Element,
+    filter?: (item: ItemInterface) => boolean,
 }
 
-const Data = ({props: {path, query, itemAction}}: { props: ItemListProps }) => {
+const IList = ({props: {path, query, filter, itemAction}}: { props: ItemListProps }) => {
     const types = useItemTypes();
     const {data: items} = useFirestoreCollectionBuilder(path, query, itemConverter);
 
     if (!items || items.length === 0) {
         return (<NothingHere/>);
     } else {
+
+        const itemList = filter ? items.filter(filter) : items;
         return (<>
-            {items.forEach((item => (<Item key={item.id} item={item} types={types} itemAction={itemAction}/>)))}
+            {itemList.map((item => (<Item key={item.id} item={item} types={types} itemAction={itemAction}/>)))}
         </>)
     }
 }
@@ -59,7 +62,7 @@ const ItemList = (props: ItemListProps) => {
                   spacing={2}
                   className={classes.container}>
                 <SuspenseWithPerf fallback={<Loading/>} traceId="load-items">
-                    <Data props={props}/>
+                    <IList props={props}/>
                 </SuspenseWithPerf>
             </Grid>
         </Container>

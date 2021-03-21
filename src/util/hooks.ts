@@ -1,8 +1,8 @@
 import {ChangeEvent, SyntheticEvent, useState} from "react";
-import {FirestoreQuery} from "./types";
+import {FirestoreQuery, FirestoreQueryWhere} from "./types";
 import firebase from "firebase";
 import {useFirestore, useFirestoreCollectionData} from "reactfire";
-import {buildFirestoreQuery, buildTypesObject, itemTypeConverter} from "./utils";
+import {buildTypesObject, itemTypeConverter} from "./utils";
 import {COLLECTIONS} from "./config";
 
 export const useInput = (initialValue?: any) => {
@@ -24,7 +24,16 @@ export function useFirestoreCollectionBuilder<T>(path: string,
                                                  converter: firebase.firestore.FirestoreDataConverter<T> | undefined) {
     const firestore = useFirestore();
     const collectionRef = firestore.collection(path);
-    const _query = buildFirestoreQuery(collectionRef, query, converter);
+    let _query: firebase.firestore.Query = collectionRef;
+
+    if (query) {
+        query.where.forEach((where: FirestoreQueryWhere) =>
+            (_query = _query.where(where.fieldPath, where.opStr, where.value)));
+        if (query.orderBy) _query = _query.orderBy(query.orderBy.fieldPath, query.orderBy.directionStr);
+        if (query.limit) _query = _query.limit(query.limit);
+    }
+
+    if (converter) _query = _query.withConverter(converter);
 
     return useFirestoreCollectionData<T>(_query, {idField: 'id'});
 }

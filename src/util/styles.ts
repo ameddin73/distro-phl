@@ -14,8 +14,9 @@ export const itemStyle = makeStyles((theme) => ({
         minWidth: 220,
     },
     media: {
+        width: '100%',
         height: 140,
-        objectFit: 'fill',
+        objectFit: 'cover',
     },
 }));
 
