@@ -2,7 +2,7 @@ import {ChangeEvent, SyntheticEvent, useState} from "react";
 import {FirestoreQuery, FirestoreQueryWhere} from "./types";
 import firebase from "firebase";
 import {useFirestore, useFirestoreCollectionData} from "reactfire";
-import {buildTypesObject, itemTypeConverter} from "./utils";
+import {buildTypesObject, converters} from "./utils";
 import {COLLECTIONS} from "./config";
 
 export const useInput = (initialValue?: any) => {
@@ -39,7 +39,7 @@ export function useFirestoreCollectionBuilder<T>(path: string,
 
 export const useItemTypes = () => {
     const path = COLLECTIONS.types;
-    const converter = itemTypeConverter;
+    const converter = converters.itemTypeConverter;
     const query: FirestoreQuery = {
         where: [],
         orderBy: {
