@@ -3,12 +3,12 @@ import {Button, List, ListItem, ListItemText, SwipeableDrawer} from "@material-u
 import {Menu as MenuIcon} from "@material-ui/icons";
 import {PATHS} from "../../../../util/config";
 import {AuthCheck, useAuth, useUser} from "reactfire";
-import {useHistory} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 import RouterLink from "../../RouterLink";
 
 const UserMenu = () => {
     const auth = useAuth();
-    const history = useHistory();
+    const location = useLocation();
 
     const [open, setOpen] = useState(false);
     const {data: user} = useUser();
@@ -21,7 +21,10 @@ const UserMenu = () => {
 
     return (
         <AuthCheck fallback={
-            <RouterLink to={PATHS.public.login}>
+            <RouterLink to={{
+                pathname: PATHS.public.login,
+                state: {from: location}
+            }}>
                 <Button color="inherit"
                         style={{whiteSpace: 'nowrap'}}>Sign In</Button>
             </RouterLink>
@@ -40,18 +43,18 @@ const UserMenu = () => {
                              open={open}
                              anchor="right">
                 <List>
-                    <RouterLink to={PATHS.public.createItem}>
+                    <RouterLink to={PATHS.public.createItem} onClick={toggleDrawer(false)}>
                         <ListItem button key="new-item">
                             <ListItemText primary="New Item"/>
                         </ListItem>
                     </RouterLink>
-                    <RouterLink to={PATHS.public.userItems}>
+                    <RouterLink to={PATHS.public.userItems} onClick={toggleDrawer(false)}>
                         <ListItem button key="my-items">
                             <ListItemText primary="My Items"/>
                         </ListItem>
                     </RouterLink>
                     <ListItem button key="sign-out" onClick={() => closeAndAction(() => {
-                        auth.signOut().then(() => history.push(PATHS.public.base));
+                        auth.signOut();
                     })}>
                         <ListItemText primary="Sign Out"/>
                     </ListItem>
