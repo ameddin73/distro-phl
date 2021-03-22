@@ -4,7 +4,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import Item from "../Item/Item.lazy";
 import NothingHere from "../NothingHere/NothingHere.lazy";
 import {FirestoreQuery, ItemInterface} from "../../../util/types";
-import {itemConverter} from "../../../util/utils";
+import {converters} from "../../../util/utils";
 import {useFirestoreCollectionBuilder, useItemTypes} from "../../../util/hooks";
 
 const useStyles = makeStyles((theme) => ({
@@ -36,7 +36,7 @@ export type ItemListProps = {
 
 const IList = ({props: {path, query, filter, itemAction}}: { props: ItemListProps }) => {
     const types = useItemTypes();
-    const {data: items} = useFirestoreCollectionBuilder(path, query, itemConverter);
+    const {data: items} = useFirestoreCollectionBuilder(path, query, converters.itemConverter);
 
     if (!items || items.length === 0) {
         return (<NothingHere/>);

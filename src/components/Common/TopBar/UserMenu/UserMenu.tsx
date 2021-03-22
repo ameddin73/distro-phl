@@ -24,7 +24,7 @@ const UserMenu = () => {
             <RouterLink to={{
                 pathname: PATHS.public.login,
                 state: {from: location}
-            }}>
+            }} onClick={toggleDrawer(false)}>
                 <Button color="inherit"
                         style={{whiteSpace: 'nowrap'}}>Sign In</Button>
             </RouterLink>

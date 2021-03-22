@@ -12,7 +12,7 @@ import DateFnsUtils from "@date-io/date-fns";
 import theme from "../../../../util/theme";
 import 'firebase/storage';
 import {MaterialUiPickersDate} from "@material-ui/pickers/typings/date";
-import {getFileWithUUID, itemConverter} from "../../../../util/utils";
+import {converters, getFileWithUUID} from "../../../../util/utils";
 import {useStorage, useUser} from "reactfire";
 import firebase from "firebase";
 import {useHistory} from "react-router-dom";
@@ -56,7 +56,7 @@ const AddItem = () => {
     const storage = useStorage();
     const {data: user} = useUser();
     const types = useItemTypes();
-    const [addItem] = useFirestoreAdd(path, itemConverter);
+    const [addItem] = useFirestoreAdd(path, converters.itemConverter);
 
     const [error, setError] = useState<string | null>(null);
     const [imgLocalImgUrl, setLocalImgUrl] = useState<string>();

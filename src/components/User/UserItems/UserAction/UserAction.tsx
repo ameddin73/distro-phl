@@ -4,7 +4,7 @@ import {Button, CardActions, Dialog, DialogActions, DialogContent, DialogContent
 import {Delete, Edit} from "@material-ui/icons";
 import Alert from '@material-ui/lab/Alert';
 import {ItemActionProps} from "../../../../util/types";
-import {itemConverter} from "../../../../util/utils";
+import {converters} from "../../../../util/utils";
 import {useFirestoreUpdate} from "../../../../util/hooks";
 
 const useStyles = makeStyles((theme) => ({
@@ -29,7 +29,7 @@ const UserAction = ({id, path}: ItemActionProps) => {
     const [deleteAlert, setDeleteAlert] = useState(false);
     const [success, setSuccess] = useState(false);
     const [fail, setFail] = useState(false);
-    const [setInactive] = useFirestoreUpdate(path, id, itemConverter);
+    const [setInactive] = useFirestoreUpdate(path, id, converters.itemConverter);
 
     const clickDelete = () => setDeleteAlert(true);
     const closeDeleteAlert = (doDelete: boolean) => {
