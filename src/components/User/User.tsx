@@ -1,34 +1,29 @@
 import React from 'react';
 import {PATHS} from "../../util/config";
 import Login from "./Login/Login.lazy";
-// @ts-ignore
-import {navigate, useQueryParams, useRoutes} from "hookrouter";
 import UserItems from "./UserItems/UserItems.lazy";
 import AddItem from "./UserItems/AddItem/AddItem.lazy";
-import {RouteType} from "../../util/types";
-import {AuthCheck, useUser} from "reactfire";
+import {Route, Switch, useRouteMatch} from "react-router-dom";
+import PrivateRoute from "../Common/PrivateRoute";
 
-const routes: RouteType = {};
-routes[PATHS.user.login] = () => ({redirect}) => (navigate(redirect, true));
-routes[PATHS.user.items] = () => () => <UserItems/>;
-routes[PATHS.user.create] = () => () => <AddItem/>;
+const User = () => {
+    const match = useRouteMatch();
 
-const AuthedUser = () => {
-    const [queryParams] = useQueryParams();
-    const {data: user} = useUser();
-
-    const routeResult = useRoutes(routes) || routes[PATHS.user.items];
-    const redirect = queryParams.hasOwnProperty('redirect') ? queryParams.redirect : PATHS.public.distro;
-
-    return routeResult({redirect, user})
-}
-
-const User = () => (
-    <>
-        <AuthCheck fallback={<Login/>}>
-            <AuthedUser/>
-        </AuthCheck>
-    </>
-);
+    return (
+        <>
+            <Switch>
+                <Route path={`${match.path}${PATHS.user.login}`}>
+                    <Login/>
+                </Route>
+                <PrivateRoute path={`${match.path}${PATHS.user.items}`}>
+                    <UserItems/>
+                </PrivateRoute>
+                <PrivateRoute path={`${match.path}${PATHS.user.create}`}>
+                    <AddItem/>
+                </PrivateRoute>
+            </Switch>
+        </>
+    )
+};
 
 export default User;

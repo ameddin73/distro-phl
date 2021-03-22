@@ -2,12 +2,11 @@ import React from 'react';
 import {AppBar, Button, Container, Toolbar, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import UserMenu from "./UserMenu/UserMenu.lazy";
-// @ts-ignore
-import {navigate} from 'hookrouter';
 import {PATHS} from "../../../util/config";
+import {CustomTheme} from "../../../util/theme";
+import RouterLink from "../RouterLink";
 
-// @ts-ignore
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: CustomTheme) => ({
     root: {
         flexGrow: 1,
     },
@@ -16,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         flexGrow: 1,
-        // @ts-ignore
         fontFamily: theme.title.fontFamily,
     },
 }));
@@ -29,11 +27,13 @@ const TopBar = () => {
             <AppBar position="static">
                 <Toolbar>
                     <Container className={classes.title}>
-                        <Button onClick={() => navigate(PATHS.public.base)}>
-                            <Typography variant="h6" className={classes.title}>
-                                Distro PHL
-                            </Typography>
-                        </Button>
+                        <RouterLink to={PATHS.public.base}>
+                            <Button>
+                                <Typography variant="h6" className={classes.title}>
+                                    Distro PHL
+                                </Typography>
+                            </Button>
+                        </RouterLink>
                     </Container>
                     <UserMenu/>
                 </Toolbar>
