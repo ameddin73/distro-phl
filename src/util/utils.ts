@@ -21,7 +21,7 @@ export const getFileWithUUID = (file: File): File => {
     return file;
 }
 
-export const itemConverter: firebase.firestore.FirestoreDataConverter<ItemInterface> = {
+const itemConverter: firebase.firestore.FirestoreDataConverter<ItemInterface> = {
     toFirestore(item: Pick<ItemInterface, any>): firebase.firestore.DocumentData {
         return {
             active: item.active,
@@ -52,7 +52,7 @@ export const itemConverter: firebase.firestore.FirestoreDataConverter<ItemInterf
     }
 }
 
-export const itemTypeConverter: firebase.firestore.FirestoreDataConverter<ItemTypeInterface> = {
+const itemTypeConverter: firebase.firestore.FirestoreDataConverter<ItemTypeInterface> = {
     toFirestore(): firebase.firestore.DocumentData {
         throw new Error('Cannot update item types from here.');
     },
@@ -66,4 +66,9 @@ export const itemTypeConverter: firebase.firestore.FirestoreDataConverter<ItemTy
             index: data.index,
         }
     }
+}
+
+export const converters = {
+    itemConverter: itemConverter,
+    itemTypeConverter: itemTypeConverter
 }
