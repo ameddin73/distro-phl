@@ -14,7 +14,7 @@ const PrivateRoute = ({children, ...rest}: PrivateRouteProps) => {
         <Route
             {...rest}
             render={({location}) =>
-                user ? (
+                user.data ? (
                     children
                 ) : (
                     <Redirect
