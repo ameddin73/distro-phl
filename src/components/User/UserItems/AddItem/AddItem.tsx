@@ -11,12 +11,11 @@ import 'date-fns';
 import DateFnsUtils from "@date-io/date-fns";
 import theme from "../../../../util/theme";
 import 'firebase/storage';
-// @ts-ignore
-import {navigate} from 'hookrouter';
 import {MaterialUiPickersDate} from "@material-ui/pickers/typings/date";
 import {getFileWithUUID, itemConverter} from "../../../../util/utils";
 import {useStorage, useUser} from "reactfire";
 import firebase from "firebase";
+import {useHistory} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -49,10 +48,11 @@ interface HTMLInputEvent extends SyntheticEvent {
 }
 
 const AddItem = () => {
-    const itemClasses = itemStyle();
     const classes = useStyles();
+    const itemClasses = itemStyle();
     const path = COLLECTIONS.items;
 
+    const history = useHistory();
     const storage = useStorage();
     const {data: user} = useUser();
     const types = useItemTypes();
@@ -108,7 +108,7 @@ const AddItem = () => {
                     console.error('Delete failed for: ' + storageRef.fullPath + '. File may be orphaned.');
                 });
         });
-        navigate(PATHS.public.userItems, {addSuccess: true});
+        history.push(PATHS.public.userItems, {addSuccess: true});
     };
 
     return (
