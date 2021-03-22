@@ -6,6 +6,7 @@ import {useInput} from "../../../util/hooks";
 import {CustomTheme} from "../../../util/theme";
 import firebase from "firebase";
 import {useAuth} from "reactfire";
+import {useHistory, useLocation} from "react-router-dom";
 
 const useStyles = makeStyles((theme: CustomTheme) => ({
     root: {
@@ -36,10 +37,17 @@ const useStyles = makeStyles((theme: CustomTheme) => ({
     link: theme.link,
 }));
 
+type LocationState = {
+    from: Location,
+};
+
 const Login = () => {
+    const classes = useStyles();
+
+    const {state} = useLocation<LocationState>();
+    const history = useHistory();
     const auth = useAuth();
     const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
-    const classes = useStyles();
 
     const {value: email, bind: bindEmail, reset: resetEmail} = useInput('');
     const {value: password, bind: bindPassword, reset: resetPassword} = useInput('');
@@ -63,10 +71,11 @@ const Login = () => {
                     })
                     .catch((error) => {
                         setError(error.message);
-                    })
+                    });
             }
         } else {
             auth.signInWithEmailAndPassword(email, password)
+                .then(() => history.push(state.from))
                 .catch((error) => {
                     setError(error.message);
                 });
@@ -144,7 +153,9 @@ const Login = () => {
                                 </Grid>
                                 <Grid item xs>
                                     <GoogleButton
-                                        onClick={() => (auth.signInWithPopup(googleAuthProvider))}
+                                        onClick={() => (auth.signInWithPopup(googleAuthProvider)
+                                                .then(() => history.push(state.from))
+                                        )}
                                     />
                                 </Grid>
                             </Grid>
