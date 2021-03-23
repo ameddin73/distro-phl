@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {Button, IconButton, List, ListItem, ListItemText, SwipeableDrawer} from "@material-ui/core";
-import {Close, Menu as MenuIcon} from "@material-ui/icons";
+import {Button, IconButton, List, ListItem, ListItemIcon, ListItemText, SwipeableDrawer} from "@material-ui/core";
+import {Add, Close, ExitToApp, List as ListIcon, Menu as MenuIcon} from "@material-ui/icons";
 import {PATHS} from "../../../../util/config";
 import {AuthCheck, useAuth, useUser} from "reactfire";
 import {useLocation} from 'react-router-dom';
@@ -28,9 +28,9 @@ const UserMenu = () => {
     const {data: user} = useUser();
 
     const toggleDrawer = (open: boolean) => () => (setOpen(open));
-    const closeAndAction = async (action: Promise<void>) => {
-        await action;
+    const closeAndAction = (action: () => Promise<void>) => {
         toggleDrawer(false);
+        action();
     }
 
     return (
@@ -40,6 +40,7 @@ const UserMenu = () => {
                 state: {from: location}
             }} onClick={toggleDrawer(false)}>
                 <Button color="inherit"
+                        fullWidth
                         style={{whiteSpace: 'nowrap'}}>Sign In</Button>
             </RouterLink>
         }>
@@ -64,15 +65,24 @@ const UserMenu = () => {
                 <List>
                     <RouterLink to={PATHS.public.createItem} onClick={toggleDrawer(false)}>
                         <ListItem button key="new-item">
+                            <ListItemIcon>
+                                <Add/>
+                            </ListItemIcon>
                             <ListItemText primary="New Item"/>
                         </ListItem>
                     </RouterLink>
                     <RouterLink to={PATHS.public.userItems} onClick={toggleDrawer(false)}>
                         <ListItem button key="my-items">
+                            <ListItemIcon>
+                                <ListIcon/>
+                            </ListItemIcon>
                             <ListItemText primary="My Items"/>
                         </ListItem>
                     </RouterLink>
-                    <ListItem button key="sign-out" onClick={() => closeAndAction(auth.signOut())}>
+                    <ListItem button key="sign-out" onClick={() => closeAndAction(() => auth.signOut())}>
+                        <ListItemIcon>
+                            <ExitToApp/>
+                        </ListItemIcon>
                         <ListItemText primary="Sign Out"/>
                     </ListItem>
                 </List>
