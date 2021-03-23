@@ -69,7 +69,7 @@ const UserMenu = () => {
                             <ListItemIcon>
                                 <Add/>
                             </ListItemIcon>
-                            <ListItemText primary="Add an Item"/>
+                            <ListItemText primary="Post an Item"/>
                         </ListItem>
                     </RouterLink>
                     <RouterLink to={PATHS.public.userItems} onClick={toggleDrawer(false)}>

@@ -38,15 +38,16 @@ const IList = ({props: {path, query, filter, itemAction}}: { props: ItemListProp
     const types = useItemTypes();
     const {data: items} = useFirestoreCollectionBuilder(path, query, Converters.itemConverter);
 
-    if (!items || items.length === 0) {
+    if (!items || items.length === 0)
         return (<NothingHere/>);
-    } else {
 
-        const itemList = filter ? items.filter(filter) : items;
-        return (<>
-            {itemList.map((item => (<Item key={item.id} item={item} types={types} itemAction={itemAction}/>)))}
-        </>)
-    }
+    const itemList = filter ? items.filter(filter) : items;
+
+    if (itemList.length === 0)
+        return (<NothingHere/>);
+    return (<>
+        {itemList.map((item => (<Item key={item.id} item={item} types={types} itemAction={itemAction}/>)))}
+    </>)
 }
 
 const ItemList = (props: ItemListProps) => {
