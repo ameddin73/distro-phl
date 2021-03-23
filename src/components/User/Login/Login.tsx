@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme: CustomTheme) => ({
 }));
 
 type LocationState = {
-    from: Location,
+    from: string,
 };
 
 const Login = () => {
@@ -77,10 +77,10 @@ const Login = () => {
             }
         } else {
             auth.signInWithEmailAndPassword(email, password)
-                .then(() => history.push(state.from.pathname))
                 .catch((error) => {
                     setError(error.message);
                 });
+            history.push(state.from)
         }
     }
 
@@ -96,7 +96,7 @@ const Login = () => {
         <>
             {user.data ?
                 <Redirect
-                    to={{pathname: PATHS.public.base,}}/>
+                    to={{pathname: (state.from ? state.from : PATHS.public.base)}}/>
                 :
                 <Grid container
                       direction="column"
@@ -140,9 +140,9 @@ const Login = () => {
                                     </Grid>
                                     }
                                     <Typography variant="subtitle2" className={classes.error} noWrap={false}>{error}</Typography>
-                                    <Link className={classes.link} align="center" variant="subtitle2" underline="hover" onClick={clickRegister}>{registerOpen ? 'Login' : 'Register'}</Link>
+                                    <Link className={classes.link} align="center" variant="subtitle2" underline="hover" onClick={clickRegister}>{registerOpen ? 'Sign In' : 'Register'}</Link>
                                     <Grid item xs>
-                                        <Button type="submit" className={classes.button} variant="outlined">{registerOpen ? 'Register' : 'Login'}</Button>
+                                        <Button type="submit" className={classes.button} variant="outlined">{registerOpen ? 'Register' : 'Sign In'}</Button>
                                     </Grid>
                                     <Grid item xs>
                                         <Grid container spacing={0} className={classes.divider}>
@@ -160,7 +160,7 @@ const Login = () => {
                                     <Grid item xs>
                                         <GoogleButton
                                             onClick={() => (auth.signInWithPopup(googleAuthProvider)
-                                                    .then(() => history.push(state.from.pathname))
+                                                    .then(() => history.push(state.from))
                                             )}
                                         />
                                     </Grid>
