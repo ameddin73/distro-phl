@@ -26,7 +26,6 @@ const UserHub = () => {
     if (!user) return null;
 
     const filter = ((item: ItemInterface) => item.uid !== user.uid);
-    console.dir(filter)
 
     return (
         <ItemList path={path}
