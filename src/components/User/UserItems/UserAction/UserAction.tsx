@@ -34,7 +34,7 @@ const UserAction = ({id, path}: ItemActionProps) => {
     const closeDeleteAlert = (doDelete: boolean) => {
         setDeleteAlert(false);
         if (doDelete) {
-            setInactive({active: true})
+            setInactive({active: false})
                 .then(() => openSnackbar('success', 'Deleted Successfully.'))
                 .catch(error => {
                     console.error(error);
