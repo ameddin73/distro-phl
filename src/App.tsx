@@ -18,8 +18,8 @@ function App({config}: { config: Object }) {
     return (
         <ThemeProvider theme={theme}>
             <FirebaseAppProvider firebaseConfig={config} suspense={true}>
-                <Router>
-                    <ErrorBoundary FallbackComponent={ErrorMessage}>
+                <ErrorBoundary FallbackComponent={ErrorMessage}>
+                    <Router>
                         <TopBar/>
                         <SuspenseWithPerf fallback={<Loading/>} traceId="app-load">
                             <ErrorBoundary FallbackComponent={ErrorMessage}>
@@ -36,8 +36,8 @@ function App({config}: { config: Object }) {
                                 </Switch>
                             </ErrorBoundary>
                         </SuspenseWithPerf>
-                    </ErrorBoundary>
-                </Router>
+                    </Router>
+                </ErrorBoundary>
             </FirebaseAppProvider>
         </ThemeProvider>
     )

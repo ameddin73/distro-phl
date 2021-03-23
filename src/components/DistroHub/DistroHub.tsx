@@ -15,16 +15,16 @@ const query: FirestoreQuery = {
     orderBy,
 };
 
-const PublicHub = () => {
-    return (
-        <ItemList path={path}
-                  query={query}
-                  itemAction={(item: ItemInterface) => (<HubAction id={item.id} path={path + item.id}/>)}/>
-    );
-};
+const PublicHub = () => (
+    <ItemList path={path}
+              query={query}
+              itemAction={(item: ItemInterface) => (<HubAction id={item.id} path={path + item.id}/>)}/>
+);
 
 const UserHub = () => {
     const {data: user} = useUser();
+    if (!user) return null;
+
     const filter = ((item: ItemInterface) => item.uid !== user.uid);
 
     return (
@@ -36,13 +36,11 @@ const UserHub = () => {
 };
 
 const DistroHub = () => (
-    <>
-        <ErrorBoundary FallbackComponent={ErrorMessage}>
-            <AuthCheck fallback={<PublicHub/>}>
-                <UserHub/>
-            </AuthCheck>
-        </ErrorBoundary>
-    </>
+    <ErrorBoundary FallbackComponent={ErrorMessage}>
+        <AuthCheck fallback={<PublicHub/>}>
+            <UserHub/>
+        </AuthCheck>
+    </ErrorBoundary>
 );
 
 export default DistroHub;

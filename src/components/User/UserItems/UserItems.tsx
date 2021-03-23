@@ -8,6 +8,7 @@ import {useUser} from "reactfire";
 
 const UserItems = () => {
     const {data: user} = useUser();
+    if (!user) return null;
 
     const path = COLLECTIONS.items;
     const orderBy = orderByCreated;

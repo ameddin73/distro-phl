@@ -19,13 +19,13 @@ export const PATHS = {
     public: {
         base: '/',
         distro: '/distro',
-        user: '/user*',
-        login: '/user/login',
+        user: '/user',
+        login: '/user/signIn',
         userItems: '/user/items',
         createItem: '/user/add',
     },
     user: {
-        login: '/login',
+        login: '/signIn',
         items: '/items',
         create: '/add',
     },
