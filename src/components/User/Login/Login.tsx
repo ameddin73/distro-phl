@@ -50,6 +50,7 @@ const Login = () => {
     const auth = useAuth();
     const user = useUser();
     const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
+    console.dir(state)
 
     const {value: email, bind: bindEmail, reset: resetEmail} = useInput('');
     const {value: password, bind: bindPassword, reset: resetPassword} = useInput('');
@@ -96,7 +97,7 @@ const Login = () => {
         <>
             {user.data ?
                 <Redirect
-                    to={{pathname: (state.from ? state.from : PATHS.public.base)}}/>
+                    to={{pathname: (state.from && state.from !== PATHS.public.login ? state.from : PATHS.public.base)}}/>
                 :
                 <Grid container
                       direction="column"
@@ -172,6 +173,6 @@ const Login = () => {
             }
         </>
     );
-}
+};
 
 export default Login;
