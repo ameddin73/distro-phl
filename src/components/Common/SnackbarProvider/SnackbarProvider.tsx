@@ -7,9 +7,11 @@ export const SnackbarContext = createContext<(severity: Color, message: string) 
 const SnackbarProvider: React.FC = (props) => {
     const [open, setOpen] = useState(false);
     const [color, setColor] = useState<Color>()
+    const [privateMessage, setPrivateMessage] = useState<string>()
 
     const openSnackbar = (severity: Color, message: string) => {
         setColor(severity);
+        setPrivateMessage(message);
         setOpen(true);
     }
     const closeSnackbar = () => {
@@ -20,7 +22,7 @@ const SnackbarProvider: React.FC = (props) => {
         <SnackbarContext.Provider value={openSnackbar}>
             {props.children}
             <Snackbar open={open} autoHideDuration={3000} onClose={closeSnackbar}>
-                <Alert variant="filled" severity={color} onClose={closeSnackbar}>Deleted Successfully.</Alert>
+                <Alert variant="filled" severity={color} onClose={closeSnackbar}>{privateMessage}</Alert>
             </Snackbar>
         </SnackbarContext.Provider>
     )
