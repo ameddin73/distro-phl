@@ -4,7 +4,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import Item from "../Item/Item.lazy";
 import NothingHere from "../NothingHere/NothingHere.lazy";
 import {FirestoreQuery, ItemInterface} from "../../../util/types";
-import {useFirestoreCollectionBuilder, useItemTypes} from "../../../util/hooks";
+import {useFirestoreCollectionBuilder} from "../../../util/hooks";
 import {Converters} from "../../../util/utils";
 
 const useStyles = makeStyles((theme) => ({
@@ -35,7 +35,6 @@ export type ItemListProps = {
 }
 
 const IList = ({props: {path, query, filter, itemAction}}: { props: ItemListProps }) => {
-    const types = useItemTypes();
     const {data: items} = useFirestoreCollectionBuilder(path, query, Converters.itemConverter);
 
     if (!items || items.length === 0)
@@ -46,7 +45,7 @@ const IList = ({props: {path, query, filter, itemAction}}: { props: ItemListProp
     if (itemList.length === 0)
         return (<NothingHere/>);
     return (<>
-        {itemList.map((item => (<Item key={item.id} item={item} types={types} itemAction={itemAction}/>)))}
+        {itemList.map((item => (<Item key={item.id} item={item} itemAction={itemAction}/>)))}
     </>)
 }
 
