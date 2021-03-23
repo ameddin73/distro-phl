@@ -55,6 +55,7 @@ const AddItem = () => {
     const history = useHistory();
     const storage = useStorage();
     const {data: user} = useUser();
+
     const types = useItemTypes();
     const [addItem] = useFirestoreAdd(path, converters.itemConverter);
 
@@ -68,6 +69,7 @@ const AddItem = () => {
     const {value: description, bind: bindDescription} = useInput('');
     const {value: type, bind: bindType} = useInput('');
 
+    if (!user) return null;
     const changeFile = (event: HTMLInputEvent) => {
         if (event.target.files) {
             const file = event.target.files[0];
