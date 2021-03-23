@@ -10,9 +10,6 @@ const useStyles = makeStyles((theme: CustomTheme) => ({
     root: {
         flexGrow: 1,
     },
-    menuButton: {
-        marginRight: theme.spacing(2),
-    },
     title: {
         flexGrow: 1,
         fontFamily: theme.title.fontFamily,
