@@ -12,6 +12,7 @@ import {ErrorBoundary} from "react-error-boundary";
 import ErrorMessage from "./components/Common/ErrorMessage";
 import Loading from "./components/Common/Loading";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import SnackbarProvider from "./components/Common/SnackbarProvider/SnackbarProvider.lazy";
 
 function App({config}: { config: Object }) {
 
@@ -23,17 +24,19 @@ function App({config}: { config: Object }) {
                         <TopBar/>
                         <SuspenseWithPerf fallback={<Loading/>} traceId="app-load">
                             <ErrorBoundary FallbackComponent={ErrorMessage}>
-                                <Switch>
-                                    <Route path={PATHS.public.user}>
-                                        <User/>
-                                    </Route>
-                                    <Route path={PATHS.public.distro}>
-                                        <DistroHub/>
-                                    </Route>
-                                    <Route path={PATHS.public.base}>
-                                        <DistroHub/>
-                                    </Route>
-                                </Switch>
+                                <SnackbarProvider>
+                                    <Switch>
+                                        <Route path={PATHS.public.user}>
+                                            <User/>
+                                        </Route>
+                                        <Route path={PATHS.public.distro}>
+                                            <DistroHub/>
+                                        </Route>
+                                        <Route path={PATHS.public.base}>
+                                            <DistroHub/>
+                                        </Route>
+                                    </Switch>
+                                </SnackbarProvider>
                             </ErrorBoundary>
                         </SuspenseWithPerf>
                     </Router>

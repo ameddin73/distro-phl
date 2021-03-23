@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
-import {Button, CardActions, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, Snackbar} from "@material-ui/core";
-import {Delete, Edit} from "@material-ui/icons";
-import Alert from '@material-ui/lab/Alert';
+import {Button, CardActions, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton} from "@material-ui/core";
+import {Delete} from "@material-ui/icons";
 import {ItemActionProps} from "../../../../util/types";
 import {Converters} from "../../../../util/utils";
 import {useFirestoreUpdate} from "../../../../util/hooks";
+import {SnackbarContext} from "../../../Common/SnackbarProvider/SnackbarProvider";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,32 +27,25 @@ const UserAction = ({id, path}: ItemActionProps) => {
     const classes = useStyles();
 
     const [deleteAlert, setDeleteAlert] = useState(false);
-    const [success, setSuccess] = useState(false);
-    const [fail, setFail] = useState(false);
+    const openSnackbar = useContext(SnackbarContext);
     const [setInactive] = useFirestoreUpdate(path, id, Converters.itemConverter);
 
     const clickDelete = () => setDeleteAlert(true);
     const closeDeleteAlert = (doDelete: boolean) => {
         setDeleteAlert(false);
         if (doDelete) {
-            setInactive({active: false}).then(() => setSuccess(true))
+            setInactive({active: true})
+                .then(() => openSnackbar('success', 'Deleted Successfully.'))
                 .catch(error => {
                     console.error(error);
-                    setFail(true);
-                })
+                    openSnackbar('error', 'Item failed to delete.');
+                });
         }
     };
-    const closeSnackbar = () => {
-        setSuccess(false);
-        setFail(false);
-    }
 
     return (
         <>
             <CardActions disableSpacing>
-                <IconButton aria-label="edit item" color="primary">
-                    <Edit/>
-                </IconButton>
                 <IconButton onClick={clickDelete} aria-label="delete" className={classes.delete} color="primary">
                     <Delete/>
                 </IconButton>
@@ -78,12 +71,6 @@ const UserAction = ({id, path}: ItemActionProps) => {
                     </Button>
                 </DialogActions>
             </Dialog>
-            <Snackbar open={success} autoHideDuration={3000} onClose={closeSnackbar}>
-                <Alert variant="filled" severity="error" onClose={closeSnackbar}>Item failed to delete.</Alert>
-            </Snackbar>
-            <Snackbar open={fail} autoHideDuration={3000} onClose={closeSnackbar}>
-                <Alert variant="filled" severity="error" onClose={closeSnackbar}>Item failed to delete.</Alert>
-            </Snackbar>
         </>
     )
 };
