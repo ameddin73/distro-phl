@@ -10,7 +10,7 @@ export type FirestoreQueryWhere = {
     value: any
 }
 export type FirestoreQuery = {
-    where: [FirestoreQueryWhere] | [],
+    where: FirestoreQueryWhere[],
     orderBy?: {
         fieldPath: string | FieldPath,
         directionStr?: OrderByDirection
