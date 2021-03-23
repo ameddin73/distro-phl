@@ -1,22 +1,36 @@
-import React, {SyntheticEvent, useState} from 'react';
-import {Button, List, ListItem, ListItemText, SwipeableDrawer} from "@material-ui/core";
-import {Menu as MenuIcon} from "@material-ui/icons";
+import React, {useState} from 'react';
+import {Button, IconButton, List, ListItem, ListItemText, SwipeableDrawer} from "@material-ui/core";
+import {Close, Menu as MenuIcon} from "@material-ui/icons";
 import {PATHS} from "../../../../util/config";
 import {AuthCheck, useAuth, useUser} from "reactfire";
 import {useLocation} from 'react-router-dom';
 import RouterLink from "../../RouterLink";
+import {makeStyles} from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+    paper: {
+        minWidth: 240,
+        backgroundColor: theme.palette.primary.main,
+    },
+    closeMenuButton: {
+        marginLeft: 'auto',
+        marginRight: 0,
+    }
+}));
 
 const UserMenu = () => {
+    const classes = useStyles();
+
     const auth = useAuth();
     const location = useLocation();
 
     const [open, setOpen] = useState(false);
     const {data: user} = useUser();
 
-    const toggleDrawer = (open: boolean) => (event: SyntheticEvent) => (setOpen(open));
-    const closeAndAction = (action: () => void) => {
+    const toggleDrawer = (open: boolean) => () => (setOpen(open));
+    const closeAndAction = async (action: Promise<void>) => {
+        await action;
         toggleDrawer(false);
-        action();
     }
 
     return (
@@ -41,7 +55,12 @@ const UserMenu = () => {
             <SwipeableDrawer onClose={toggleDrawer(false)}
                              onOpen={toggleDrawer(true)}
                              open={open}
-                             anchor="right">
+                             anchor="right"
+                             color="primary"
+                             classes={{paper: classes.paper}}>
+                <IconButton onClick={toggleDrawer(false)} className={classes.closeMenuButton}>
+                    <Close/>
+                </IconButton>
                 <List>
                     <RouterLink to={PATHS.public.createItem} onClick={toggleDrawer(false)}>
                         <ListItem button key="new-item">
@@ -53,9 +72,7 @@ const UserMenu = () => {
                             <ListItemText primary="My Items"/>
                         </ListItem>
                     </RouterLink>
-                    <ListItem button key="sign-out" onClick={() => closeAndAction(() => {
-                        auth.signOut();
-                    })}>
+                    <ListItem button key="sign-out" onClick={() => closeAndAction(auth.signOut())}>
                         <ListItemText primary="Sign Out"/>
                     </ListItem>
                 </List>
