@@ -4,14 +4,14 @@ import ItemList from "../Common/ItemList/ItemList.lazy";
 import {COLLECTIONS} from "../../util/config";
 import {FirestoreQuery, ItemInterface} from "../../util/types";
 import {AuthCheck, useUser} from "reactfire";
-import {orderByCreated} from "../../util/utils";
 import ErrorMessage from "../Common/ErrorMessage";
 import {ErrorBoundary} from "react-error-boundary";
+import {Query} from "../../util/utils";
 
 const path = COLLECTIONS.items;
-const orderBy = orderByCreated;
+const orderBy = Query.orderByCreated;
 const query: FirestoreQuery = {
-    where: [],
+    where: [Query.whereActive],
     orderBy,
 };
 
