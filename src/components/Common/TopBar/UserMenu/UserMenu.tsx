@@ -8,6 +8,9 @@ import RouterLink from "../../RouterLink";
 import {makeStyles} from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
+    button: {
+        whiteSpace: "nowrap",
+    },
     paper: {
         minWidth: 240,
         backgroundColor: theme.palette.primary.main,
@@ -40,15 +43,13 @@ const UserMenu = () => {
                 state: {from: location}
             }} onClick={toggleDrawer(false)}>
                 <Button color="inherit"
-                        fullWidth
-                        style={{whiteSpace: 'nowrap'}}>Sign In</Button>
+                        className={classes.button}>Sign In</Button>
             </RouterLink>
         }>
             {user &&
             <Button aria-controls="simple-menu"
                     aria-haspopup="true"
                     onClick={toggleDrawer(true)}
-                    style={{whiteSpace: 'nowrap'}}
                     endIcon={<MenuIcon/>}>
                 {user.displayName}
             </Button>
@@ -68,7 +69,7 @@ const UserMenu = () => {
                             <ListItemIcon>
                                 <Add/>
                             </ListItemIcon>
-                            <ListItemText primary="New Item"/>
+                            <ListItemText primary="Add an Item"/>
                         </ListItem>
                     </RouterLink>
                     <RouterLink to={PATHS.public.userItems} onClick={toggleDrawer(false)}>

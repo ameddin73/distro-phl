@@ -50,7 +50,6 @@ const Login = () => {
     const auth = useAuth();
     const user = useUser();
     const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
-    console.dir(state)
 
     const {value: email, bind: bindEmail, reset: resetEmail} = useInput('');
     const {value: password, bind: bindPassword, reset: resetPassword} = useInput('');
