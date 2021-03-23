@@ -7,20 +7,20 @@ interface PrivateRouteProps extends RouteProps {
     children: JSX.Element,
 }
 
-const PrivateRoute = ({children, ...rest}: PrivateRouteProps) => {
-    const user = useUser();
+const PrivateRoute = ({children, path, ...rest}: PrivateRouteProps) => {
+    const {data: user} = useUser();
 
     return (
         <Route
             {...rest}
-            render={({location}) =>
-                user.data ? (
+            render={() =>
+                user ? (
                     children
                 ) : (
                     <Redirect
                         to={{
                             pathname: PATHS.public.login,
-                            state: {from: location}
+                            state: {from: path},
                         }}
                     />
                 )
