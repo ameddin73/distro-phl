@@ -1,29 +1,50 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Item from './Item';
-import {ItemMocks} from "util/test/item.mock";
-import {configure, shallow} from "enzyme";
-import Adapter from 'enzyme-adapter-react-16';
-import {TypesMocks} from "util/test/type.mock";
+import * as useItemTypes from "util/hooks/useItemTypes";
+import {cleanup, render} from "@testing-library/react";
+import {FirebaseAppProvider} from "reactfire";
+import {teardownFirestore} from "test/firestore/firestoreEmulator";
+import {ItemMocks} from "test/mocks/item.mock";
+import {initializeAdminApp, initializeTestApp} from '@firebase/testing';
+import setTypes from "test/firestore/setTypes";
 
-describe('Item', () => {
-    configure({adapter: new Adapter()});
-    const mockDefaultTypes = TypesMocks.defaultTypes;
+const mockDefaultItem = ItemMocks.defaultItem;
+// @ts-ignore
+// let firebaseApp: firebase.app.App;
 
-    const mockedUseItemTypes =
+const PROJECT_ID = `${process.env.REACT_APP_FIREBASE_PROJECT_ID}`;
 
-        jest.mock("../../../util/hooks/useItemTypes", () => ({
-            useItemTypes: () => mockDefaultTypes,
-        }));
+beforeAll(async () => {
+    // [firebaseApp] = await setupFirestore()
+});
 
-    it('should mount', () => {
-        const div = document.createElement('div');
-        ReactDOM.render(<Item item={ItemMocks.defaultItem}/>, div);
-        ReactDOM.unmountComponentAtNode(div);
-    });
+afterEach(cleanup);
 
-    it('renders correctly', () => {
-        const wrapper = shallow(<Item item={ItemMocks.defaultItem}/>);
-        expect(wrapper).toMatchSnapshot();
-    });
+afterAll(teardownFirestore);
+
+it('should print types', async () => {
+    const firebaseApp = initializeTestApp({projectId: PROJECT_ID});
+    const firestoreAdmin = initializeAdminApp({projectId: PROJECT_ID}).firestore();
+
+    await setTypes(firestoreAdmin);
+
+    const typeRef = firebaseApp.firestore().collection('item_types');
+    const data = await typeRef.doc('perishable').get();
+    // console.dir(data)
+});
+
+it('should mount', () => {
+    const renderer = render(
+        <FirebaseAppProvider firebaseApp={firebaseApp}>
+            <Item item={mockDefaultItem}/>
+        </FirebaseAppProvider>);
+
+    expect(renderer.baseElement).toBe('div');
+});
+
+it('renders correctly', () => {
+    // @ts-ignore
+    useItemTypes.default.mockReturnValue(mockDefaultTypes);
+    // const wrapper = shallow(<Item item={mockDefaultItem}/>);
+    // expect(wrapper).toMatchSnapshot();
 });

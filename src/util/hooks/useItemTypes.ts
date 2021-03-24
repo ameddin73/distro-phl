@@ -1,9 +1,9 @@
 import {COLLECTIONS} from "../config";
 import {buildTypesObject, Converters} from "../utils";
-import {FirestoreQuery} from "../types";
+import {FirestoreQuery, ItemTypes} from "../types";
 import useFirestoreCollectionBuilder from "./useFirestoreCollectionBuilder";
 
-const useItemTypes = () => {
+function useItemTypes(): ItemTypes {
     const path = COLLECTIONS.types;
     const converter = Converters.itemTypeConverter;
     const query: FirestoreQuery = {
