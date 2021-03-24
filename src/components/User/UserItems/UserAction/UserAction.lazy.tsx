@@ -1,6 +1,6 @@
 import React, {lazy, Suspense} from 'react';
 import Loading from "../../../Common/Loading";
-import {ItemActionProps} from "../../../../util/types";
+import {ItemActionProps} from "util/types";
 
 const LazyUserAction = lazy(() => import('./UserAction'));
 

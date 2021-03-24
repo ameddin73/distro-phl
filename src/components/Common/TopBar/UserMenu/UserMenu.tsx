@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Button, IconButton, List, ListItem, ListItemIcon, ListItemText, SwipeableDrawer} from "@material-ui/core";
 import {Add, Close, ExitToApp, List as ListIcon, Menu as MenuIcon} from "@material-ui/icons";
-import {PATHS} from "../../../../util/config";
+import {PATHS} from "util/config";
 import {AuthCheck, useAuth, useUser} from "reactfire";
 import {useLocation} from 'react-router-dom';
 import RouterLink from "../../RouterLink";

@@ -11,6 +11,7 @@
     "@material-ui/styles": "^4.11.3",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
+    "@testing-library/react-hooks": "^5.1.0",
     "@testing-library/user-event": "^12.8.1",
     "@types/jest": "^26.0.20",
     "@types/node": "^14.14.35",
@@ -25,7 +26,9 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "reactfire": "^3.0.0-rc.0",
+    "save-dev": "0.0.1-security",
     "typescript": "^4.2.3",
+    "util": "file:src/util",
     "uuid": "^8.3.2",
     "web-vitals": "^1.1.0"
   },
@@ -55,8 +58,18 @@
     ]
   },
   "devDependencies": {
+    "@types/enzyme": "^3.10.8",
+    "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/react-router-dom": "^5.1.7",
     "@types/uuid": "^8.3.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
+    "enzyme-to-json": "^3.6.1",
     "eslint-plugin-react-hooks": "^4.2.0"
+  },
+  "jest": {
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
   }
 }

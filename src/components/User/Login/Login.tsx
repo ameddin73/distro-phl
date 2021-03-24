@@ -2,12 +2,12 @@ import React, {SyntheticEvent, useState} from 'react';
 import {Button, Card, Divider, FormControl, Grid, Input, InputLabel, Link, Typography} from "@material-ui/core";
 import GoogleButton from "react-google-button";
 import {makeStyles} from "@material-ui/core/styles";
-import {useInput} from "../../../util/hooks";
-import {CustomTheme} from "../../../util/theme";
+import {CustomTheme} from "util/theme";
 import firebase from "firebase";
 import {useAuth, useUser} from "reactfire";
 import {Redirect, useHistory, useLocation} from "react-router-dom";
-import {PATHS} from "../../../util/config";
+import {PATHS} from "util/config";
+import useInput from "util/hooks/useInput";
 
 const useStyles = makeStyles((theme: CustomTheme) => ({
     root: {

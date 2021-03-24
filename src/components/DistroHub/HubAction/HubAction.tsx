@@ -1,7 +1,7 @@
 import React from 'react';
 import {Grid, IconButton} from "@material-ui/core";
 import {Add} from "@material-ui/icons";
-import {ItemActionProps} from "../../../util/types";
+import {ItemActionProps} from "util/types";
 
 const HubAction = ({id, path}: ItemActionProps) => {
 

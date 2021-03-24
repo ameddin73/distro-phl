@@ -2,8 +2,8 @@ import React from 'react';
 import {AppBar, Button, Container, Toolbar, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import UserMenu from "./UserMenu/UserMenu.lazy";
-import {PATHS} from "../../../util/config";
-import {CustomTheme} from "../../../util/theme";
+import {PATHS} from "util/config";
+import {CustomTheme} from "util/theme";
 import RouterLink from "../RouterLink";
 
 const useStyles = makeStyles((theme: CustomTheme) => ({

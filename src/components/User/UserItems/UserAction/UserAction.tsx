@@ -2,10 +2,10 @@ import React, {useContext, useState} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import {Button, CardActions, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
-import {ItemActionProps} from "../../../../util/types";
-import {Converters} from "../../../../util/utils";
-import {useFirestoreUpdate} from "../../../../util/hooks";
+import {ItemActionProps} from "util/types";
+import {Converters} from "util/utils";
 import {SnackbarContext} from "../../../Common/SnackbarProvider/SnackbarProvider";
+import useFirestoreUpdate from "util/hooks/useFirestoreUpdate";
 
 const useStyles = makeStyles((theme) => ({
     root: {
