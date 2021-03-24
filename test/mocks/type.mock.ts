@@ -1,4 +1,4 @@
-import {ItemTypes} from "../types";
+import {ItemTypes} from "util/types";
 
 export namespace TypesMocks {
     export const defaultTypes: ItemTypes = {

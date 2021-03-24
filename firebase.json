@@ -20,6 +20,16 @@
     },
     "ui": {
       "enabled": true
+    },
+    "auth": {
+      "port": 9099
+    },
+    "firestore": {
+      "port": 8080,
+      "rules": {
+        "rules": "test/firestore/firestore.rules",
+        "indexes": "test/firestore/firestore.indexes.json"
+      }
     }
   }
 }

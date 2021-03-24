@@ -1,5 +1,6 @@
-import {ItemInterface} from "../types";
-import {DEFAULT_IMAGE} from "../config";
+import {ItemInterface} from "util/types";
+import {DEFAULT_IMAGE} from "../../src/util/config";
+import {TypesMocks} from "./type.mock";
 
 export namespace ItemMocks {
     export const defaultItem: ItemInterface = {
@@ -10,7 +11,7 @@ export namespace ItemMocks {
         description: 'default_item_description',
         expires: new Date('02 Jan 1970 00:00:00 GMT'),
         image: DEFAULT_IMAGE,
-        type: 'default_item_type',
+        type: Object.keys(TypesMocks.defaultTypes)[0],
         uid: 'default_item_uid',
         userName: 'default_item_userName',
     }

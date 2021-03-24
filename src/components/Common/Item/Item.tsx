@@ -16,7 +16,7 @@ const Item = ({item, itemAction = (() => (<div/>))}: ItemProps) => {
     const classes = itemStyle();
 
     const types = useItemTypes();
-    const {displayName, description, image} = item;
+    const {displayName, description, image, type, userName} = item;
     const [openDesc, setOpenDesc] = useState(false);
 
     const clickCard = () => {
@@ -39,7 +39,7 @@ const Item = ({item, itemAction = (() => (<div/>))}: ItemProps) => {
                             </Typography>
                             <Collapse in={openDesc} collapsedHeight={100}>
                                 <Typography variant="subtitle2" color="textSecondary" gutterBottom noWrap>
-                                    {types[item.type].displayName}
+                                    {types[type].displayName}
                                 </Typography>
                                 <Typography gutterBottom
                                             variant="body2"
@@ -50,7 +50,7 @@ const Item = ({item, itemAction = (() => (<div/>))}: ItemProps) => {
                                     Supplied by:
                                 </Typography>
                                 <Typography variant="button">
-                                    {item.userName}
+                                    {userName}
                                 </Typography>
                             </Collapse>
                         </CardContent>
