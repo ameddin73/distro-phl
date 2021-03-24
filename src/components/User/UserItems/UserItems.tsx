@@ -1,10 +1,10 @@
 import React from 'react';
 import ItemList from "../../Common/ItemList/ItemList.lazy";
-import {COLLECTIONS} from "../../../util/config";
+import {COLLECTIONS} from "util/config";
 import UserAction from "./UserAction/UserAction.lazy";
-import {FirestoreQuery, FirestoreQueryWhere, ItemInterface} from "../../../util/types";
+import {FirestoreQuery, FirestoreQueryWhere, ItemInterface} from "util/types";
 import {useUser} from "reactfire";
-import {Query} from "../../../util/utils";
+import {Query} from "util/utils";
 
 const UserItems = () => {
     const {data: user} = useUser();

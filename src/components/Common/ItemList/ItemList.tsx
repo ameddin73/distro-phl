@@ -3,9 +3,9 @@ import {Container, Grid} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import Item from "../Item/Item.lazy";
 import NothingHere from "../NothingHere/NothingHere.lazy";
-import {FirestoreQuery, ItemInterface} from "../../../util/types";
-import {useFirestoreCollectionBuilder} from "../../../util/hooks";
-import {Converters} from "../../../util/utils";
+import {FirestoreQuery, ItemInterface} from "util/types";
+import {Converters} from "util/utils";
+import useFirestoreCollectionBuilder from "util/hooks/useFirestoreCollectionBuilder";
 
 const useStyles = makeStyles((theme) => ({
     root: {

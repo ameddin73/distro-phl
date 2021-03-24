@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {FIREBASE_CONFIG} from "./util/config";
+import {FIREBASE_CONFIG} from "util/config";
 
 ReactDOM.render(
     <div>

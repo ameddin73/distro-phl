@@ -1,12 +1,12 @@
 import React from 'react';
 import HubAction from "./HubAction/HubAction";
 import ItemList from "../Common/ItemList/ItemList.lazy";
-import {COLLECTIONS} from "../../util/config";
-import {FirestoreQuery, ItemInterface} from "../../util/types";
+import {COLLECTIONS} from "util/config";
+import {FirestoreQuery, ItemInterface} from "util/types";
 import {AuthCheck, useUser} from "reactfire";
 import ErrorMessage from "../Common/ErrorMessage";
 import {ErrorBoundary} from "react-error-boundary";
-import {Query} from "../../util/utils";
+import {Query} from "util/utils";
 
 const path = COLLECTIONS.items;
 const orderBy = Query.orderByCreated;

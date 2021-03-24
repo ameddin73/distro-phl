@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {Card, CardActionArea, CardContent, ClickAwayListener, Collapse, Grid, Typography} from "@material-ui/core";
-import {itemStyle} from "../../../util/styles";
-import {ItemInterface} from '../../../util/types';
-import {DEFAULT_IMAGE} from "../../../util/config";
+import {itemStyle} from "util/styles";
+import {ItemInterface} from 'util/types';
+import {DEFAULT_IMAGE} from "util/config";
 import {StorageImage} from "reactfire";
 import Loading from "../Loading";
-import {useItemTypes} from "../../../util/hooks";
+import useItemTypes from "util/hooks/useItemTypes";
 
 export type ItemProps = {
     item: ItemInterface,

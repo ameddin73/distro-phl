@@ -1,5 +1,5 @@
 import React from 'react';
-import {PATHS} from "../../util/config";
+import {PATHS} from "util/config";
 import Login from "./Login/Login.lazy";
 import UserItems from "./UserItems/UserItems.lazy";
 import AddItem from "./UserItems/AddItem/AddItem.lazy";

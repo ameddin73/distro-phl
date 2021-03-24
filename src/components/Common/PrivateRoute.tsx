@@ -1,7 +1,7 @@
 import React from "react";
 import {useUser} from "reactfire";
 import {Redirect, Route, RouteProps} from "react-router-dom";
-import {PATHS} from "../../util/config";
+import {PATHS} from "util/config";
 
 interface PrivateRouteProps extends RouteProps {
     children: JSX.Element,

@@ -1,21 +1,23 @@
 import React, {SyntheticEvent, useState} from 'react';
-import {itemStyle} from "../../../../util/styles";
+import {itemStyle} from "util/styles";
 import {Button, Card, CardContent, CardMedia, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, TextField, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import {CameraAlt} from "@material-ui/icons";
 import {grey} from "@material-ui/core/colors";
-import {COLLECTIONS, DEFAULT_IMAGE, DESCRIPTION_LENGTH, PATHS, STORAGE} from "../../../../util/config";
-import {useFirestoreAdd, useInput, useItemTypes} from "../../../../util/hooks";
+import {COLLECTIONS, DEFAULT_IMAGE, DESCRIPTION_LENGTH, PATHS, STORAGE} from "util/config";
 import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import 'date-fns';
 import DateFnsUtils from "@date-io/date-fns";
-import theme from "../../../../util/theme";
+import theme from "util/theme";
 import 'firebase/storage';
 import {MaterialUiPickersDate} from "@material-ui/pickers/typings/date";
-import {Converters, getFileWithUUID} from "../../../../util/utils";
+import {Converters, getFileWithUUID} from "util/utils";
 import {useStorage, useUser} from "reactfire";
 import firebase from "firebase";
 import {useHistory} from "react-router-dom";
+import useItemTypes from "util/hooks/useItemTypes";
+import useFirestoreAdd from "util/hooks/useFirestoreAdd";
+import useInput from "util/hooks/useInput";
 
 const useStyles = makeStyles((theme) => ({
     root: {
