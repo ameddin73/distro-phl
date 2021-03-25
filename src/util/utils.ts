@@ -51,7 +51,7 @@ export namespace Converters {
                 description: data.description,
                 displayName: data.displayName,
                 expires: data.expires,
-                id: data.id,
+                id: snapshot.id,
                 image: data.image,
                 type: data.type,
                 uid: data.uid,
@@ -69,7 +69,7 @@ export namespace Converters {
                 consumable: data.consumable,
                 displayName: data.displayName,
                 expires: data.expires,
-                id: data.id,
+                id: snapshot.id,
                 index: data.index,
             }
         }

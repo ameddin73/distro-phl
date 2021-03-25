@@ -1,5 +1,5 @@
 import {ItemInterface} from "util/types";
-import {DEFAULT_IMAGE} from "../../src/util/config";
+import {DEFAULT_IMAGE} from "util/config";
 import {TypesMocks} from "./type.mock";
 
 export namespace ItemMocks {
