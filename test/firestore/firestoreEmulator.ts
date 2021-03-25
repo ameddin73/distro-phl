@@ -18,9 +18,6 @@ export async function setupFirestore(typesMock: ItemTypes = TypesMocks.defaultTy
 
     await setTypes(firestoreAdmin, typesMock);
 
-    const typeRef = firestoreAdmin.collection('item_types');
-    const data = await typeRef.doc('perishable').get();
-    console.dir(data)
     return [firebaseApp, firestoreAdmin];
 }
 
