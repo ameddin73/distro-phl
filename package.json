@@ -3,33 +3,31 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@date-io/date-fns": "^1.3.13",
+    "@date-io/date-fns": "^2.10.8",
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.57",
-    "@material-ui/pickers": "^3.2.10",
+    "@material-ui/pickers": "^3.3.10",
     "@material-ui/styles": "^4.11.3",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react-hooks": "^5.1.0",
-    "@testing-library/user-event": "^12.8.1",
-    "@types/jest": "^26.0.20",
+    "@testing-library/user-event": "^13.0.15",
     "@types/node": "^14.14.35",
     "@types/react": "^17.0.3",
-    "@types/react-dom": "^17.0.2",
+    "@types/react-dom": "^17.0.3",
     "date-fns": "^2.19.0",
-    "firebase": "^8.2.9",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
+    "firebase": "^8.3.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-error-boundary": "^3.1.1",
     "react-google-button": "^0.7.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "reactfire": "^3.0.0-rc.0",
     "save-dev": "0.0.1-security",
-    "typescript": "^4.2.3",
     "util": "file:src/util",
     "uuid": "^8.3.2",
-    "web-vitals": "^1.1.0"
+    "web-vitals": "^1.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -57,12 +55,17 @@
     ]
   },
   "devDependencies": {
-    "@firebase/testing": "^0.20.11",
+    "@firebase/rules-unit-testing": "^1.2.5",
     "@testing-library/react": "^11.2.5",
+    "@types/lodash": "^4.14.168",
     "@types/react-router-dom": "^5.1.7",
     "@types/uuid": "^8.3.0",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "firebase-admin": "^9.5.0",
     "jest-environment-jsdom": "^26.6.2",
-    "test": "file:src/test"
+    "lodash": "^4.17.21",
+    "test": "file:src/test",
+    "ts-jest": "^26.5.4",
+    "typescript": "^4.2.3"
   }
 }
