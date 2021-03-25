@@ -16,6 +16,7 @@ const Item = ({item, itemAction = (() => (<div/>))}: ItemProps) => {
     const classes = itemStyle();
 
     const types = useItemTypes();
+    console.dir(types)
     const {displayName, description, image, type, userName} = item;
     const [openDesc, setOpenDesc] = useState(false);
 

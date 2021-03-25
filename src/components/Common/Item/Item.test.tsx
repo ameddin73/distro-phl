@@ -1,9 +1,9 @@
 /**
- * @jest-environment ./test/jest-env
+ * @jest-environment test/jest-env
  */
 import React from 'react';
 import Item from './Item';
-import * as useItemTypes from "util/hooks/useItemTypes";
+import useItemTypes from "util/hooks/useItemTypes";
 import {cleanup, render} from "@testing-library/react";
 import {FirebaseAppProvider} from "reactfire";
 import {setupFirestore, teardownFirestore} from "test/firestore/firestoreEmulator";
