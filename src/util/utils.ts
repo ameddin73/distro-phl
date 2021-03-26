@@ -37,7 +37,7 @@ export namespace Converters {
                 description: item.description,
                 displayName: item.displayName,
                 expires: item.expires,
-                image: item.imgUrl,
+                image: item.image,
                 type: item.type,
                 uid: item.uid,
                 userName: item.userName,
