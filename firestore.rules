@@ -1,3 +1,4 @@
+rules_version = '2';
 service cloud.firestore {
     match /databases/{database}/documents {
         match /{document=**} {
@@ -9,9 +10,22 @@ service cloud.firestore {
             allow read: if true;
         }
 
+        function createItemRules() {
+            let hasAll = request.resource.data.keys().hasAll(["active" , "created" , "description" , "image" , "type" , "uid" , "userName"]) ;
+            let uidEqual = request.auth.uid == request.resource.data.uid;
+            let nameEqual = request.auth.token.name == request.resource.data.userName;
+            let activeTrue = request.resource.data.active == true;
+            let createdNow = request.resource.data.created == request.time;
+            let expiresLater = !request.resource.data.keys().hasAny(["expires"]) || request.resource.data.expires > request.time;
+            let typeExists = exists(/databases/$(database)/documents/item_types/$(request.resource.data.type)) ;
+            // TODO verify image is storage ref
+            return hasAll && uidEqual && nameEqual && activeTrue && createdNow && expiresLater && typeExists;
+        }
+
         match /items/{docId} {
-            allow write: if request.auth.uid == request.resource.data.uid;
+            allow create: if createItemRules();
             allow read: if true;
+            allow delete: if false;
         }
 
         match /reservations/{docId} {
