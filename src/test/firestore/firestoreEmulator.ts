@@ -4,18 +4,22 @@ import {clearFirestoreData, initializeAdminApp, initializeTestApp} from "@fireba
 import firebase from "firebase";
 import {UserMocks} from "../mocks/user.mock";
 import {Mutable} from "../types";
-import {COLLECTIONS} from "../../util/config";
+import {COLLECTIONS} from "util/config";
 import {ItemMocks} from "../mocks/item.mock";
 import _ from "lodash";
 
 const PROJECT_ID = `${process.env.TEST_PROJECT}`;
 
-export async function startFirestore() {
+export function startFirestore() {
     const firestore: firebase.firestore.Firestore = initializeTestApp({projectId: PROJECT_ID}).firestore();
-    const firestoreAuth: firebase.firestore.Firestore = initializeTestApp({projectId: PROJECT_ID, auth: {uid: UserMocks.defaultUser.uid, email: UserMocks.defaultUser.email}}).firestore();
+    const firestoreAuth: firebase.firestore.Firestore = initializeTestApp({projectId: PROJECT_ID, auth: {uid: UserMocks.defaultUser.uid, name: UserMocks.defaultUser.name, email: UserMocks.defaultUser.email}}).firestore();
     const firestoreAdmin: firebase.firestore.Firestore = initializeAdminApp({projectId: PROJECT_ID}).firestore();
 
     return {firestore, firestoreAuth, firestoreAdmin};
+}
+
+export function getFirestoreUser({uid = UserMocks.defaultUser.uid, name = UserMocks.defaultUser.name, email = UserMocks.defaultUser.email}: { uid?: string, name?: string, email?: string }) {
+    return initializeTestApp({projectId: PROJECT_ID, auth: {uid: uid, name: name, email: email}}).firestore();
 }
 
 export async function setupFirestore(firestoreAdmin: firebase.firestore.Firestore, typesMock: ItemTypes | null = TypesMocks.defaultTypes, itemMock: ItemInterface | null = ItemMocks.defaultItem) {
@@ -23,7 +27,7 @@ export async function setupFirestore(firestoreAdmin: firebase.firestore.Firestor
     if (itemMock !== null) await setItems(firestoreAdmin, itemMock);
 }
 
-export async function teardownFirestore() {
+export function teardownFirestore() {
     return clearFirestoreData({projectId: PROJECT_ID});
 }
 
