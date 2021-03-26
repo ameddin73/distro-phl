@@ -33,7 +33,7 @@ export namespace Converters {
         toFirestore(item: Pick<ItemInterface, any>): firebase.firestore.DocumentData {
             return {
                 active: item.active,
-                created: item.created ? item.created : firebase.firestore.FieldValue.serverTimestamp(),
+                created: firebase.firestore.FieldValue.serverTimestamp(),
                 description: item.description,
                 displayName: item.displayName,
                 expires: item.expires,

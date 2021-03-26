@@ -4,7 +4,7 @@
 // this test has to be run in a node environment because @firebase/rules-testing-library
 // uses grpc and doesn't work in JSDOM. See more:
 // https://github.com/firebase/firebase-admin-node/issues/1135#issuecomment-765766020
-import {getFirestoreUser, setupFirestore, startFirestore, teardownFirestore} from "./firestoreEmulator";
+import {setupFirestore, startFirestore, teardownFirestore} from "./firestoreEmulator";
 import {COLLECTIONS} from "util/config";
 import {buildTypesObject, Converters} from "util/utils";
 import {TypesMocks} from "test/mocks/type.mock";
@@ -28,12 +28,12 @@ describe('testing framework', () => {
         firestore = stores.firestore;
         firestoreAdmin = stores.firestoreAdmin;
     })
-    beforeEach(async () => await setupFirestore(firestoreAdmin));
-    afterEach(() => {
+    beforeEach(async () => await setupFirestore());
+    afterEach(async () => {
         unsubscribe();
-        teardownFirestore();
+        await teardownFirestore();
     });
-    afterAll(teardownFirestore);
+    afterAll(async () => await teardownFirestore);
 
     it('tests populates types', done => {
         const query = firestore.collection(COLLECTIONS.types).withConverter(Converters.itemTypeConverter);
@@ -46,7 +46,7 @@ describe('testing framework', () => {
     });
 
     it('tests populates items', done => {
-        const testItem: Mutable<ItemInterface> = ItemMocks.defaultItem;
+        const testItem: Mutable<ItemInterface> = _.clone(ItemMocks.defaultItem);
         delete testItem.created;
         delete testItem.expires;
 
@@ -63,7 +63,7 @@ describe('testing framework', () => {
     });
 });
 
-describe('post an item', () => {
+describe('create item rules', () => {
     const mockItem = ItemMocks.defaultItem;
     const mocDoc: Mutable<ItemInterface> = _.clone(mockItem);
     delete mocDoc.id;
@@ -71,40 +71,92 @@ describe('post an item', () => {
 
     let query: firebase.firestore.DocumentReference<firebase.firestore.DocumentData>;
     let queryAuthed: firebase.firestore.DocumentReference<firebase.firestore.DocumentData>;
-    let queryAuthed2: firebase.firestore.DocumentReference<firebase.firestore.DocumentData>;
 
     beforeAll(async () => {
         const stores = await startFirestore();
         firestore = stores.firestore;
         firestoreAuth = stores.firestoreAuth;
-        firestoreAdmin = stores.firestoreAdmin;
 
         query = firestore.collection(COLLECTIONS.items).doc(mockItem.id).withConverter(Converters.itemConverter);
         queryAuthed = firestoreAuth.collection(COLLECTIONS.items).doc(mockItem.id).withConverter(Converters.itemConverter);
 
-        await setupFirestore(firestoreAdmin)
+        await setupFirestore();
     })
-    afterEach(unsubscribe);
-    afterAll(teardownFirestore);
-
-    it('tests uid rule', async () => {
-        const firestoreAuth2 = getFirestoreUser({uid: 'test-uid'});
-        queryAuthed2 = firestoreAuth2.collection(COLLECTIONS.items).doc(mockItem.id).withConverter(Converters.itemConverter);
-
-        // await assertFails(query.set(mocDoc));
-        // await assertFails(queryAuthed2.set(mocDoc));
-        await assertSucceeds(queryAuthed.set(mocDoc));
+    beforeEach(async () => await setupFirestore());
+    afterEach(async () => {
+        unsubscribe();
+        await teardownFirestore();
     });
 
-    it('tests displayName rule', async () => {
-        const firestoreAuth2 = getFirestoreUser({name: 'test-name'});
-        queryAuthed2 = firestoreAuth2.collection(COLLECTIONS.items).doc(mockItem.id).withConverter(Converters.itemConverter);
+    it('tests hasAll rule', async () => {
+        const testDoc: Mutable<ItemInterface> = _.clone(mocDoc);
+        delete testDoc.description;
 
-        await assertFails(queryAuthed2.set(mocDoc));
-        await assertSucceeds(queryAuthed.set(mocDoc));
+        const testQuery = firestoreAuth.collection(COLLECTIONS.items).doc(mockItem.id);
+
+        await assertFails(testQuery.set(testDoc));
     });
 
-    it('tests update an item', async () => {
+    it('tests hasOnly rule', async () => {
+        const testDoc: Mutable<ItemInterface & { test: string }> = _.clone(mocDoc);
+        testDoc.test = 'test';
+
+        const testQuery = firestoreAuth.collection(COLLECTIONS.items).doc(mockItem.id);
+
+        await assertFails(testQuery.set(testDoc));
+    });
+
+    it('tests uidEqual rule', async () => {
+        const testDoc: Mutable<ItemInterface> = _.clone(mocDoc);
+
+        await assertFails(query.set(testDoc));
+        await assertSucceeds(queryAuthed.set(testDoc));
+
+        testDoc.uid = 'test uid';
+        await assertFails(queryAuthed.set(testDoc));
+    });
+
+    it('tests nameEqual rule', async () => {
+        const testDoc: Mutable<ItemInterface> = _.clone(mocDoc);
+        testDoc.userName = 'test name';
+
+        await assertFails(queryAuthed.set(testDoc));
+    });
+
+    it('tests activeTrue rule', async () => {
+        const testDoc: Mutable<ItemInterface> = _.clone(mocDoc);
+        testDoc.active = false;
+
+        const testQuery = firestoreAuth.collection(COLLECTIONS.items).doc(mockItem.id);
+
+        await assertFails(testQuery.set(testDoc));
+    });
+
+    it('tests createdNow rule', async () => {
+        const testDoc: Mutable<ItemInterface> = _.clone(mocDoc);
+        testDoc.created = new Date('26 Mar 2021 00:00:00 GMT')
+
+        const testQuery = firestoreAuth.collection(COLLECTIONS.items).doc(mockItem.id);
+
+        await assertFails(testQuery.set(testDoc));
+
+        // @ts-ignore
+        testDoc.created = firebase.firestore.FieldValue.serverTimestamp();
+        await assertSucceeds(testQuery.set(testDoc));
+    });
+
+    it('tests expiresLater rule', async () => {
+        const testDoc: Mutable<ItemInterface> = _.clone(mocDoc);
+        testDoc.created = new Date('26 Mar 2021 00:00:00 GMT')
+
+        await assertFails(query.set(testDoc));
+    });
+
+    it('tests typeExists rule', async () => {
+        const testDoc: Mutable<ItemInterface> = _.clone(mocDoc);
+        testDoc.type = 'test'
+
+        await assertFails(query.set(testDoc));
     });
 });
 
