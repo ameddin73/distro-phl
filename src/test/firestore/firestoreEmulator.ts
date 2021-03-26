@@ -22,7 +22,8 @@ export function getFirestoreUser({uid = UserMocks.defaultUser.uid, name = UserMo
     return initializeTestApp({projectId: PROJECT_ID, auth: {uid: uid, name: name, email: email}}).firestore();
 }
 
-export async function setupFirestore(firestoreAdmin: firebase.firestore.Firestore, typesMock: ItemTypes | null = TypesMocks.defaultTypes, itemMock: ItemInterface | null = ItemMocks.defaultItem) {
+export async function setupFirestore(typesMock: ItemTypes | null = TypesMocks.defaultTypes, itemMock: ItemInterface | null = ItemMocks.defaultItem) {
+    const firestoreAdmin: firebase.firestore.Firestore = initializeAdminApp({projectId: PROJECT_ID}).firestore();
     if (typesMock !== null) await setTypes(firestoreAdmin, typesMock);
     if (itemMock !== null) await setItems(firestoreAdmin, itemMock);
 }

@@ -12,6 +12,7 @@ service cloud.firestore {
 
         function createItemRules() {
             let hasAll = request.resource.data.keys().hasAll(["active" , "created" , "description" , "image" , "type" , "uid" , "userName"]) ;
+            let hasOnly = request.resource.data.keys().hasOnly(["active" , "created" , "description" , "image" , "type" , "uid" , "userName"]) ;
             let uidEqual = request.auth.uid == request.resource.data.uid;
             let nameEqual = request.auth.token.name == request.resource.data.userName;
             let activeTrue = request.resource.data.active == true;
