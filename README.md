@@ -18,10 +18,6 @@ Connect to dev project.
 
 *Request permission from repo owner for project access.*
 
-#### `firebase init`
-
-**When prompted, install the firestore emulator.**
-
 ### Run
 
 *Local environment variables from the firebase project are needed to run. Request from owner.*
