@@ -1,5 +1,6 @@
 import {RunMutation} from "@react-firebase/firestore/dist/components/FirestoreMutation";
 import firebase from "firebase";
+import {firestore} from "firebase-admin/lib/firestore";
 import FieldPath = firebase.firestore.FieldPath;
 import WhereFilterOp = firebase.firestore.WhereFilterOp;
 import OrderByDirection = firebase.firestore.OrderByDirection;

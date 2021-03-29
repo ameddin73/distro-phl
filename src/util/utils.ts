@@ -30,34 +30,19 @@ export namespace Query {
 
 export namespace Converters {
     export const itemConverter: firebase.firestore.FirestoreDataConverter<ItemInterface> = {
-        toFirestore(item: Pick<ItemInterface, any>): firebase.firestore.DocumentData {
+        toFirestore(item: ItemInterface): firebase.firestore.DocumentData {
             return {
-                active: item.active,
+                ...item,
                 created: firebase.firestore.FieldValue.serverTimestamp(),
-                description: item.description,
-                displayName: item.displayName,
-                expires: item.expires,
-                image: item.image,
-                type: item.type,
-                uid: item.uid,
-                userName: item.userName,
             }
         },
         fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): ItemInterface {
             const data = snapshot.data(options);
             return {
-                active: data.active,
-                created: data.created,
-                description: data.description,
-                displayName: data.displayName,
-                expires: data.expires,
+                ...data as ItemInterface,
                 id: snapshot.id,
-                image: data.image,
-                type: data.type,
-                uid: data.uid,
-                userName: data.userName,
             }
-        }
+        },
     };
     export const itemTypeConverter: firebase.firestore.FirestoreDataConverter<ItemTypeInterface> = {
         toFirestore(): firebase.firestore.DocumentData {
@@ -66,11 +51,8 @@ export namespace Converters {
         fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): ItemTypeInterface {
             const data = snapshot.data(options);
             return {
-                consumable: data.consumable,
-                displayName: data.displayName,
-                expires: data.expires,
+                ...data as ItemTypeInterface,
                 id: snapshot.id,
-                index: data.index,
             }
         }
     };
