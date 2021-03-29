@@ -13,7 +13,7 @@ service cloud.firestore {
         match /items/{docId} {
             allow create: if createItemRules();
             allow update: if updateItemRules();
-            allow read: if true; //TODO can't view if inactive and not yours
+            allow read: if readItemRules();
             allow delete: if false;
         }
 
@@ -22,6 +22,9 @@ service cloud.firestore {
             allow read: if true;
         }
 
+        /*
+         * Item Rules
+         */
         function validateItemFields() {
             let hasOnly = request.resource.data.keys().hasOnly(["active" , "created" , "description" , "displayName" , "expires" , "image" , "type" , "uid" , "userName"]) ;
             let types = request.resource.data.active is bool //
@@ -50,6 +53,11 @@ service cloud.firestore {
             let hasOnly = request.resource.data.diff(resource.data).affectedKeys().hasOnly(["active" , "description" , "displayName" , "expires" , "image" , "type" , "userName"]) ;
             let activeOnly = request.resource.data.diff(resource.data).affectedKeys().hasAny(["active"]) != true || request.resource.data.diff(resource.data).affectedKeys().hasOnly(["active"]);
             return validateItemFields() && uidEqual && hasOnly && activeOnly;
+        }
+
+        function readItemRules() {
+            let seeActive = resource.data.active == true || request.auth.uid == resource.data.uid;
+            return seeActive ;
         }
     }
 }
