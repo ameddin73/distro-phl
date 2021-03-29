@@ -59,7 +59,7 @@ describe('testing framework', () => {
         delete testItem.created;
         delete testItem.expires;
 
-        const query = firestore.collection(COLLECTIONS.items).withConverter(Converters.itemConverter);
+        const query = firestore.collection(COLLECTIONS.items).where('active', '==', true).withConverter(Converters.itemConverter);
 
         testCollection(query, (data: ItemInterface[]) => {
             expect(data.length).toBe(5);
@@ -252,6 +252,44 @@ describe('update item rules', () => {
         await assertFails(updateQueryAuthed.update({active: false, description: 'test'}));
     });
 
+});
+
+describe('read item rules', () => {
+    beforeAll(async () => {
+        await buildFirestore();
+        await setupFirestore(true, true);
+        await queryAuthed.set(mocDoc);
+        await queryAuthed.update({active: false});
+    });
+    afterEach(async () => {
+        unsubscribe();
+    });
+    afterAll(async () => {
+        await teardownFirestore();
+    });
+
+    it('tests reading a single document', async () => {
+        await assertSucceeds(queryAuthed.get());
+    });
+
+    it('tests reading a collection', async () => {
+        await assertFails(firestoreAuth.collection(COLLECTIONS.items).get());
+        await assertSucceeds(firestoreAuth.collection(COLLECTIONS.items).where('active', '==', true).get());
+    });
+
+    it('tests seeActive rule for active', async () => {
+        const query = firestore.collection(COLLECTIONS.items).where('active', '==', true);
+        await assertSucceeds(query.get());
+        const collection = await query.get();
+        expect(collection.docs.length).toBe(5);
+    });
+
+    it('tests seeActive rule for authed', async () => {
+        const query = firestoreAuth.collection(COLLECTIONS.items).where('uid', '==', UserMocks.defaultUser.uid);
+        await assertSucceeds(query.get());
+        const collection = await query.get();
+        expect(collection.docs.length).toBe(6);
+    })
 });
 
 async function buildFirestore() {
