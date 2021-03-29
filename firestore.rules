@@ -10,28 +10,46 @@ service cloud.firestore {
             allow read: if true;
         }
 
-        function createItemRules() {
-            let hasAll = request.resource.data.keys().hasAll(["active" , "created" , "description" , "image" , "type" , "uid" , "userName"]) ;
-            let hasOnly = request.resource.data.keys().hasOnly(["active" , "created" , "description" , "image" , "type" , "uid" , "userName"]) ;
-            let uidEqual = request.auth.uid == request.resource.data.uid;
-            let nameEqual = request.auth.token.name == request.resource.data.userName;
-            let activeTrue = request.resource.data.active == true;
-            let createdNow = request.resource.data.created == request.time;
-            let expiresLater = !request.resource.data.keys().hasAny(["expires"]) || request.resource.data.expires > request.time;
-            let typeExists = exists(/databases/$(database)/documents/item_types/$(request.resource.data.type)) ;
-            // TODO verify image is storage ref
-            return hasAll && uidEqual && nameEqual && activeTrue && createdNow && expiresLater && typeExists;
-        }
-
         match /items/{docId} {
             allow create: if createItemRules();
-            allow read: if true;
+            allow update: if updateItemRules();
+            allow read: if true; //TODO can't view if inactive and not yours
             allow delete: if false;
         }
 
         match /reservations/{docId} {
             allow write: if request.auth.uid == request.resource.data.uid;
             allow read: if true;
+        }
+
+        function validateItemFields() {
+            let hasOnly = request.resource.data.keys().hasOnly(["active" , "created" , "description" , "displayName" , "expires" , "image" , "type" , "uid" , "userName"]) ;
+            let types = (request.resource.data.keys().hasAny(["active"]) != true || request.resource.data.active is bool)//
+            && (request.resource.data.keys().hasAny(["created"]) != true || request.resource.data.created is timestamp) //
+            && (request.resource.data.keys().hasAny(["description"]) != true || request.resource.data.description is string)//
+            && (request.resource.data.keys().hasAny(["displayName"]) != true || request.resource.data.displayName is string)//
+            && (request.resource.data.keys().hasAny(["expires"]) != true || request.resource.data.expires is timestamp)//
+            && (request.resource.data.keys().hasAny(["image"]) != true || request.resource.data.image.matches('images/items/[0-9a-f-.]*.[a-z.]*'))//
+            && (request.resource.data.keys().hasAny(["type"]) != true || request.resource.data.type is string)//
+            && (request.resource.data.keys().hasAny(["uid"]) != true || request.resource.data.uid is string)//
+            && (request.resource.data.keys().hasAny(["userName"]) != true || request.auth.token.name == request.resource.data.userName);
+            return hasOnly && types;
+        }
+
+        function createItemRules() {
+            let uidEqual = request.auth.uid == request.resource.data.uid;
+            let hasAll = request.resource.data.keys().hasAll(["active" , "created" , "description" , "displayName" , "image" , "type" , "uid" , "userName"]) ;
+            let activeTrue = request.resource.data.active == true;
+            let createdNow = request.resource.data.created == request.time;
+            let expiresLater = request.resource.data.keys().hasAny(["expires"]) != true || request.resource.data.expires > request.time;
+            let typeExists = exists(/databases/$(database)/documents/item_types/$(request.resource.data.type)) ;
+            return validateItemFields() && uidEqual && hasAll && activeTrue && createdNow && expiresLater && typeExists;
+        }
+
+        function updateItemRules() {
+            let uidEqual = request.auth.uid == resource.data.uid;
+            let hasOnly = request.resource.data.diff(resource.data).affectedKeys().hasOnly(["active" , "description" , "displayName" , "expires" , "image" , "type" , "userName"]) ;
+            return validateItemFields() && uidEqual && hasOnly;
         }
     }
 }
