@@ -4,7 +4,7 @@
 // this test has to be run in a node environment because @firebase/rules-testing-library
 // uses grpc and doesn't work in JSDOM. See more:
 // https://github.com/firebase/firebase-admin-node/issues/1135#issuecomment-765766020
-import {setupFirestore, startFirestore, teardownFirestore} from "./firestoreEmulator";
+import {setupFirestore, startFirestore, teardownFirestore} from "./utils";
 import {COLLECTIONS} from "util/config";
 import {buildTypesObject, Converters} from "util/utils";
 import {TypesMocks} from "test/mocks/type.mock";
