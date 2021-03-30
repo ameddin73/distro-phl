@@ -3,7 +3,7 @@ import {buildTypesObject, Converters} from "../utils";
 import {FirestoreQuery, ItemTypes} from "../types";
 import useFirestoreCollectionBuilder from "./useFirestoreCollectionBuilder";
 
-function useItemTypes(): ItemTypes {
+export function useItemTypes(): ItemTypes {
     const path = COLLECTIONS.types;
     const converter = Converters.itemTypeConverter;
     const query: FirestoreQuery = {
@@ -17,5 +17,3 @@ function useItemTypes(): ItemTypes {
     const {data: types} = useFirestoreCollectionBuilder(path, query, converter);
     return buildTypesObject(types);
 }
-
-export default useItemTypes;

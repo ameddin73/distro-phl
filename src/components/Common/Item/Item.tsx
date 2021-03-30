@@ -5,7 +5,7 @@ import {ItemInterface} from 'util/types';
 import {DEFAULT_IMAGE} from "util/config";
 import {StorageImage} from "reactfire";
 import Loading from "../Loading";
-import useItemTypes from "util/hooks/useItemTypes";
+import {useItemTypes} from "util/hooks/useItemTypes";
 
 export type ItemProps = {
     item: ItemInterface,
@@ -16,7 +16,6 @@ const Item = ({item, itemAction = (() => (<div/>))}: ItemProps) => {
     const classes = itemStyle();
 
     const types = useItemTypes();
-    console.dir(types)
     const {displayName, description, image, type, userName} = item;
     const [openDesc, setOpenDesc] = useState(false);
 
@@ -35,7 +34,7 @@ const Item = ({item, itemAction = (() => (<div/>))}: ItemProps) => {
                     <CardActionArea onClick={clickCard}>
                         <StorageImage suspense={true} placeHolder={<Loading/>} storagePath={image || DEFAULT_IMAGE} className={classes.media} alt={image ? item.displayName : 'Default Image'}/>
                         <CardContent>
-                            <Typography variant="h5" component="h2">
+                            <Typography variant="h5" component="h2" id="title">
                                 {displayName}
                             </Typography>
                             <Collapse in={openDesc} collapsedHeight={100}>
