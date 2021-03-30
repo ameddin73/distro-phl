@@ -1,6 +1,3 @@
-/**
- * @jest-environment test/jest-env
- */
 import React from 'react';
 import {cleanup, screen} from "@testing-library/react";
 import Item from "./Item";
@@ -9,27 +6,38 @@ import {ItemMocks} from "test/mocks/item.mock";
 import {TypesMocks} from "test/mocks/type.mock";
 import {useItemTypes} from "util/hooks/useItemTypes";
 
-const mockDefaultItem = ItemMocks.defaultItem;
-const mockTypes = TypesMocks.defaultTypes;
 jest.mock('util/hooks/useItemTypes', () => ({
     useItemTypes: jest.fn(),
 }));
 
-beforeAll(async () => {
-});
+const mockDefaultItem = ItemMocks.defaultItem;
+const mockTypes = TypesMocks.defaultTypes;
+const testItemActionText = 'test item action text';
+
+const TestItemAction = () => (
+    <div>{testItemActionText}</div>
+)
 afterEach(cleanup);
 
 it('should mount', () => {
     // @ts-ignore
     useItemTypes.mockReturnValue(mockTypes);
     customRender(<Item item={mockDefaultItem}/>);
-    screen.getByText(mockDefaultItem.displayName);
 });
 
-it('renders correctly', () => {
+it('renders item details properly', () => {
     // @ts-ignore
     useItemTypes.mockReturnValue(mockTypes);
-    const renderer = customRender(<Item item={mockDefaultItem}/>);
-    // const wrapper = shallow(<Item item={mockDefaultItem}/>);
-    // expect(wrapper).toMatchSnapshot();
+    customRender(<Item item={mockDefaultItem}/>);
+    screen.getByText(mockDefaultItem.displayName);
+    screen.getByText(mockTypes[mockDefaultItem.type].displayName);
+    screen.getByText(mockDefaultItem.description);
+    screen.getByText(mockDefaultItem.userName);
+});
+
+it('renders item action properly', () => {
+    // @ts-ignore
+    useItemTypes.mockReturnValue(mockTypes);
+    customRender(<Item item={mockDefaultItem} itemAction={TestItemAction}/>);
+    screen.getByText(testItemActionText);
 });

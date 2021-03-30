@@ -34,7 +34,7 @@ const Item = ({item, itemAction = (() => (<div/>))}: ItemProps) => {
                     <CardActionArea onClick={clickCard}>
                         <StorageImage suspense={true} placeHolder={<Loading/>} storagePath={image || DEFAULT_IMAGE} className={classes.media} alt={image ? item.displayName : 'Default Image'}/>
                         <CardContent>
-                            <Typography variant="h5" component="h2" id="title">
+                            <Typography variant="h5" component="h2">
                                 {displayName}
                             </Typography>
                             <Collapse in={openDesc} collapsedHeight={100}>
