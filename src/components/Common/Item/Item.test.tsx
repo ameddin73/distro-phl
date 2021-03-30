@@ -1,14 +1,12 @@
+/**
+ * @jest-environment test/jest-env
+ */
 import React from 'react';
-import {cleanup, screen} from "@testing-library/react";
+import {screen, waitForElementToBeRemoved} from "@testing-library/react";
 import Item from "./Item";
-import {customRender} from "test/utils";
+import {customRender, resetFirebase, setupFirebase} from "test/utils";
 import {ItemMocks} from "test/mocks/item.mock";
 import {TypesMocks} from "test/mocks/type.mock";
-import {useItemTypes} from "util/hooks/useItemTypes";
-
-jest.mock('util/hooks/useItemTypes', () => ({
-    useItemTypes: jest.fn(),
-}));
 
 const mockDefaultItem = ItemMocks.defaultItem;
 const mockTypes = TypesMocks.defaultTypes;
@@ -17,27 +15,28 @@ const testItemActionText = 'test item action text';
 const TestItemAction = () => (
     <div>{testItemActionText}</div>
 )
-afterEach(cleanup);
+beforeAll(setupFirebase);
+afterEach(async () => await resetFirebase());
 
-it('should mount', () => {
-    // @ts-ignore
-    useItemTypes.mockReturnValue(mockTypes);
+it('should mount', async () => {
     customRender(<Item item={mockDefaultItem}/>);
+    expect(document.querySelector('#fallback')).toBeInTheDocument();
+    await waitForElementToBeRemoved(document.querySelector('#fallback'));
+    screen.getByText(mockDefaultItem.displayName);
 });
 
-it('renders item details properly', () => {
-    // @ts-ignore
-    useItemTypes.mockReturnValue(mockTypes);
+it('renders item details properly', async () => {
     customRender(<Item item={mockDefaultItem}/>);
+    expect(document.querySelector('#fallback')).toBeInTheDocument();
+    await waitForElementToBeRemoved(document.querySelector('#fallback'));
     screen.getByText(mockDefaultItem.displayName);
     screen.getByText(mockTypes[mockDefaultItem.type].displayName);
     screen.getByText(mockDefaultItem.description);
     screen.getByText(mockDefaultItem.userName);
 });
 
-it('renders item action properly', () => {
-    // @ts-ignore
-    useItemTypes.mockReturnValue(mockTypes);
+it('renders item action properly', async () => {
     customRender(<Item item={mockDefaultItem} itemAction={TestItemAction}/>);
+    await waitForElementToBeRemoved(document.querySelector('#fallback'));
     screen.getByText(testItemActionText);
 });
