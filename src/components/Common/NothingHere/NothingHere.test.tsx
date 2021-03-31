@@ -1,9 +1,26 @@
+/**
+ * @jest-environment test/jest-env
+ */
 import React from 'react';
-import ReactDOM from 'react-dom';
-import NothingHere from './NothingHere';
+import {fireEvent, screen} from "@testing-library/react";
+import {customRender, setupFirebase} from "test/utils";
+import NothingHere from "./NothingHere";
+import {PATHS} from "../../../util/config";
 
-it('It should mount', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<NothingHere />, div);
-  ReactDOM.unmountComponentAtNode(div);
+beforeAll(setupFirebase);
+
+it('should mount', () => {
+    customRender(<NothingHere/>);
+});
+
+it('renders properly', () => {
+    customRender(<NothingHere/>);
+    screen.getByText('Oops, theres nothing here.');
+    screen.getByText('Make a Post');
+});
+
+it('navigates when button clicked', async () => {
+    customRender(<NothingHere/>);
+    fireEvent.click(screen.getByText('Make a Post'));
+    expect(window.location.pathname).toBe(PATHS.public.createItem);
 });

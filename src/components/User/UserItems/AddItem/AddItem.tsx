@@ -15,9 +15,9 @@ import {Converters, getFileWithUUID} from "util/utils";
 import {useStorage, useUser} from "reactfire";
 import firebase from "firebase";
 import {useHistory} from "react-router-dom";
-import useItemTypes from "util/hooks/useItemTypes";
 import useFirestoreAdd from "util/hooks/useFirestoreAdd";
 import useInput from "util/hooks/useInput";
+import {useItemTypes} from "../../../../util/hooks/useItemTypes";
 
 const useStyles = makeStyles((theme) => ({
     root: {
