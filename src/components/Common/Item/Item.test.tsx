@@ -2,7 +2,7 @@
  * @jest-environment test/jest-env
  */
 import React from 'react';
-import {screen, waitForElementToBeRemoved} from "@testing-library/react";
+import {screen, waitFor, waitForElementToBeRemoved} from "@testing-library/react";
 import Item from "./Item";
 import {customRender, resetFirebase, setupFirebase} from "test/utils";
 import {ItemMocks} from "test/mocks/item.mock";
@@ -20,15 +20,13 @@ afterEach(async () => await resetFirebase());
 
 it('should mount', async () => {
     customRender(<Item item={mockDefaultItem}/>);
-    expect(document.querySelector('#fallback')).toBeInTheDocument();
-    await waitForElementToBeRemoved(document.querySelector('#fallback'));
-    screen.getByText(mockDefaultItem.displayName);
+    expect(document.querySelector('#loading')).toBeInTheDocument();
+    await waitForElementToBeRemoved(document.querySelector('#loading'));
 });
 
 it('renders item details properly', async () => {
     customRender(<Item item={mockDefaultItem}/>);
-    expect(document.querySelector('#fallback')).toBeInTheDocument();
-    await waitForElementToBeRemoved(document.querySelector('#fallback'));
+    await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
     screen.getByText(mockDefaultItem.displayName);
     screen.getByText(mockTypes[mockDefaultItem.type].displayName);
     screen.getByText(mockDefaultItem.description);
@@ -37,6 +35,6 @@ it('renders item details properly', async () => {
 
 it('renders item action properly', async () => {
     customRender(<Item item={mockDefaultItem} itemAction={TestItemAction}/>);
-    await waitForElementToBeRemoved(document.querySelector('#fallback'));
+    await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
     screen.getByText(testItemActionText);
 });
