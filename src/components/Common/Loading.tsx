@@ -15,7 +15,7 @@ const Loading = () => {
 
     return (
         <div className={classes.body}>
-            <CircularProgress/>
+            <CircularProgress id="loading"/>
         </div>
     )
 };
