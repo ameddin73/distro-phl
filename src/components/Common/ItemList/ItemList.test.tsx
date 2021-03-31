@@ -1,9 +1,35 @@
+/**
+ * @jest-environment test/jest-env
+ */
 import React from 'react';
-import ReactDOM from 'react-dom';
-// import ItemList from './ItemList'; TODO testing
+import ItemList from "./ItemList";
+import {customRender, resetFirebase, setupFirebase} from "../../../test/utils";
+import {screen, waitFor} from "@testing-library/react";
+import {COLLECTIONS} from "util/config";
+import {Query} from "util/utils";
+import {ItemMocks} from "../../../test/mocks/item.mock";
 
-it('It should mount', () => {
-  const div = document.createElement('div');
-    // ReactDOM.render(<ItemList  path={}/>, div); TODO testing
-  ReactDOM.unmountComponentAtNode(div);
+const mockDefaultItem = ItemMocks.defaultItem;
+
+const path = COLLECTIONS.items;
+const orderBy = Query.orderByCreated;
+const query = {
+    where: [Query.whereActive],
+    orderBy,
+}
+const props = {path, query};
+
+beforeAll(setupFirebase);
+afterEach(async () => await resetFirebase());
+
+it('should mount', async () => {
+    customRender(<ItemList {...props}/>);
+    await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
+});
+
+it('renders all items', async () => {
+    customRender(<ItemList {...props}/>);
+    await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
+    const items = screen.getAllByText(mockDefaultItem.displayName);
+    expect(items.length).toBe(5);
 });
