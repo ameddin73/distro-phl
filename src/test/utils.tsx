@@ -7,6 +7,7 @@ import {render, RenderOptions} from "@testing-library/react";
 import SnackbarProvider from "../components/Common/SnackbarProvider/SnackbarProvider";
 import firebase from "firebase";
 import Loading from "../components/Common/Loading";
+import {BrowserRouter as Router} from "react-router-dom";
 
 const PROJECT_ID = `${process.env.TEST_PROJECT}`;
 let firebaseApp: firebase.app.App;
@@ -31,9 +32,11 @@ const Providers = ({children}: PropsWithChildren<any>) => (
     <ThemeProvider theme={theme}>
         <FirebaseAppProvider firebaseApp={firebaseApp} suspense>
             <SnackbarProvider>
-                <Suspense fallback={<Loading/>}>
-                    {children}
-                </Suspense>
+                <Router>
+                    <Suspense fallback={<Loading/>}>
+                        {children}
+                    </Suspense>
+                </Router>
             </SnackbarProvider>
         </FirebaseAppProvider>
     </ThemeProvider>
