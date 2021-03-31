@@ -7,9 +7,6 @@ import {customRender, resetFirebase, setupFirebase} from "../../../test/utils";
 import {screen, waitFor} from "@testing-library/react";
 import {COLLECTIONS} from "util/config";
 import {Query} from "util/utils";
-import {ItemMocks} from "../../../test/mocks/item.mock";
-
-const mockDefaultItem = ItemMocks.defaultItem;
 
 const path = COLLECTIONS.items;
 const orderBy = Query.orderByCreated;
@@ -30,6 +27,6 @@ it('should mount', async () => {
 it('renders all items', async () => {
     customRender(<ItemList {...props}/>);
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
-    const items = screen.getAllByText(mockDefaultItem.displayName);
-    expect(items.length).toBe(5);
+    const items = screen.getAllByText('Supplied by:');
+    expect(items.length).toBe(7);
 });
