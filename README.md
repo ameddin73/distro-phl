@@ -32,7 +32,7 @@ This will start the app and connect to the firebase dev project. Run firestore &
 
 #### `firebase --project test-project emulators:start --only firestore`
 
-#### `npm test -- --testPathPattern="firestore.test.ts"`
+#### `npm test -- --watchAll-false --testPathPattern="irestore.test.ts --forceExit`
 
 **Test React app:**
 
