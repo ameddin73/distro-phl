@@ -33,6 +33,7 @@ export namespace Converters {
         toFirestore(item: ItemInterface): firebase.firestore.DocumentData {
             return {
                 ...item,
+                ...(item.hasExpiration && {expires: firebase.firestore.Timestamp.fromDate(item.expires)}),
                 created: firebase.firestore.FieldValue.serverTimestamp(),
             }
         },

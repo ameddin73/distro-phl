@@ -10,11 +10,52 @@ service cloud.firestore {
             allow read: if true;
         }
 
-        match /items/{docId} {
+        match /items/{itemId} {
             allow create: if createItemRules();
             allow update: if updateItemRules();
             allow read: if readItemRules();
             allow delete: if false;
+
+            function validateItemFields() {
+                let hasOnly = request.resource.data.keys().hasOnly(["active" , "created" , "description" , "displayName" , "hasExpiration" , "expires" , "image" , "type" , "uid" , "userName"]) ;
+                let types = request.resource.data.active is bool //
+                && request.resource.data.created is timestamp //
+                && request.resource.data.description is string //
+                && request.resource.data.displayName is string //
+                && request.resource.data.hasExpiration is bool //
+                && ((!request.resource.data.hasExpiration && !("expires" in request.resource.data.keys())) || //
+                (request.resource.data.expires is timestamp && request.resource.data.expires > request.time)) //
+                && request.resource.data.image.matches('images/items/[0-9a-f-.]*.[a-z.]*') //
+                && request.resource.data.type is string //
+                && request.resource.data.uid is string //
+                && request.auth.token.name == request.resource.data.userName;
+                return hasOnly && types;
+            }
+
+            function createItemRules() {
+                let uidEqual = request.auth.uid == request.resource.data.uid;
+                let hasAll = request.resource.data.keys().hasAll(["active" , "created" , "description" , "displayName" , "hasExpiration" , "image" , "type" , "uid" , "userName"]) ;
+                let activeTrue = request.resource.data.active ;
+                let createdNow = request.resource.data.created == request.time;
+                let typeExists = exists(/databases/$(database)/documents/item_types/$(request.resource.data.type)) ;
+                return validateItemFields() && uidEqual && hasAll && activeTrue && createdNow && typeExists;
+            }
+
+            function updateItemRules() {
+                let uidEqual = request.auth.uid == resource.data.uid;
+                let hasOnly = request.resource.data.diff(resource.data).affectedKeys().hasOnly(["active" , "description" , "displayName" , "expires" , "image" , "type" , "userName"]) ;
+                let activeOnly = !request.resource.data.diff(resource.data).affectedKeys().hasAny(["active"]) || request.resource.data.diff(resource.data).affectedKeys().hasOnly(["active"]);
+                let hasExpirationOrNoExpires = resource.data.hasExpiration || !request.resource.data.diff(resource.data).affectedKeys().hasAny(["expires"]);
+                return validateItemFields() && uidEqual && hasOnly && activeOnly && hasExpirationOrNoExpires;
+            }
+
+            function readItemRules() {
+                let seeActive = resource.data.active == true || request.auth.uid == resource.data.uid;
+                let seeUnexpired = !resource.data.hasExpiration || //
+                (request.time < resource.data.expires) || //
+                request.auth.uid == resource.data.uid; //
+                return seeActive && seeUnexpired;
+            }
         }
 
         match /reservations/{docId} {
@@ -22,42 +63,5 @@ service cloud.firestore {
             allow read: if true;
         }
 
-        /*
-         * Item Rules
-         */
-        function validateItemFields() {
-            let hasOnly = request.resource.data.keys().hasOnly(["active" , "created" , "description" , "displayName" , "expires" , "image" , "type" , "uid" , "userName"]) ;
-            let types = request.resource.data.active is bool //
-            && request.resource.data.created is timestamp //
-            && request.resource.data.description is string //
-            && request.resource.data.displayName is string //
-            && request.resource.data.expires > request.time //
-            && request.resource.data.image.matches('images/items/[0-9a-f-.]*.[a-z.]*') //
-            && request.resource.data.type is string //
-            && request.resource.data.uid is string //
-            && request.auth.token.name == request.resource.data.userName;
-            return hasOnly && types;
-        }
-
-        function createItemRules() {
-            let uidEqual = request.auth.uid == request.resource.data.uid;
-            let hasAll = request.resource.data.keys().hasAll(["active" , "created" , "description" , "displayName" , "image" , "type" , "uid" , "userName"]) ;
-            let activeTrue = request.resource.data.active == true;
-            let createdNow = request.resource.data.created == request.time;
-            let typeExists = exists(/databases/$(database)/documents/item_types/$(request.resource.data.type)) ;
-            return validateItemFields() && uidEqual && hasAll && activeTrue && createdNow && typeExists;
-        }
-
-        function updateItemRules() {
-            let uidEqual = request.auth.uid == resource.data.uid;
-            let hasOnly = request.resource.data.diff(resource.data).affectedKeys().hasOnly(["active" , "description" , "displayName" , "expires" , "image" , "type" , "userName"]) ;
-            let activeOnly = request.resource.data.diff(resource.data).affectedKeys().hasAny(["active"]) != true || request.resource.data.diff(resource.data).affectedKeys().hasOnly(["active"]);
-            return validateItemFields() && uidEqual && hasOnly && activeOnly;
-        }
-
-        function readItemRules() {
-            let seeActive = resource.data.active == true || request.auth.uid == resource.data.uid;
-            return seeActive ;
-        }
     }
 }

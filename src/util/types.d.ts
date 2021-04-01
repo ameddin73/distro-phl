@@ -1,6 +1,4 @@
-import {RunMutation} from "@react-firebase/firestore/dist/components/FirestoreMutation";
 import firebase from "firebase";
-import {firestore} from "firebase-admin/lib/firestore";
 import FieldPath = firebase.firestore.FieldPath;
 import WhereFilterOp = firebase.firestore.WhereFilterOp;
 import OrderByDirection = firebase.firestore.OrderByDirection;
@@ -34,14 +32,22 @@ interface ItemKeys extends FirestoreMember {
     active: boolean,
     readonly created: Date,
     description: string,
-    expires?: Date,
     image: string,
     type: ItemTypeInterface['id'],
     readonly uid: string,
     userName: string,
 }
 
-export type ItemInterface = NoExtraProperties<ItemKeys>;
+interface ItemWithExpiration extends ItemKeys {
+    hasExpiration: true,
+    expires: Date,
+}
+
+interface ItemNoExpiration extends ItemKeys {
+    hasExpiration: false,
+}
+
+export type ItemInterface = NoExtraProperties<ItemWithExpiration | ItemNoExpiration>;
 
 export interface ItemTypeInterface extends FirestoreMember {
     readonly consumable: boolean,
@@ -50,15 +56,8 @@ export interface ItemTypeInterface extends FirestoreMember {
     readonly index: number,
 }
 
-export type ItemMutation = RunMutation extends (value: any, ...rest: infer U) => infer R
-    ? (value: ItemInterface, ...rest: U) => R : never;
-
 export type ItemTypes = {
     [key: string]: ItemTypeInterface,
-}
-
-export type RouteType = {
-    [key: string]: JSX.Element | (() => JSX.Element) | (() => (arg0: any) => JSX.Element),
 }
 
 export type ItemActionProps = {
