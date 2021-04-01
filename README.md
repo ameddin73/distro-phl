@@ -40,6 +40,14 @@ This will start the app and connect to the firebase dev project. Run firestore &
 
 #### `npm test -- --testPathIgnorePatterns="firestore.test.ts"`
 
+**Update Firestore Data**
+
+#### `firebase --project test-project emulators:start --only firestore`
+
+Debug a test with a breakpoint set after `setupFirestore(true,true)`
+
+#### `firebase --project test-project emulators:export src/test/firestore`
+
 ## Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

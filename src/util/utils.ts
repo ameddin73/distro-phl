@@ -25,7 +25,17 @@ export namespace Query {
         fieldPath: 'active',
         opStr: '==',
         value: true,
-    }
+    };
+    export const whereNoExpiration: FirestoreQueryWhere = {
+        fieldPath: 'hasExpiration',
+        opStr: '==',
+        value: false,
+    };
+    export const whereUnexpired: FirestoreQueryWhere = {
+        fieldPath: 'expires',
+        opStr: '>',
+        value: firebase.firestore.Timestamp.now(),
+    };
 }
 
 export namespace Converters {
