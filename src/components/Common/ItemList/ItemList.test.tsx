@@ -13,7 +13,7 @@ import {UserMocks} from "../../../test/mocks/user.mock";
 const path = COLLECTIONS.items;
 const orderBy = Query.orderByCreated;
 const query = {
-    where: [Query.whereActive],
+    where: [Query.whereActive, Query.whereNoExpiration],
     orderBy,
 }
 const props = {path, query};
@@ -30,7 +30,7 @@ it('renders all items', async () => {
     customRender(<ItemList {...props}/>);
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
     const items = screen.getAllByText('Supplied by:');
-    expect(items.length).toBe(7);
+    expect(items.length).toBe(3);
 });
 
 it('filters items', async () => {
@@ -38,7 +38,7 @@ it('filters items', async () => {
     customRender(<ItemList {...props} filter={filter}/>);
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
     const items = screen.getAllByText('Supplied by:');
-    expect(items.length).toBe(2);
+    expect(items.length).toBe(1);
 });
 
 it('renders NothingHere if query returns empty list', async () => {
@@ -48,7 +48,7 @@ it('renders NothingHere if query returns empty list', async () => {
         value: 'fake-name',
     }
     const newQuery = {
-        where: [Query.whereActive, newWhere],
+        where: [Query.whereActive, Query.whereNoExpiration, newWhere],
     };
     customRender(<ItemList path={path} query={newQuery}/>);
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
@@ -56,7 +56,7 @@ it('renders NothingHere if query returns empty list', async () => {
 });
 
 it('renders NothingHere if filter filters all items', async () => {
-    const filter = ((item: ItemInterface) => false);
+    const filter = (() => false);
     customRender(<ItemList {...props} filter={filter}/>);
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
     screen.getByText('Oops, theres nothing here.');
