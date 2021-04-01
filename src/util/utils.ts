@@ -29,6 +29,7 @@ export namespace Query {
 }
 
 export namespace Converters {
+
     export const itemConverter: firebase.firestore.FirestoreDataConverter<ItemInterface> = {
         toFirestore(item: ItemInterface): firebase.firestore.DocumentData {
             return {

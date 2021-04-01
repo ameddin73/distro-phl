@@ -7,7 +7,6 @@ import {Mutable} from "../types";
 import {COLLECTIONS} from "util/config";
 import {ItemMocks} from "../mocks/item.mock";
 import _ from "lodash";
-import {firestore} from "firebase-admin/lib/firestore";
 
 const PROJECT_ID = `${process.env.TEST_PROJECT}`;
 
@@ -36,9 +35,9 @@ export function teardownFirestore() {
 
 async function setItems(firestoreAdmin: firebase.firestore.Firestore, mock: ItemInterface, mock2: ItemInterface) {
     for (let i: number = 0; i < 5; i++) { // @ts-ignore
-        await firestoreAdmin.collection(COLLECTIONS.items).withConverter(testItemConverter).doc('preset-item-' + i).set(mock);
+        await firestoreAdmin.collection(COLLECTIONS.items).doc('preset-item-' + i).set(mock);
     }
-    await firestoreAdmin.collection(COLLECTIONS.items).withConverter(testItemConverter).doc(mock2.id).set(mock2);
+    await firestoreAdmin.collection(COLLECTIONS.items).doc(mock2.id).set(mock2);
 }
 
 async function setTypes(firestoreAdmin: firebase.firestore.Firestore, mock: ItemTypes) {
@@ -49,27 +48,3 @@ async function setTypes(firestoreAdmin: firebase.firestore.Firestore, mock: Item
         await firestoreAdmin.collection(COLLECTIONS.types).doc(id).set(mocDoc);
     }
 }
-
-// This is a copy of itemConverter from src/utils that uses the firebase-admin firestore instance
-// because of an incompatibility between FieldData types. See more here:
-// https://github.com/googleapis/nodejs-firestore/issues/760#issuecomment-643006776
-// Not sure what to do in terms of keeping this up to date.
-// TODO Could be a huge maintenance problem. Env var?
-export const testItemConverter: firebase.firestore.FirestoreDataConverter<ItemInterface> = {
-    toFirestore(item: ItemInterface): firebase.firestore.DocumentData {
-        return {
-            ...item,
-            ...(item.hasExpiration && {expires: firestore.Timestamp.fromDate(item.expires)}),
-            created: firestore.FieldValue.serverTimestamp(),
-        }
-    },
-    fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): ItemInterface {
-        const data = snapshot.data(options);
-        return {
-            ...data as ItemInterface,
-            ...(data.hasExpiration && {expires: data.expires.toDate()}),
-            created: data.created.toDate(),
-            id: snapshot.id,
-        }
-    },
-};
