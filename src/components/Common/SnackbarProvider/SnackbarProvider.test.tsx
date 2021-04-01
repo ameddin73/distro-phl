@@ -1,9 +1,35 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import SnackbarProvider from './SnackbarProvider';
+import React, {useContext} from 'react';
+import {SnackbarContext} from './SnackbarProvider';
+import {screen, waitForElementToBeRemoved} from "@testing-library/react";
+import {customRender, resetFirebase, setupFirebase} from "../../../test/utils";
 
-it('It should mount', () => {
-    const div = document.createElement('div');
-    ReactDOM.render(<SnackbarProvider/>, div);
-    ReactDOM.unmountComponentAtNode(div);
+const successMessage = 'success message';
+
+beforeAll(setupFirebase);
+afterEach(async () => await resetFirebase());
+
+it('Opens correctly', async () => {
+    customRender(<TestSnackbar testSnack={testSnack}/>);
+    testSnack.testSnackbar();
+    screen.getByText(successMessage);
 });
+
+it('Autohides', async () => {
+    customRender(<TestSnackbar testSnack={testSnack}/>);
+    testSnack.testSnackbar();
+    await waitForElementToBeRemoved(() => screen.getByText(successMessage), {timeout: 3500});
+});
+
+const testSnack = {
+    openSnackbar: () => null,
+    testSnackbar: () => null,
+}
+testSnack.testSnackbar = () => testSnack.openSnackbar();
+
+const TestSnackbar = ({testSnack}: { testSnack: any }) => {
+    const openSnackbar = useContext(SnackbarContext)
+
+    testSnack.openSnackbar = () => openSnackbar('success', successMessage);
+
+    return <></>;
+}

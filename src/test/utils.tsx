@@ -3,7 +3,7 @@ import {ThemeProvider} from "@material-ui/styles";
 import {FirebaseAppProvider} from "reactfire";
 import {FIREBASE_CONFIG} from "util/config";
 import theme from "util/theme";
-import {render, RenderOptions} from "@testing-library/react";
+import {render, RenderOptions, screen} from "@testing-library/react";
 import SnackbarProvider from "../components/Common/SnackbarProvider/SnackbarProvider";
 import firebase from "firebase";
 import Loading from "../components/Common/Loading";
@@ -27,6 +27,11 @@ export async function resetFirebase() {
 }
 
 export const customRender = (ui: React.ReactElement, options?: RenderOptions) => render(ui, {wrapper: Providers, ...options});
+
+export const rendersNothingHere = () => {
+    screen.getByText('Oops, theres nothing here.');
+    screen.getByText('Make a Post');
+}
 
 const Providers = ({children}: PropsWithChildren<any>) => (
     <ThemeProvider theme={theme}>

@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import {fireEvent, screen} from "@testing-library/react";
-import {customRender, setupFirebase} from "test/utils";
+import {customRender, rendersNothingHere, setupFirebase} from "test/utils";
 import NothingHere from "./NothingHere";
 import {PATHS} from "../../../util/config";
 
@@ -15,8 +15,7 @@ it('should mount', () => {
 
 it('renders properly', () => {
     customRender(<NothingHere/>);
-    screen.getByText('Oops, theres nothing here.');
-    screen.getByText('Make a Post');
+    rendersNothingHere();
 });
 
 it('navigates when button clicked', async () => {

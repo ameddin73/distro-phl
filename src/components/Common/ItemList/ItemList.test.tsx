@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import ItemList from "./ItemList";
-import {customRender, resetFirebase, setupFirebase} from "../../../test/utils";
+import {customRender, rendersNothingHere, resetFirebase, setupFirebase} from "../../../test/utils";
 import {screen, waitFor} from "@testing-library/react";
 import {COLLECTIONS} from "util/config";
 import {Query} from "util/utils";
@@ -59,5 +59,5 @@ it('renders NothingHere if filter filters all items', async () => {
     const filter = (() => false);
     customRender(<ItemList {...props} filter={filter}/>);
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
-    screen.getByText('Oops, theres nothing here.');
+    rendersNothingHere();
 });
