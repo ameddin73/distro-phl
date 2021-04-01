@@ -312,9 +312,6 @@ describe('read item rules', () => {
         await queryAuthed.set(mocDoc);
         await queryAuthed.update({active: false});
     });
-    afterEach(async () => {
-        unsubscribe();
-    });
     afterAll(async () => {
         await teardownFirestore();
     });
