@@ -36,7 +36,7 @@ This will start the app and connect to the firebase dev project. Run firestore &
 
 **Test React app:**
 
-#### `firebase --project test-project emulators:start --only firestore --import src/test/firestore`
+#### `firebase --project test-project emulators:start --only firestore,auth --import src/test/firebase`
 
 #### `npm test -- --testPathIgnorePatterns="firestore.test.ts"`
 
@@ -46,7 +46,7 @@ This will start the app and connect to the firebase dev project. Run firestore &
 
 Debug a test with a breakpoint set after `setupFirestore(true,true)`
 
-#### `firebase --project test-project emulators:export src/test/firestore`
+#### `firebase --project test-project emulators:export src/test/firebase`
 
 ## Create React App
 
