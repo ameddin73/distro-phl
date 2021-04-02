@@ -1,5 +1,4 @@
 import React from 'react';
-import HubAction from "./HubAction/HubAction";
 import ItemList from "../Common/ItemList/ItemList.lazy";
 import {COLLECTIONS} from "util/config";
 import {FirestoreQuery, ItemInterface} from "util/types";
@@ -11,14 +10,14 @@ import {Query} from "util/utils";
 const path = COLLECTIONS.items;
 const orderBy = Query.orderByCreated;
 const query: FirestoreQuery = {
-    where: [Query.whereActive],
+    where: [Query.whereActive, Query.whereNoExpiration],
     orderBy,
 };
 
 const PublicHub = () => (
     <ItemList path={path}
               query={query}
-              itemAction={(item: ItemInterface) => (<HubAction id={item.id} path={path + item.id}/>)}/>
+              itemAction={() => (<></>)}/>
 );
 
 const UserHub = () => {
@@ -31,7 +30,7 @@ const UserHub = () => {
         <ItemList path={path}
                   query={query}
                   filter={filter}
-                  itemAction={(item: ItemInterface) => (<HubAction id={item.id} path={path}/>)}/>
+                  itemAction={() => (<></>)}/>
     );
 };
 
