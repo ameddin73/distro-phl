@@ -3,12 +3,12 @@
  */
 import React from 'react';
 import ItemList from "./ItemList";
-import {customRender, rendersNothingHere, resetFirebase, setupFirebase} from "../../../test/utils";
+import {customRender, rendersNothingHere, resetFirebase, setupFirebase} from "test/utils";
 import {screen, waitFor} from "@testing-library/react";
 import {COLLECTIONS} from "util/config";
 import {Query} from "util/utils";
 import {FirestoreQueryWhere, ItemInterface} from "util/types";
-import {UserMocks} from "../../../test/mocks/user.mock";
+import {UserMocks} from "test/mocks/user.mock";
 
 const path = COLLECTIONS.items;
 const orderBy = Query.orderByCreated;

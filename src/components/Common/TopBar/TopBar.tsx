@@ -20,22 +20,20 @@ const TopBar = () => {
     const classes = useStyles();
 
     return (
-        <div>
-            <AppBar position="static">
-                <Toolbar>
-                    <Container className={classes.title}>
-                        <RouterLink to={PATHS.public.base}>
-                            <Button>
-                                <Typography variant="h6" className={classes.title}>
-                                    Distro PHL
-                                </Typography>
-                            </Button>
-                        </RouterLink>
-                    </Container>
-                    <UserMenu/>
-                </Toolbar>
-            </AppBar>
-        </div>
+        <AppBar position="static">
+            <Toolbar>
+                <Container className={classes.title}>
+                    <RouterLink to={PATHS.public.base}>
+                        <Button>
+                            <Typography variant="h6" className={classes.title}>
+                                Distro PHL
+                            </Typography>
+                        </Button>
+                    </RouterLink>
+                </Container>
+                <UserMenu/>
+            </Toolbar>
+        </AppBar>
     );
 }
 export default TopBar;
