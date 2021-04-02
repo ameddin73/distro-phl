@@ -3,15 +3,18 @@ export namespace UserMocks {
         uid: string,
         name: string,
         email: string,
+        password: string,
     }
     export const defaultUser: UserType = {
-        uid: 'default_uid',
-        name: 'default_user_displayName',
-        email: 'default_email@email.com',
+        uid: 'yIEcR6DWPlKQ57X8l1xgdxKTiOjn',
+        name: 'primary user',
+        email: 'primary@gmail.com',
+        password: 'primary password',
     }
     export const userTwo: UserType = {
-        uid: 'test_uid',
-        name: 'test_user_displayName',
-        email: 'test_email@email.com',
+        uid: 'H3STegtgxFqju8CtxBIFN7Qjwmeh',
+        name: 'secondary user',
+        email: 'secondary@gmail.com',
+        password: 'secondary password',
     }
 }

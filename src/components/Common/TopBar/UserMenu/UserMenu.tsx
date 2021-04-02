@@ -47,7 +47,7 @@ const UserMenu = () => {
             </RouterLink>
         }>
             {user &&
-            <Button aria-controls="simple-menu"
+            <Button aria-controls="menu"
                     aria-haspopup="true"
                     onClick={toggleDrawer(true)}
                     endIcon={<MenuIcon/>}>

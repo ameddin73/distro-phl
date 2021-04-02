@@ -1,12 +1,11 @@
 import React, {useContext} from 'react';
 import {SnackbarContext} from './SnackbarProvider';
 import {screen, waitForElementToBeRemoved} from "@testing-library/react";
-import {customRender, resetFirebase, setupFirebase} from "../../../test/utils";
+import {customRender, setupFirebase} from "../../../test/utils";
 
 const successMessage = 'success message';
 
 beforeAll(setupFirebase);
-afterEach(async () => await resetFirebase());
 
 it('Opens correctly', async () => {
     customRender(<TestSnackbar testSnack={testSnack}/>);
