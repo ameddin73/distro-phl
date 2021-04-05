@@ -21,11 +21,17 @@ export function setupFirebase() {
     firebaseApp.auth().useEmulator('http://localhost:9099');
 }
 
-export async function resetFirebase() {
+export async function resetFirebase(signOut?: boolean) {
     const firestore = firebaseApp.firestore();
     await firestore.terminate();
     await firestore.clearPersistence();
     firebaseApp.firestore().useEmulator('localhost', 8080);
+
+    if (signOut) await firebase.auth().signOut();
+}
+
+export function getFirebase() {
+    return firebaseApp;
 }
 
 export const customRender = (ui: React.ReactElement, options?: RenderOptions) => render(ui, {wrapper: Providers, ...options});
