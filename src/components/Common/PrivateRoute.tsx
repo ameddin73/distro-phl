@@ -20,7 +20,7 @@ const PrivateRoute = ({children, path, ...rest}: PrivateRouteProps) => {
                     <Redirect
                         to={{
                             pathname: PATHS.public.login,
-                            state: {from: path},
+                            state: {referrer: path},
                         }}
                     />
                 )
