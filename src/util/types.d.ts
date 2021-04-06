@@ -59,8 +59,3 @@ export interface ItemTypeInterface extends FirestoreMember {
 export type ItemTypes = {
     [key: string]: ItemTypeInterface,
 }
-
-export type ItemActionProps = {
-    id: string,
-    path: string,
-}
