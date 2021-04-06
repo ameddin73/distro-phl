@@ -40,7 +40,7 @@ export namespace Query {
 
 export namespace Converters {
 
-    export const itemConverter: firebase.firestore.FirestoreDataConverter<ItemInterface> = {
+    export const itemConverter: firebase.firestore.FirestoreDataConverter<Omit<ItemInterface, 'id' | 'created'>> = {
         toFirestore(item: ItemInterface): firebase.firestore.DocumentData {
             return {
                 ...item,

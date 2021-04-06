@@ -8,9 +8,7 @@ function useFirestoreUpdate<T>(
     const firestore = useFirestore();
     const collectionRef = firestore.collection(path);
 
-    return [
-        (data: Partial<T>) => collectionRef.doc(id).withConverter(converter).update(data)
-    ];
+    return (data: Partial<T>) => collectionRef.doc(id).withConverter(converter).update(data);
 }
 
 export default useFirestoreUpdate;

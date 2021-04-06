@@ -1,5 +1,5 @@
 import React, {createContext, useState} from 'react';
-import {Snackbar} from "@material-ui/core";
+import {Slide, SlideProps, Snackbar} from "@material-ui/core";
 import {Alert, Color} from "@material-ui/lab";
 
 export const SnackbarContext = createContext<(severity: Color, message: string) => void>(() => null);
@@ -21,11 +21,15 @@ const SnackbarProvider: React.FC = (props) => {
     return (
         <SnackbarContext.Provider value={openSnackbar}>
             {props.children}
-            <Snackbar open={open} autoHideDuration={3000} onClose={closeSnackbar}>
+            <Snackbar open={open} aria-label="snackbar" autoHideDuration={3000} onClose={closeSnackbar} TransitionComponent={SlideTransition}>
                 <Alert variant="filled" severity={color} onClose={closeSnackbar}>{privateMessage}</Alert>
             </Snackbar>
         </SnackbarContext.Provider>
     )
-};
+}
+
+function SlideTransition(props: JSX.IntrinsicAttributes & SlideProps) {
+    return <Slide {...props} direction="up"/>;
+}
 
 export default SnackbarProvider;

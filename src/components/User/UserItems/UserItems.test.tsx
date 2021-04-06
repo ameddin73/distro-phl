@@ -16,7 +16,7 @@ beforeEach(async () => {
 }, 5000); // TODO why is this slow?
 afterAll(async () => await resetFirebase(true));
 
-it('should mount', async () => {
+it('should mount', () => {
 });
 
 it('renders all items', async () => {
