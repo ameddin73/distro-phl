@@ -2,10 +2,11 @@ import React, {useContext, useState} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import {Button, CardActions, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
-import {ItemActionProps} from "util/types";
+import {ItemInterface} from "util/types";
 import {Converters} from "util/utils";
 import {SnackbarContext} from "../../../Common/SnackbarProvider/SnackbarProvider";
 import useFirestoreUpdate from "util/hooks/useFirestoreUpdate";
+import {COLLECTIONS} from "../../../../util/config";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -23,12 +24,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const UserAction = ({id, path}: ItemActionProps) => {
+const UserAction = ({id}: ItemInterface) => {
     const classes = useStyles();
 
     const [deleteAlert, setDeleteAlert] = useState(false);
     const openSnackbar = useContext(SnackbarContext);
-    const [setInactive] = useFirestoreUpdate(path, id, Converters.itemConverter);
+    const [setInactive] = useFirestoreUpdate(COLLECTIONS.items, id, Converters.itemConverter);
 
     const clickDelete = () => setDeleteAlert(true);
     const closeDeleteAlert = (doDelete: boolean) => {

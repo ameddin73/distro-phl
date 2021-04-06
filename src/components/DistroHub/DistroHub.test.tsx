@@ -11,7 +11,6 @@ beforeEach(async () => {
     customRender(<DistroHub/>)
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
 })
-
 afterEach(async () => await resetFirebase());
 
 it('should mount', async () => {
