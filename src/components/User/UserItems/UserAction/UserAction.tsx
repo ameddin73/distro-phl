@@ -29,7 +29,7 @@ const UserAction = ({id}: ItemInterface) => {
 
     const [deleteAlert, setDeleteAlert] = useState(false);
     const openSnackbar = useContext(SnackbarContext);
-    const [setInactive] = useFirestoreUpdate(COLLECTIONS.items, id, Converters.itemConverter);
+    const setInactive = useFirestoreUpdate(COLLECTIONS.items, id, Converters.itemConverter);
 
     const clickDelete = () => setDeleteAlert(true);
     const closeDeleteAlert = (doDelete: boolean) => {
