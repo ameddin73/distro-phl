@@ -36,7 +36,7 @@
     "eject": "react-scripts eject",
     "deploy": "npm run build && firebase deploy",
     "test-firestore": "npm test -- --testPathPattern=firestore.test.ts --forceExit",
-    "test-react-app": "npm test -- --testPathIgnorePatterns=firestore.test.ts"
+    "test-react-app": "npm test -- --testPathIgnorePatterns=firestore.test.ts --watchAll=false"
   },
   "eslintConfig": {
     "extends": [

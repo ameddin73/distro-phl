@@ -1,0 +1,53 @@
+{
+  "kind": "identitytoolkit#DownloadAccountResponse",
+  "users": [
+    {
+      "localId": "H3STegtgxFqju8CtxBIFN7Qjwmeh",
+      "createdAt": "1617306322338",
+      "lastLoginAt": "1617306322338",
+      "displayName": "secondary user",
+      "photoUrl": "",
+      "passwordHash": "fakeHash:salt=fakeSaltRLfwKUrS6hc6hpjj7nfq:password=secondary password",
+      "salt": "fakeSaltRLfwKUrS6hc6hpjj7nfq",
+      "passwordUpdatedAt": 1617667551782,
+      "providerUserInfo": [
+        {
+          "providerId": "password",
+          "email": "secondary@gmail.com",
+          "federatedId": "secondary@gmail.com",
+          "rawId": "secondary@gmail.com",
+          "displayName": "secondary user",
+          "photoUrl": ""
+        }
+      ],
+      "validSince": "1617667551",
+      "email": "secondary@gmail.com",
+      "emailVerified": false,
+      "disabled": false
+    },
+    {
+      "localId": "yIEcR6DWPlKQ57X8l1xgdxKTiOjn",
+      "createdAt": "1617306308436",
+      "lastLoginAt": "1617306308436",
+      "displayName": "primary user",
+      "photoUrl": "",
+      "passwordHash": "fakeHash:salt=fakeSaltAIA48oL4OJSsurI3xqka:password=primary password",
+      "salt": "fakeSaltAIA48oL4OJSsurI3xqka",
+      "passwordUpdatedAt": 1617667551783,
+      "providerUserInfo": [
+        {
+          "providerId": "password",
+          "email": "primary@gmail.com",
+          "federatedId": "primary@gmail.com",
+          "rawId": "primary@gmail.com",
+          "displayName": "primary user",
+          "photoUrl": ""
+        }
+      ],
+      "validSince": "1617667551",
+      "email": "primary@gmail.com",
+      "emailVerified": false,
+      "disabled": false
+    }
+  ]
+}
