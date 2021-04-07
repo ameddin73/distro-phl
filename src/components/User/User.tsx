@@ -10,19 +10,17 @@ const User = () => {
     const match = useRouteMatch();
 
     return (
-        <>
-            <Switch>
-                <Route path={`${match.path}${PATHS.user.login}`}>
-                    <Login/>
-                </Route>
-                <PrivateRoute path={`${match.path}${PATHS.user.items}`}>
-                    <UserItems/>
-                </PrivateRoute>
-                <PrivateRoute path={`${match.path}${PATHS.user.create}`}>
-                    <AddItem/>
-                </PrivateRoute>
-            </Switch>
-        </>
+        <Switch>
+            <Route path={`${match.path}${PATHS.user.login}`}>
+                <Login/>
+            </Route>
+            <PrivateRoute path={`${match.path}${PATHS.user.items}`}>
+                <UserItems/>
+            </PrivateRoute>
+            <PrivateRoute path={`${match.path}${PATHS.user.create}`}>
+                <AddItem/>
+            </PrivateRoute>
+        </Switch>
     )
 };
 
