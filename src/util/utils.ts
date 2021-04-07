@@ -46,14 +46,14 @@ export namespace Converters {
                 ...item,
                 ...(item.hasExpiration && {expires: firebase.firestore.Timestamp.fromDate(item.expires)}),
                 created: firebase.firestore.FieldValue.serverTimestamp(),
-            }
+            };
         },
         fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): ItemInterface {
             const data = snapshot.data(options);
             return {
                 ...data as ItemInterface,
                 id: snapshot.id,
-            }
+            };
         },
     };
     export const itemTypeConverter: firebase.firestore.FirestoreDataConverter<ItemTypeInterface> = {

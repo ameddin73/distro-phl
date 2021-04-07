@@ -30,22 +30,23 @@ const useStyles = makeStyles((theme) => ({
 export type ItemListProps = {
     path: string,
     query?: FirestoreQuery,
-    itemAction?: (item: ItemInterface) => JSX.Element,
     filter?: (item: ItemInterface) => boolean,
+    itemAction?: (item: ItemInterface) => JSX.Element,
 }
 
-const IList = ({props: {path, query, filter, itemAction}}: { props: ItemListProps }) => {
-    const {data: items} = useFirestoreCollectionBuilder(path, query, Converters.itemConverter);
+const IList = ({path, query, filter, itemAction}: ItemListProps) => {
+    const {data} = useFirestoreCollectionBuilder(path, query, Converters.itemConverter);
+    const items = data as ItemInterface[];
 
     if (!items || items.length === 0)
         return (<NothingHere/>);
 
-    const itemList = filter ? items.filter(filter) : items;
+    const itemList: ItemInterface[] = filter ? items.filter(filter) : items;
 
     if (itemList.length === 0)
         return (<NothingHere/>);
     return (<>
-        {itemList.map((item => (<Item key={item.id} item={item} itemAction={itemAction}/>)))}
+        {itemList.map(((item: ItemInterface) => (<Item key={item.id} item={item} itemAction={itemAction}/>)))}
     </>)
 }
 
@@ -59,7 +60,7 @@ const ItemList = (props: ItemListProps) => {
                   justify="center"
                   spacing={2}
                   className={classes.container}>
-                <IList props={props}/>
+                <IList {...props}/>
             </Grid>
         </Container>
     );
