@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: '14'
       - run: npm install -g firebase-tools && npm ci
-      - run: firebase --project test-project emulators:start --only firestore
+      - run: firebase --project test-project emulators:exec --only firestore
       - run: npm test -- --watchAll-false --testPathPattern="irestore.test.ts --forceExit
         env:
           REACT_APP_FIREBASE_API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY_DEV }}
@@ -33,7 +33,7 @@ jobs:
         with:
           node-version: '14'
       - run: npm install -g firebase-tools && npm ci
-      - run: firebase --project test-project emulators:start --only firestore,auth --import src/test/firebase
+      - run: firebase --project test-project emulators:exec --only firestore,auth --import src/test/firebase
       - run: npm test -- --testPathIgnorePatterns="firestore.test.ts"
         env:
           REACT_APP_FIREBASE_API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY_DEV }}
