@@ -17,7 +17,7 @@ import firebase from "firebase";
 import {useHistory} from "react-router-dom";
 import useFirestoreAdd from "util/hooks/useFirestoreAdd";
 import useInput from "util/hooks/useInput";
-import {useItemTypes} from "../../../../util/hooks/useItemTypes";
+import {useItemTypes} from "util/hooks/useItemTypes";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -62,7 +62,7 @@ const AddItem = () => {
     const [addItem] = useFirestoreAdd(path, Converters.itemConverter);
 
     const [error, setError] = useState<string | null>(null);
-    const [imgLocalImgUrl, setLocalImgUrl] = useState<string>();
+    const [localImgUrl, setLocalImgUrl] = useState<string>();
     const [imgFile, setImgFile] = useState<File>();
     const [storageRef, setStorageRef] = useState<firebase.storage.Reference>();
     const [uploadRef, setUploadRef] = useState<HTMLInputElement | null>(null);
@@ -94,15 +94,14 @@ const AddItem = () => {
         uploadImg().then(() =>
             addItem({
                 active: true,
-                created: new Date(),
                 description: description,
                 displayName: title,
+                hasExpiration: types[type].expires,
                 ...(types[type].expires && {expires: expires}),
-                id: '',
                 image: storageRef?.fullPath ? storageRef.fullPath : DEFAULT_IMAGE,
                 type: type,
                 userName: user.displayName ? user.displayName : '',
-                uid: user.uid,
+                uid: user.uid
             })).catch((error: Error) => {
             console.error(error);
             setError('Something went wrong posting item.');
@@ -136,17 +135,18 @@ const AddItem = () => {
                 <Grid item xs>
                     <Card className={itemClasses.card}>
                         <form onSubmit={submit}>
-                            {imgLocalImgUrl ?
+                            {localImgUrl ?
                                 <CardMedia
                                     className={itemClasses.media}
-                                    image={imgLocalImgUrl}
-                                    title="Uploaded Item Image"/>
+                                    image={localImgUrl}
+                                    aria-label="uploaded-image"
+                                    title="Uploaded Image"/>
                                 :
                                 <Grid container
                                       alignItems="center"
                                       direction="column"
                                       className={`${classes.mediaBox} ${itemClasses.media}`}>
-                                    <IconButton onClick={() => {
+                                    <IconButton aria-label="upload-image" onClick={() => {
                                         if (uploadRef) uploadRef.click();
                                     }}>
                                         <CameraAlt className={classes.upload}/>
@@ -232,7 +232,7 @@ const AddItem = () => {
                     </Card>
                 </Grid>
             </Grid>
-            <input hidden id="imageInput" type="file" accept="image/*"
+            <input hidden id="imageInput" data-testid="image-input" type="file" accept="image/*"
                    onChange={changeFile}
                    ref={(ref) => setUploadRef(ref)}/>
         </>
