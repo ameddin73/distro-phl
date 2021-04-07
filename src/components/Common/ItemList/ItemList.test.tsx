@@ -23,8 +23,8 @@ afterEach(async () => await resetFirebase());
 
 it('should mount', async () => {
     customRender(<ItemList {...props}/>);
-    await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
-});
+    await waitFor(() => expect(document.querySelector('#loading')).toBeNull(), {timeout: 60000})
+}, 60000);
 
 it('renders all items', async () => {
     customRender(<ItemList {...props}/>);

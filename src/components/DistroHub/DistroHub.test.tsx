@@ -9,8 +9,8 @@ import DistroHub from "./DistroHub";
 beforeAll(setupFirebase);
 beforeEach(async () => {
     customRender(<DistroHub/>)
-    await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
-})
+    await waitFor(() => expect(document.querySelector('#loading')).toBeNull(), {timeout: 60000})
+}, 60000);
 afterEach(async () => await resetFirebase());
 
 it('should mount', async () => {
