@@ -63,6 +63,7 @@
     "@types/react-router-dom": "^5.1.7",
     "@types/uuid": "^8.3.0",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "firebase-admin": "^9.6.0",
     "jest-environment-jsdom": "^26.6.2",
     "lodash": "^4.17.21",
     "test": "file:src/test",
