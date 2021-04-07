@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: npm install -g firebase-tools && npm ci
+      - run:  npm ci && npm install firebase-tools
       - run: firebase --project test-project emulators:start --only firestore
       - run: npm test -- --watchAll-false --testPathPattern="irestore.test.ts --forceExit
         env:
@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: npm install -g firebase-tools && npm ci
+      - run:  npm ci && npm install firebase-tools
       - run: firebase --project test-project emulators:start --only firestore,auth --import src/test/firebase
       - run: npm test -- --testPathIgnorePatterns="firestore.test.ts"
         env:
