@@ -41,7 +41,7 @@ const IList = ({path, query, filter, itemAction}: ItemListProps) => {
     if (!items || items.length === 0)
         return (<NothingHere/>);
 
-    const itemList: ItemInterface[] = filter ? items.filter(filter) : items;
+    const itemList = filter ? items.filter(filter) : items;
 
     if (itemList.length === 0)
         return (<NothingHere/>);

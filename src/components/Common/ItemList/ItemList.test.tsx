@@ -30,7 +30,7 @@ it('renders all items', async () => {
     customRender(<ItemList {...props}/>);
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
     const items = screen.getAllByText('Supplied by:');
-    expect(items.length).toBeGreaterThan(3);
+    expect(items.length).toBeGreaterThanOrEqual(3);
 });
 
 it('filters items', async () => {
