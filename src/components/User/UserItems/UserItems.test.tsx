@@ -13,8 +13,8 @@ beforeAll(async () => {
 });
 beforeEach(async () => {
     customRender(<UserItems/>)
-    await waitFor(() => expect(document.querySelector('#loading')).toBeNull(), {timeout: 10000})
-}, 10000); // TODO why is this slow?
+    await waitFor(() => expect(document.querySelector('#loading')).toBeNull(), {timeout: 60000})
+}, 60000); // This is slow because the emulator has to create a new index
 afterAll(async () => await resetFirebase(true));
 
 it('should mount', () => {
