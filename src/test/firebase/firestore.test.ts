@@ -10,7 +10,7 @@ import {buildTypesObject, Converters} from "util/utils";
 import {TypesMocks} from "test/mocks/type.mock";
 import {ItemInterface, ItemTypeInterface} from "util/types";
 import {assertFails, assertSucceeds, initializeTestApp} from "@firebase/rules-unit-testing";
-import {firestore as testFirestore} from "firebase-admin/lib/firestore";
+import {firestore as testFirestore} from "firebase-admin";
 import {ItemMocks} from "../mocks/item.mock";
 import {Mutable} from "../types";
 import firebase from "firebase";
