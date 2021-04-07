@@ -16,7 +16,7 @@
   },
   "firestore": {
     "rules": "firestore.rules",
-    "indexes": "./src/test/firestore/firestore.indexes.json"
+    "indexes": "firestore.indexes.json"
   },
   "emulators": {
     "hosting": {

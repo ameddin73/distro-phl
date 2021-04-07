@@ -18,7 +18,7 @@ it('should mount', async () => {
 
 it('renders all items', async () => {
     const items = screen.getAllByText('Supplied by:');
-    expect(items.length).toBeGreaterThan(3);
+    expect(items.length).toBeGreaterThanOrEqual(3);
 });
 
 describe('when signed in', () => {
