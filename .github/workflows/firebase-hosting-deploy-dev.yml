@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: npm ci && npm test && npm run build
+      - run: npm ci && npm run build
         env:
           REACT_APP_FIREBASE_API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY_DEV }}
           REACT_APP_FIREBASE_AUTH_DOMAIN: distro-phl-2a16a.firebaseapp.com
