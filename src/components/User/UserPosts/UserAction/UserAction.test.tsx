@@ -18,7 +18,7 @@ beforeAll(async () => {
     await signIn();
 });
 beforeEach(async () => {
-    doc = getFirebase().firestore().collection(COLLECTIONS.items).doc(v4()).withConverter(Converters.itemConverter);
+    doc = getFirebase().firestore().collection(COLLECTIONS.posts).doc(v4()).withConverter(Converters.itemConverter);
     await doc.set({
         active: true,
         description: "",
@@ -81,7 +81,7 @@ it('should open fail snackbar', async () => {
         }),
     });
     doDelete();
-    await waitFor(() => screen.getByText('Item failed to delete.'));
+    await waitFor(() => screen.getByText('PostComponent failed to delete.'));
 })
 
 function doDelete(incomplete?: boolean) {

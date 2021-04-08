@@ -21,5 +21,5 @@ it('renders properly', () => {
 it('navigates when button clicked', async () => {
     customRender(<NothingHere/>);
     fireEvent.click(screen.getByText('Make a Post'));
-    expect(window.location.pathname).toBe(PATHS.public.createItem);
+    expect(window.location.pathname).toBe(PATHS.public.newPost);
 });

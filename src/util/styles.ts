@@ -1,6 +1,6 @@
 import {makeStyles} from "@material-ui/core/styles";
 
-export const itemStyle = makeStyles((theme) => ({
+export const postStyle = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
     },

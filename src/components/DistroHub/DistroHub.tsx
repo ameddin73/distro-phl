@@ -1,13 +1,13 @@
 import React from 'react';
-import ItemList from "../Common/ItemList/ItemList.lazy";
 import {COLLECTIONS} from "util/config";
 import {FirestoreQuery, ItemInterface} from "util/types";
 import {AuthCheck, useUser} from "reactfire";
 import ErrorMessage from "../Common/ErrorMessage";
 import {ErrorBoundary} from "react-error-boundary";
 import {Query} from "util/utils";
+import PostList from "../Common/PostList/PostList.lazy";
 
-const path = COLLECTIONS.items;
+const path = COLLECTIONS.posts;
 const orderBy = Query.orderByCreated;
 const query: FirestoreQuery = {
     where: [Query.whereActive, Query.whereNoExpiration],
@@ -15,22 +15,22 @@ const query: FirestoreQuery = {
 };
 
 const PublicHub = () => (
-    <ItemList path={path}
+    <PostList path={path}
               query={query}
-              itemAction={() => (<></>)}/>
+              postAction={() => (<></>)}/>
 );
 
 const UserHub = () => {
     const {data: user} = useUser();
     if (!user) return null;
 
-    const filter = ((item: ItemInterface) => item.uid !== user.uid);
+    const filter = ((post: ItemInterface) => post.uid !== user.uid);
 
     return (
-        <ItemList path={path}
+        <PostList path={path}
                   query={query}
                   filter={filter}
-                  itemAction={() => (<></>)}/>
+                  postAction={() => (<></>)}/>
     );
 };
 

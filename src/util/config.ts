@@ -8,32 +8,35 @@ export const FIREBASE_CONFIG = {
 };
 
 export const COLLECTIONS = {
-    items: '/items/',
-    types: '/item_types/',
+    posts: '/posts/',
     reservations: '/reservations/',
     confirmations: '/confirmations',
-    completed: '/completed_items',
 }
 
+const userPaths = {
+    base: '/user',
+    login: '/signIn',
+    posts: '/posts',
+    new: '/add',
+}
 export const PATHS = {
     public: {
         base: '/',
         distro: '/distro',
         user: '/user',
-        login: '/user/signIn',
-        userItems: '/user/items',
-        createItem: '/user/add',
+        login: `${userPaths.base}${userPaths.login}`,
+        userPosts: `${userPaths.base}${userPaths.posts}`,
+        newPost: `${userPaths.base}${userPaths.new}`,
     },
     user: {
-        login: '/signIn',
-        items: '/items',
-        create: '/add',
+        login: `${userPaths.login}`,
+        posts: `${userPaths.posts}`,
+        new: `${userPaths.new}`,
     },
 };
 
 export const DESCRIPTION_LENGTH = 250;
-export const DEFAULT_IMAGE = 'images/items/8df1bb3e-15c4-4896-be46-f1a14cd5cd94.24.05_pm.png'
 
 export const STORAGE = {
-    itemImage: 'images/items/',
+    postImages: 'images/posts/',
 }

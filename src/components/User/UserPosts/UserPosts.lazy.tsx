@@ -1,12 +1,12 @@
 import React, {lazy, Suspense} from 'react';
 import Loading from "../../Common/Loading";
 
-const LazyUserItems = lazy(() => import('./UserItems'));
+const LazyUserPosts = lazy(() => import('./UserPosts'));
 
-const UserItems = () => (
+const UserPosts = () => (
     <Suspense fallback={<Loading/>}>
-        <LazyUserItems/>
+        <LazyUserPosts/>
     </Suspense>
 );
 
-export default UserItems;
+export default UserPosts;

@@ -35,8 +35,8 @@ describe('redirects if signed in', () => {
     });
 
     it('redirects to history', async () => {
-        await load(PATHS.public.createItem);
-        expect(window.location.pathname).toBe(PATHS.public.createItem);
+        await load(PATHS.public.newPost);
+        expect(window.location.pathname).toBe(PATHS.public.newPost);
     });
 })
 
@@ -59,11 +59,11 @@ describe('signs in with email/password', () => {
 
     it('redirect successfully', async () => {
         await cleanup();
-        await load(PATHS.public.createItem);
+        await load(PATHS.public.newPost);
         fireEvent.change(screen.getByLabelText('email'), {target: {value: UserMocks.defaultUser.email}});
         fireEvent.change(screen.getByLabelText('password'), {target: {value: UserMocks.defaultUser.password}});
         fireEvent.click(screen.getByLabelText('sign-in'));
-        await waitFor(() => expect(window.location.pathname).toBe(PATHS.public.createItem));
+        await waitFor(() => expect(window.location.pathname).toBe(PATHS.public.newPost));
     })
 
     it('does not sign in with invalid email', async () => {
@@ -103,9 +103,9 @@ describe('sign in with google', () => {
 
     it('redirect successfully', async () => {
         await cleanup();
-        await load(PATHS.public.createItem);
+        await load(PATHS.public.newPost);
         googleSignIn();
-        await waitFor(() => expect(window.location.pathname).toBe(PATHS.public.createItem));
+        await waitFor(() => expect(window.location.pathname).toBe(PATHS.public.newPost));
     });
 
     function googleSignIn() {

@@ -1,10 +1,10 @@
 import React, {SyntheticEvent, useState} from 'react';
-import {itemStyle} from "util/styles";
+import {postStyle} from "util/styles";
 import {Button, Card, CardContent, CardMedia, FormControl, Grid, IconButton, InputLabel, MenuItem, Select, TextField, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import {CameraAlt} from "@material-ui/icons";
 import {grey} from "@material-ui/core/colors";
-import {COLLECTIONS, DEFAULT_IMAGE, DESCRIPTION_LENGTH, PATHS, STORAGE} from "util/config";
+import {COLLECTIONS, DESCRIPTION_LENGTH, PATHS, STORAGE} from "util/config";
 import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import 'date-fns';
 import DateFnsUtils from "@date-io/date-fns";
@@ -49,17 +49,17 @@ interface HTMLInputEvent extends SyntheticEvent {
     target: HTMLInputElement & EventTarget,
 }
 
-const AddItem = () => {
+const NewPost = () => {
     const classes = useStyles();
-    const itemClasses = itemStyle();
-    const path = COLLECTIONS.items;
+    const postClasses = postStyle();
+    const path = COLLECTIONS.posts;
 
     const history = useHistory();
     const storage = useStorage();
     const {data: user} = useUser();
 
     const types = useItemTypes();
-    const [addItem] = useFirestoreAdd(path, Converters.itemConverter);
+    const [newPost] = useFirestoreAdd(path, Converters.itemConverter);
 
     const [error, setError] = useState<string | null>(null);
     const [localImgUrl, setLocalImgUrl] = useState<string>();
@@ -77,7 +77,7 @@ const AddItem = () => {
             const file = event.target.files[0];
             setLocalImgUrl(URL.createObjectURL(file));
             setImgFile(getFileWithUUID(file));
-            setStorageRef(storage.ref().child(STORAGE.itemImage + file.name));
+            setStorageRef(storage.ref().child(STORAGE.postImages + file.name));
         } else {
             console.error('event.target.files[0] may be null');
             setError('Something went wrong attaching image.');
@@ -92,7 +92,7 @@ const AddItem = () => {
     const submit = (event: SyntheticEvent) => {
         event.preventDefault();
         uploadImg().then(() =>
-            addItem({
+            newPost({
                 active: true,
                 description: description,
                 displayName: title,
@@ -104,14 +104,14 @@ const AddItem = () => {
                 uid: user.uid
             })).catch((error: Error) => {
             console.error(error);
-            setError('Something went wrong posting item.');
+            setError('Something went wrong posting post.');
             if (storageRef) storageRef.delete().then(() => console.warn('Image deleted successfully.'))
                 .catch((error: Error) => {
                     console.error(error);
                     console.error('Delete failed for: ' + storageRef.fullPath + '. File may be orphaned.');
                 });
         });
-        history.push(PATHS.public.userItems, {addSuccess: true});
+        history.push(PATHS.public.userPosts, {addSuccess: true});
     };
 
     return (
@@ -122,7 +122,7 @@ const AddItem = () => {
                   className={classes.container}>
                 <Grid item xs>
                     <Typography variant="h5" color="primary" align="center" gutterBottom>
-                        Post a new item.
+                        New Post
                     </Typography>
                 </Grid>
                 {error && (
@@ -133,11 +133,11 @@ const AddItem = () => {
                     </Grid>
                 )}
                 <Grid item xs>
-                    <Card className={itemClasses.card}>
+                    <Card className={postClasses.card}>
                         <form onSubmit={submit}>
                             {localImgUrl ?
                                 <CardMedia
-                                    className={itemClasses.media}
+                                    className={postClasses.media}
                                     image={localImgUrl}
                                     aria-label="uploaded-image"
                                     title="Uploaded Image"/>
@@ -145,7 +145,7 @@ const AddItem = () => {
                                 <Grid container
                                       alignItems="center"
                                       direction="column"
-                                      className={`${classes.mediaBox} ${itemClasses.media}`}>
+                                      className={`${classes.mediaBox} ${postClasses.media}`}>
                                     <IconButton aria-label="upload-image" onClick={() => {
                                         if (uploadRef) uploadRef.click();
                                     }}>
@@ -239,4 +239,4 @@ const AddItem = () => {
     )
 };
 
-export default AddItem;
+export default NewPost;

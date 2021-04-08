@@ -30,21 +30,21 @@ describe('when user logged in', () => {
 
     it('render drawer when clicked if signed in', async () => {
         fireEvent.click(screen.getByText(UserMocks.defaultUser.name));
-        screen.getByText('Post an Item');
+        screen.getByText('Post an PostComponent');
         screen.getByText('My Items');
         screen.getByText('Sign Out');
     });
 
     it('navigates to add item', async () => {
         fireEvent.click(screen.getByText(UserMocks.defaultUser.name));
-        fireEvent.click(screen.getByText('Post an Item'));
-        expect(window.location.pathname).toBe(PATHS.public.createItem);
+        fireEvent.click(screen.getByText('Post an PostComponent'));
+        expect(window.location.pathname).toBe(PATHS.public.newPost);
     });
 
     it('navigates to my items', async () => {
         fireEvent.click(screen.getByText(UserMocks.defaultUser.name));
         fireEvent.click(screen.getByText('My Items'));
-        expect(window.location.pathname).toBe(PATHS.public.userItems);
+        expect(window.location.pathname).toBe(PATHS.public.userPosts);
     });
 
     it('signs out', async () => {

@@ -18,7 +18,7 @@ export namespace TypesMocks {
         },
         "medical-item": {
             "consumable": true,
-            "displayName": "Medical Item",
+            "displayName": "Medical PostComponent",
             "expires": false,
             "id": "medical-item",
             "index": 2
