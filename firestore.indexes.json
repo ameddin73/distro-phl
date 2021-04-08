@@ -23,6 +23,24 @@
           "order": "ASCENDING"
         },
         {
+          "fieldPath": "hasExpiration",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "created",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "items",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "active",
+          "order": "ASCENDING"
+        },
+        {
           "fieldPath": "uid",
           "order": "ASCENDING"
         },
