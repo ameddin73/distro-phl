@@ -64,20 +64,20 @@ const UserMenu = () => {
                     <Close/>
                 </IconButton>
                 <List>
-                    <RouterLink to={PATHS.public.createItem} onClick={toggleDrawer(false)}>
-                        <ListItem button key="new-item">
+                    <RouterLink to={PATHS.public.newPost} onClick={toggleDrawer(false)}>
+                        <ListItem button key="new-post">
                             <ListItemIcon>
                                 <Add/>
                             </ListItemIcon>
-                            <ListItemText primary="Post an Item"/>
+                            <ListItemText primary="New Post"/>
                         </ListItem>
                     </RouterLink>
-                    <RouterLink to={PATHS.public.userItems} onClick={toggleDrawer(false)}>
-                        <ListItem button key="my-items">
+                    <RouterLink to={PATHS.public.userPosts} onClick={toggleDrawer(false)}>
+                        <ListItem button key="my-posts">
                             <ListItemIcon>
                                 <ListIcon/>
                             </ListItemIcon>
-                            <ListItemText primary="My Items"/>
+                            <ListItemText primary="My Posts"/>
                         </ListItem>
                     </RouterLink>
                     <ListItem button key="sign-out" onClick={() => closeAndAction(() => auth.signOut())}>

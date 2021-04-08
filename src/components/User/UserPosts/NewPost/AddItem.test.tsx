@@ -2,7 +2,7 @@
  * @jest-environment test/jest-env
  */
 import React from 'react';
-import AddItem from './AddItem';
+import NewPost from './NewPost';
 import {customRender, resetFirebase, setupFirebase, signIn} from "test/utils";
 import {fireEvent, screen, waitFor} from "@testing-library/react";
 
@@ -20,7 +20,7 @@ beforeAll(async () => {
     await signIn();
 });
 beforeEach(async () => {
-    customRender(<AddItem/>);
+    customRender(<NewPost/>);
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
 });
 afterEach(async () => await resetFirebase());

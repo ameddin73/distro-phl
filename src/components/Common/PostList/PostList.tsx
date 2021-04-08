@@ -1,7 +1,7 @@
 import React from 'react';
 import {Container, Grid} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
-import Item from "../Item/Item.lazy";
+import PostComponent from "../PostComponent/PostComponent.lazy";
 import NothingHere from "../NothingHere/NothingHere.lazy";
 import {FirestoreQuery, ItemInterface} from "util/types";
 import {Converters} from "util/utils";
@@ -27,30 +27,30 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export type ItemListProps = {
+export type PostListProps = {
     path: string,
     query?: FirestoreQuery,
-    filter?: (item: ItemInterface) => boolean,
-    itemAction?: (item: ItemInterface) => JSX.Element,
+    filter?: (post: ItemInterface) => boolean,
+    postAction?: (post: ItemInterface) => JSX.Element,
 }
 
-const IList = ({path, query, filter, itemAction}: ItemListProps) => {
+const IList = ({path, query, filter, postAction}: PostListProps) => {
     const {data} = useFirestoreCollectionBuilder(path, query, Converters.itemConverter);
-    const items = data as ItemInterface[];
+    const posts = data as ItemInterface[];
 
-    if (!items || items.length === 0)
+    if (!posts || posts.length === 0)
         return (<NothingHere/>);
 
-    const itemList = filter ? items.filter(filter) : items;
+    const postList = filter ? posts.filter(filter) : posts;
 
-    if (itemList.length === 0)
+    if (postList.length === 0)
         return (<NothingHere/>);
     return (<>
-        {itemList.map(((item: ItemInterface) => (<Item key={item.id} item={item} itemAction={itemAction}/>)))}
+        {postList.map(((post: ItemInterface) => (<PostComponent key={post.id} post={post} postAction={postAction}/>)))}
     </>)
 }
 
-const ItemList = (props: ItemListProps) => {
+const PostList = (props: PostListProps) => {
     const classes = useStyles();
 
     return (
@@ -66,4 +66,4 @@ const ItemList = (props: ItemListProps) => {
     );
 }
 
-export default ItemList;
+export default PostList;

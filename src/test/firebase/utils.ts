@@ -35,9 +35,9 @@ export function teardownFirestore() {
 
 async function setItems(firestoreAdmin: firebase.firestore.Firestore, mock: ItemInterface, mock2: ItemInterface) {
     for (let i: number = 0; i < 5; i++) { // @ts-ignore
-        await firestoreAdmin.collection(COLLECTIONS.items).doc('preset-item-' + i).set(mock);
+        await firestoreAdmin.collection(COLLECTIONS.posts).doc('preset-item-' + i).set(mock);
     }
-    await firestoreAdmin.collection(COLLECTIONS.items).doc(mock2.id).set(mock2);
+    await firestoreAdmin.collection(COLLECTIONS.posts).doc(mock2.id).set(mock2);
 }
 
 async function setTypes(firestoreAdmin: firebase.firestore.Firestore, mock: ItemTypes) {

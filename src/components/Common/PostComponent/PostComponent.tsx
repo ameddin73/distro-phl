@@ -1,22 +1,22 @@
 import React, {useState} from 'react';
 import {Card, CardActionArea, CardContent, ClickAwayListener, Collapse, Grid, Typography} from "@material-ui/core";
-import {itemStyle} from "util/styles";
+import {postStyle} from "util/styles";
 import {ItemInterface} from 'util/types';
 import {DEFAULT_IMAGE} from "util/config";
 import {StorageImage} from "reactfire";
 import Loading from "../Loading";
 import {useItemTypes} from "util/hooks/useItemTypes";
 
-export type ItemProps = {
-    item: ItemInterface,
-    itemAction?: (item: ItemInterface) => JSX.Element,
+export type PostComponentProps = {
+    post: ItemInterface,
+    postAction?: (item: ItemInterface) => JSX.Element,
 }
 
-const Item = ({item, itemAction = (() => (<div/>))}: ItemProps) => {
-    const classes = itemStyle();
+const PostComponent = ({post, postAction = (() => (<div/>))}: PostComponentProps) => {
+    const classes = postStyle();
 
     const types = useItemTypes();
-    const {displayName, description, image, type, userName} = item;
+    const {displayName, description, image, type, userName} = post;
     const [openDesc, setOpenDesc] = useState(false);
 
     const clickCard = () => {
@@ -32,7 +32,7 @@ const Item = ({item, itemAction = (() => (<div/>))}: ItemProps) => {
             <ClickAwayListener onClickAway={clickAway}>
                 <Card className={classes.card}>
                     <CardActionArea onClick={clickCard}>
-                        <StorageImage suspense={true} placeHolder={<Loading/>} storagePath={image || DEFAULT_IMAGE} className={classes.media} alt={image ? item.displayName : 'Default Image'}/>
+                        <StorageImage suspense={true} placeHolder={<Loading/>} storagePath={image || DEFAULT_IMAGE} className={classes.media} alt={image ? post.displayName : 'Default Image'}/>
                         <CardContent>
                             <Typography variant="h5" component="h2">
                                 {displayName}
@@ -55,11 +55,11 @@ const Item = ({item, itemAction = (() => (<div/>))}: ItemProps) => {
                             </Collapse>
                         </CardContent>
                     </CardActionArea>
-                    {itemAction(item)}
+                    {postAction(post)}
                 </Card>
             </ClickAwayListener>
         </Grid>
     );
 }
 
-export default Item;
+export default PostComponent;

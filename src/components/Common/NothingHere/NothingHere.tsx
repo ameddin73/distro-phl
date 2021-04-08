@@ -21,7 +21,7 @@ const NothingHere = () => {
                     <Typography variant="h5" color="primary" align="center">Oops, theres nothing here.</Typography>
                 </Grid>
                 <Grid item xs>
-                    <RouterLink to={PATHS.public.createItem}>
+                    <RouterLink to={PATHS.public.newPost}>
                         <Button variant="contained" color="primary">Make a Post</Button>
                     </RouterLink>
                 </Grid>

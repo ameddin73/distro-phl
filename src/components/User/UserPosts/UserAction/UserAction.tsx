@@ -29,7 +29,7 @@ const UserAction = ({id}: ItemInterface) => {
 
     const [deleteAlert, setDeleteAlert] = useState(false);
     const openSnackbar = useContext(SnackbarContext);
-    const setInactive = useFirestoreUpdate(COLLECTIONS.items, id, Converters.itemConverter);
+    const setInactive = useFirestoreUpdate(COLLECTIONS.posts, id, Converters.itemConverter);
 
     const clickDelete = () => setDeleteAlert(true);
     const closeDeleteAlert = (doDelete: boolean) => {
@@ -39,7 +39,7 @@ const UserAction = ({id}: ItemInterface) => {
                 .then(() => openSnackbar('success', 'Deleted Successfully.'))
                 .catch(error => {
                     console.error(error);
-                    openSnackbar('error', 'Item failed to delete.');
+                    openSnackbar('error', 'PostComponent failed to delete.');
                 });
         }
     };

@@ -72,7 +72,7 @@ describe('testing framework', () => {
             delete testItem.expires;
         }
 
-        const query = firestoreAdmin.collection(COLLECTIONS.items).where('active', '==', true).withConverter(Converters.itemConverter);
+        const query = firestoreAdmin.collection(COLLECTIONS.posts).where('active', '==', true).withConverter(Converters.itemConverter);
 
         testCollection(query, (data: ItemInterface[]) => {
             expect(data.length).toBe(6);
@@ -111,7 +111,7 @@ describe('create item rules', () => {
         testDoc = _.clone(mocDoc);
         // @ts-ignore
         testDoc.created = 'string';
-        await assertFails(firestoreAuth.collection(COLLECTIONS.items).doc('test').set(testDoc));
+        await assertFails(firestoreAuth.collection(COLLECTIONS.posts).doc('test').set(testDoc));
         testDoc = _.clone(mocDoc);
         // @ts-ignore
         testDoc.description = true;
@@ -127,7 +127,7 @@ describe('create item rules', () => {
         testDoc = _.clone(mocDoc);
         // @ts-ignore
         testDoc.expires = 'string';
-        await assertFails(firestoreAuth.collection(COLLECTIONS.items).doc('test').set(testDoc));
+        await assertFails(firestoreAuth.collection(COLLECTIONS.posts).doc('test').set(testDoc));
         testDoc = _.clone(mocDoc);
         // @ts-ignore
         testDoc.image = true;
@@ -153,14 +153,14 @@ describe('create item rules', () => {
     it('tests hasAll rule', async () => {
         const testDoc: Mutable<ItemInterface> = _.clone(mocDoc);
         delete testDoc.description;
-        const testQuery = firestoreAuth.collection(COLLECTIONS.items).doc(mockItem.id);
+        const testQuery = firestoreAuth.collection(COLLECTIONS.posts).doc(mockItem.id);
         await assertFails(testQuery.set(testDoc));
     });
 
     it('tests hasOnly rule', async () => {
         const testDoc: Mutable<ItemInterface & { test: string }> = _.clone(mocDoc);
         testDoc.test = 'test';
-        const testQueryFail = firestoreAuth.collection(COLLECTIONS.items).doc(mockItem.id);
+        const testQueryFail = firestoreAuth.collection(COLLECTIONS.posts).doc(mockItem.id);
         await assertFails(testQueryFail.set(testDoc));
     });
 
@@ -184,7 +184,7 @@ describe('create item rules', () => {
         const testDoc: Mutable<ItemInterface> = _.clone(mocDoc);
         testDoc.active = false;
 
-        const testQuery = firestoreAuth.collection(COLLECTIONS.items).doc(mockItem.id);
+        const testQuery = firestoreAuth.collection(COLLECTIONS.posts).doc(mockItem.id);
 
         await assertFails(testQuery.set(testDoc));
     });
@@ -193,7 +193,7 @@ describe('create item rules', () => {
         const testDoc: Mutable<ItemInterface> = _.clone(mocDoc);
         testDoc.created = new Date('26 Mar 2021 00:00:00 GMT')
 
-        const testQuery = firestoreAuth.collection(COLLECTIONS.items).doc(mockItem.id);
+        const testQuery = firestoreAuth.collection(COLLECTIONS.posts).doc(mockItem.id);
 
         await assertFails(testQuery.set(testDoc));
 
@@ -207,14 +207,14 @@ describe('create item rules', () => {
         await assertSucceeds(queryAuthed.set(testDoc));
         // @ts-ignore
         delete testDoc.expires;
-        await assertFails(firestoreAuth.collection(COLLECTIONS.items).doc(mockItem.id).set(testDoc));
+        await assertFails(firestoreAuth.collection(COLLECTIONS.posts).doc(mockItem.id).set(testDoc));
     });
 
     it('tests hasExpiration false rule', async () => {
         const testDoc: Mutable<ItemInterface> = _.clone(mocDoc2);
         await assertSucceeds(queryAuthed2.set(testDoc));
         testDoc.hasExpiration = true;
-        await assertFails(firestoreAuth2.collection(COLLECTIONS.items).doc(mockItem2.id).set(testDoc));
+        await assertFails(firestoreAuth2.collection(COLLECTIONS.posts).doc(mockItem2.id).set(testDoc));
     });
 
     it('tests expiresLater rule', async () => {
@@ -262,7 +262,7 @@ describe('update item rules', () => {
         }));
 
         const newName: firebase.firestore.Firestore = initializeTestApp({projectId: PROJECT_ID, auth: {uid: UserMocks.defaultUser.uid, name: UserMocks.userTwo.name, email: UserMocks.userTwo.email}}).firestore();
-        const nameQuery = newName.collection(COLLECTIONS.items).doc(mockItem.id);
+        const nameQuery = newName.collection(COLLECTIONS.posts).doc(mockItem.id);
         await assertSucceeds(nameQuery.update({userName: UserMocks.userTwo.name}));
     });
 
@@ -280,12 +280,12 @@ describe('update item rules', () => {
     it('tests hasOnly rule', async () => {
         await assertFails(updateQueryAuthed.update({created: new Date()}));
         await assertFails(updateQueryAuthed.update({test: 'test'}));
-        await assertFails(firestoreAuth.collection(COLLECTIONS.items).doc(mockItem.id).update({hasExpiration: false}));
+        await assertFails(firestoreAuth.collection(COLLECTIONS.posts).doc(mockItem.id).update({hasExpiration: false}));
     });
 
     it('tests uidEqual rule', async () => {
         const newName: firebase.firestore.Firestore = initializeTestApp({projectId: PROJECT_ID, auth: {uid: UserMocks.userTwo.uid, name: UserMocks.userTwo.name, email: UserMocks.userTwo.email}}).firestore();
-        const nameQuery = newName.collection(COLLECTIONS.items).doc(mockItem.id);
+        const nameQuery = newName.collection(COLLECTIONS.posts).doc(mockItem.id);
         await assertFails(nameQuery.update({description: 'test'}));
     });
 
@@ -294,7 +294,7 @@ describe('update item rules', () => {
     });
 
     it('tests update expires only if hasExpires', async () => {
-        const testQuery = firestoreAuth2.collection(COLLECTIONS.items).doc(mockItem2.id);
+        const testQuery = firestoreAuth2.collection(COLLECTIONS.posts).doc(mockItem2.id);
         await assertSucceeds(testQuery.update({description: 'test'}));
         await assertFails(testQuery.update({expires: new Date('01 Jan 2070 00:00:00 GMT')}));
     });
@@ -321,46 +321,46 @@ describe('read item rules', () => {
     });
 
     it('tests reading a collection', async () => {
-        await assertFails(firestore.collection(COLLECTIONS.items).get());
-        await assertSucceeds(firestore.collection(COLLECTIONS.items).where('active', '==', true).where('hasExpiration', '==', false).get());
-        await assertSucceeds(firestore.collection(COLLECTIONS.items).where('active', '==', true).where('hasExpiration', '==', true).where('expires', '>', firebase.firestore.Timestamp.now()).get());
+        await assertFails(firestore.collection(COLLECTIONS.posts).get());
+        await assertSucceeds(firestore.collection(COLLECTIONS.posts).where('active', '==', true).where('hasExpiration', '==', false).get());
+        await assertSucceeds(firestore.collection(COLLECTIONS.posts).where('active', '==', true).where('hasExpiration', '==', true).where('expires', '>', firebase.firestore.Timestamp.now()).get());
     });
 
     it('tests seeActive rule for active', async () => {
-        let query = firestore.collection(COLLECTIONS.items).where('active', '==', true).where('hasExpiration', '==', false);
+        let query = firestore.collection(COLLECTIONS.posts).where('active', '==', true).where('hasExpiration', '==', false);
         await assertSucceeds(query.get());
 
-        query = firestore.collection(COLLECTIONS.items).where('active', '==', false).where('hasExpiration', '==', false);
+        query = firestore.collection(COLLECTIONS.posts).where('active', '==', false).where('hasExpiration', '==', false);
         await assertFails(query.get());
     });
 
     it('tests seeActive rule for authed', async () => {
-        const query = firestoreAuth.collection(COLLECTIONS.items).where('uid', '==', UserMocks.defaultUser.uid);
+        const query = firestoreAuth.collection(COLLECTIONS.posts).where('uid', '==', UserMocks.defaultUser.uid);
         await assertSucceeds(query.get());
         const collection = await query.get();
         expect(collection.docs.length).toBe(6);
     })
 
     it('tests seeUnexpired rule for expired', async () => {
-        let query = firestore.collection(COLLECTIONS.items).where('active', '==', true).where('hasExpiration', '==', false);
+        let query = firestore.collection(COLLECTIONS.posts).where('active', '==', true).where('hasExpiration', '==', false);
         await assertSucceeds(query.get());
 
-        query = firestore.collection(COLLECTIONS.items).where('active', '==', true).where('hasExpiration', '==', true).where('expires', '>', firebase.firestore.Timestamp.now());
+        query = firestore.collection(COLLECTIONS.posts).where('active', '==', true).where('hasExpiration', '==', true).where('expires', '>', firebase.firestore.Timestamp.now());
         await assertSucceeds(query.get());
 
-        query = firestore.collection(COLLECTIONS.items).where('active', '==', true).where('hasExpiration', '==', true);
+        query = firestore.collection(COLLECTIONS.posts).where('active', '==', true).where('hasExpiration', '==', true);
         await assertFails(query.get());
 
-        query = firestore.collection(COLLECTIONS.items).where('active', '==', true).where('hasExpiration', '==', false);
+        query = firestore.collection(COLLECTIONS.posts).where('active', '==', true).where('hasExpiration', '==', false);
         await assertSucceeds(query.get());
 
-        query = firestore.collection(COLLECTIONS.items).where('active', '==', true).where('hasExpiration', '==', true).where('expires', '<', firebase.firestore.Timestamp.now());
+        query = firestore.collection(COLLECTIONS.posts).where('active', '==', true).where('hasExpiration', '==', true).where('expires', '<', firebase.firestore.Timestamp.now());
         await assertFails(query.get());
     });
 
     it('tests seeUnexpired rule for authed', async () => {
-        await firestoreAdmin.collection(COLLECTIONS.items).doc(mockItem.id).update({expires: testFirestore.Timestamp.fromDate(new Date('26 Mar 2001 00:00:00 GMT'))});
-        const query = firestoreAuth.collection(COLLECTIONS.items).where('uid', '==', UserMocks.defaultUser.uid);
+        await firestoreAdmin.collection(COLLECTIONS.posts).doc(mockItem.id).update({expires: testFirestore.Timestamp.fromDate(new Date('26 Mar 2001 00:00:00 GMT'))});
+        const query = firestoreAuth.collection(COLLECTIONS.posts).where('uid', '==', UserMocks.defaultUser.uid);
         await assertSucceeds(query.get());
         const collection = await query.get();
         expect(collection.docs.length).toBe(6);
@@ -374,10 +374,10 @@ async function buildFirestore() {
     firestoreAuth2 = stores.firestoreAuth2;
     firestoreAdmin = stores.firestoreAdmin;
 
-    query = firestore.collection(COLLECTIONS.items).doc(mockItem.id).withConverter(Converters.itemConverter);
-    queryAuthed = firestoreAuth.collection(COLLECTIONS.items).doc(mockItem.id).withConverter(Converters.itemConverter);
-    queryAuthed2 = firestoreAuth2.collection(COLLECTIONS.items).doc(mockItem2.id).withConverter(Converters.itemConverter);
-    updateQueryAuthed = firestoreAuth.collection(COLLECTIONS.items).doc(mockItem.id);
+    query = firestore.collection(COLLECTIONS.posts).doc(mockItem.id).withConverter(Converters.itemConverter);
+    queryAuthed = firestoreAuth.collection(COLLECTIONS.posts).doc(mockItem.id).withConverter(Converters.itemConverter);
+    queryAuthed2 = firestoreAuth2.collection(COLLECTIONS.posts).doc(mockItem2.id).withConverter(Converters.itemConverter);
+    updateQueryAuthed = firestoreAuth.collection(COLLECTIONS.posts).doc(mockItem.id);
 
     await setupFirestore(true, false);
 }

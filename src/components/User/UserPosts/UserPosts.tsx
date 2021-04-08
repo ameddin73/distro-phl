@@ -1,16 +1,16 @@
 import React from 'react';
-import ItemList from "../../Common/ItemList/ItemList.lazy";
+import PostList from "../../Common/PostList/PostList.lazy";
 import {COLLECTIONS} from "util/config";
 import UserAction from "./UserAction/UserAction.lazy";
 import {FirestoreQuery, FirestoreQueryWhere, ItemInterface} from "util/types";
 import {useUser} from "reactfire";
 import {Query} from "util/utils";
 
-const UserItems = () => {
+const UserPosts = () => {
     const {data: user} = useUser();
     if (!user) return null;
 
-    const path = COLLECTIONS.items;
+    const path = COLLECTIONS.posts;
     const orderBy = Query.orderByCreated;
     const where: FirestoreQueryWhere = {
         fieldPath: 'uid',
@@ -23,9 +23,9 @@ const UserItems = () => {
     };
 
     return (
-        <ItemList path={path} query={query}
-                  itemAction={(item: ItemInterface) => (<UserAction {...item}/>)}/>
+        <PostList path={path} query={query}
+                  postAction={(post: ItemInterface) => (<UserAction {...post}/>)}/>
     )
 };
 
-export default UserItems;
+export default UserPosts;
