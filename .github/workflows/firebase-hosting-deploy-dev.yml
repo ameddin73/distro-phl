@@ -13,8 +13,10 @@ jobs:
   build_and_deploy_dev:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - run: npm ci && npm run build
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Build
+        run: npm ci && npm run build
         env:
           REACT_APP_FIREBASE_API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY_DEV }}
           REACT_APP_FIREBASE_AUTH_DOMAIN: distro-phl-2a16a.firebaseapp.com
@@ -22,12 +24,9 @@ jobs:
           REACT_APP_FIREBASE_STORAGE_BUCKET: distro-phl-2a16a.appspot.com
           REACT_APP_FIREBASE_MESSAGING_SENDER_ID: 663261428018
           REACT_APP_FIREBASE_APP_ID: 1:663261428018:web:832445e410cb63da62ff2b
-          TEST_PROJECT: test-project
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      - name: Deploy
+        uses: w9jds/firebase-action@master
         with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_DISTRO_PHL_2A16A }}'
-          channelId: live
-          projectId: distro-phl-2a16a
+          args: deploy
         env:
-          FIREBASE_CLI_PREVIEWS: hostingchannels
+          FIREBASE_TOKEN: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_DISTRO_PHL_2A16A }}'
