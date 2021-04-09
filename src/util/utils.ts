@@ -1,12 +1,7 @@
-import {FirestoreQuery, FirestoreQueryWhere, ItemInterface, ItemTypeInterface, ItemTypes} from "./types";
+import {FirestoreQuery, FirestoreQueryWhere} from "./types";
 import {v4} from "uuid";
 import firebase from "firebase";
-
-export function buildTypesObject(types: ItemTypeInterface[]): ItemTypes {
-    const object: { [key: string]: ItemTypeInterface } = {};
-    types.forEach((type: ItemTypeInterface) => (object[type.id] = type));
-    return object;
-}
+import {Post, Types} from "../components/Common/Post/types";
 
 export const getFileWithUUID = (file: File): File => {
     Object.defineProperty(file, 'name', {
@@ -40,32 +35,17 @@ export namespace Query {
 
 export namespace Converters {
 
-    export const itemConverter: firebase.firestore.FirestoreDataConverter<Omit<ItemInterface, 'id' | 'created'>> = {
-        toFirestore(item: ItemInterface): firebase.firestore.DocumentData {
+    export const PostConverter: firebase.firestore.FirestoreDataConverter<Post> = {
+        toFirestore(post: Post): firebase.firestore.DocumentData {
             return {
-                ...item,
-                ...(item.hasExpiration && {expires: firebase.firestore.Timestamp.fromDate(item.expires)}),
+                ...post,
+                ...(post.hasExpiration && post.expires && {expires: firebase.firestore.Timestamp.fromDate(post.expires)}),
                 created: firebase.firestore.FieldValue.serverTimestamp(),
             };
         },
-        fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): ItemInterface {
+        fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): Post {
             const data = snapshot.data(options);
-            return {
-                ...data as ItemInterface,
-                id: snapshot.id,
-            };
+            return new Types(data as Required<Post>);
         },
-    };
-    export const itemTypeConverter: firebase.firestore.FirestoreDataConverter<ItemTypeInterface> = {
-        toFirestore(): firebase.firestore.DocumentData {
-            throw new Error('Cannot update item types from here.');
-        },
-        fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): ItemTypeInterface {
-            const data = snapshot.data(options);
-            return {
-                ...data as ItemTypeInterface,
-                id: snapshot.id,
-            }
-        }
     };
 }

@@ -1,6 +1,6 @@
 import {FirestoreQuery, FirestoreQueryWhere} from "../types";
 import firebase from "firebase";
-import {useFirestore, useFirestoreCollectionData} from "reactfire";
+import {useFirestore, useFirestoreCollection} from "reactfire";
 
 function useFirestoreCollectionBuilder<T>(path: string,
                                           query: FirestoreQuery | undefined,
@@ -17,7 +17,7 @@ function useFirestoreCollectionBuilder<T>(path: string,
 
     if (converter) _query = _query.withConverter(converter);
 
-    return useFirestoreCollectionData<T>(_query, {idField: 'id'});
+    return useFirestoreCollection<T>(_query, {idField: 'id'});
 }
 
 export default useFirestoreCollectionBuilder;

@@ -1,11 +1,13 @@
 import React from 'react';
 import {Container, Grid} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
-import PostComponent from "../PostComponent/PostComponent.lazy";
 import NothingHere from "../NothingHere/NothingHere.lazy";
-import {FirestoreQuery, ItemInterface} from "util/types";
+import {FirestoreQuery} from "util/types";
 import {Converters} from "util/utils";
 import useFirestoreCollectionBuilder from "util/hooks/useFirestoreCollectionBuilder";
+import Post from '../Post/Post.lazy';
+import {Types} from "../Post/types";
+import {PostProps} from "../Post/Post";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -30,13 +32,13 @@ const useStyles = makeStyles((theme) => ({
 export type PostListProps = {
     path: string,
     query?: FirestoreQuery,
-    filter?: (post: ItemInterface) => boolean,
-    postAction?: (post: ItemInterface) => JSX.Element,
+    filter?: (post: Types) => boolean,
+    postAction?: (post: PostProps) => JSX.Element,
 }
 
 const IList = ({path, query, filter, postAction}: PostListProps) => {
-    const {data} = useFirestoreCollectionBuilder(path, query, Converters.itemConverter);
-    const posts = data as ItemInterface[];
+    const {data} = useFirestoreCollectionBuilder(path, query, Converters.PostConverter);
+    const posts = data as Types[];
 
     if (!posts || posts.length === 0)
         return (<NothingHere/>);
@@ -46,7 +48,7 @@ const IList = ({path, query, filter, postAction}: PostListProps) => {
     if (postList.length === 0)
         return (<NothingHere/>);
     return (<>
-        {postList.map(((post: ItemInterface) => (<PostComponent key={post.id} post={post} postAction={postAction}/>)))}
+        {postList.map((post: Types) => (<Post key={post.id} post={post} postAction={postAction}/>))}
     </>)
 }
 

@@ -17,7 +17,7 @@ const User = () => {
             <PrivateRoute path={`${match.path}${PATHS.user.posts}`}>
                 <UserPosts/>
             </PrivateRoute>
-            <PrivateRoute path={`${match.path}${PATHS.user.create}`}>
+            <PrivateRoute path={`${match.path}${PATHS.user.new}`}>
                 <AddItem/>
             </PrivateRoute>
         </Switch>

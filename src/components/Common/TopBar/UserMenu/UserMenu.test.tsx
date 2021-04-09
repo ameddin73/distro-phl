@@ -30,14 +30,14 @@ describe('when user logged in', () => {
 
     it('render drawer when clicked if signed in', async () => {
         fireEvent.click(screen.getByText(UserMocks.defaultUser.name));
-        screen.getByText('Post an PostComponent');
+        screen.getByText('Post an Post');
         screen.getByText('My Items');
         screen.getByText('Sign Out');
     });
 
     it('navigates to add item', async () => {
         fireEvent.click(screen.getByText(UserMocks.defaultUser.name));
-        fireEvent.click(screen.getByText('Post an PostComponent'));
+        fireEvent.click(screen.getByText('Post an Post'));
         expect(window.location.pathname).toBe(PATHS.public.newPost);
     });
 
