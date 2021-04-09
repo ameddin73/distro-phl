@@ -4,10 +4,10 @@ import {postStyle} from "util/styles";
 import {DEFAULT_IMAGE} from "util/config";
 import {StorageImage} from "reactfire";
 import Loading from "../Loading";
-import {Types} from "./types";
+import {PostInterface} from "./types";
 
 export type PostProps = {
-    post: Types
+    post: PostInterface
     postAction?: (post: PostProps) => JSX.Element,
 }
 

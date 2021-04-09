@@ -9,7 +9,7 @@ import {COLLECTIONS} from "util/config";
 import {Query} from "util/utils";
 import {FirestoreQueryWhere} from "util/types";
 import {UserMocks} from "test/mocks/user.mock";
-import {Types} from "../Post/types";
+import {PostInterface} from "../Post/types";
 
 const path = COLLECTIONS.posts;
 const orderBy = Query.orderByCreated;
@@ -35,7 +35,7 @@ it('renders all posts', async () => {
 });
 
 it('filters posts', async () => {
-    const filter = ((post: Types) => post.uid !== UserMocks.defaultUser.uid);
+    const filter = ((post: PostInterface) => post.uid !== UserMocks.defaultUser.uid);
     customRender(<PostList {...props} filter={filter}/>);
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
     const posts = screen.getAllByText('Supplied by:');
