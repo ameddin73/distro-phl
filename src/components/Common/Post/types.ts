@@ -56,7 +56,7 @@ export class PostBuilder implements Post {
     }
 }
 
-export class Types implements Required<Post> {
+export class PostInterface implements Required<Post> {
     private readonly _active: boolean;
     private readonly _created: Date;
     private readonly _description: string;
