@@ -7,8 +7,9 @@ import {customRender, rendersNothingHere, resetFirebase, setupFirebase} from "te
 import {screen, waitFor} from "@testing-library/react";
 import {COLLECTIONS} from "util/config";
 import {Query} from "util/utils";
-import {FirestoreQueryWhere, ItemInterface} from "util/types";
+import {FirestoreQueryWhere} from "util/types";
 import {UserMocks} from "test/mocks/user.mock";
+import {Types} from "../Post/types";
 
 const path = COLLECTIONS.posts;
 const orderBy = Query.orderByCreated;
@@ -26,19 +27,19 @@ it('should mount', async () => {
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull(), {timeout: 60000})
 }, 60000);
 
-it('renders all items', async () => {
+it('renders all posts', async () => {
     customRender(<PostList {...props}/>);
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
-    const items = screen.getAllByText('Supplied by:');
-    expect(items.length).toBeGreaterThanOrEqual(3);
+    const posts = screen.getAllByText('Supplied by:');
+    expect(posts.length).toBeGreaterThanOrEqual(3);
 });
 
-it('filters items', async () => {
-    const filter = ((item: ItemInterface) => item.uid !== UserMocks.defaultUser.uid);
+it('filters posts', async () => {
+    const filter = ((post: Types) => post.uid !== UserMocks.defaultUser.uid);
     customRender(<PostList {...props} filter={filter}/>);
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
-    const items = screen.getAllByText('Supplied by:');
-    expect(items.length).toBe(1);
+    const posts = screen.getAllByText('Supplied by:');
+    expect(posts.length).toBe(1);
 });
 
 it('renders NothingHere if query returns empty list', async () => {
@@ -55,7 +56,7 @@ it('renders NothingHere if query returns empty list', async () => {
     screen.getByText('Oops, theres nothing here.');
 });
 
-it('renders NothingHere if filter filters all items', async () => {
+it('renders NothingHere if filter filters all posts', async () => {
     const filter = (() => false);
     customRender(<PostList {...props} filter={filter}/>);
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull())

@@ -1,11 +1,12 @@
 import React from 'react';
 import {COLLECTIONS} from "util/config";
-import {FirestoreQuery, ItemInterface} from "util/types";
+import {FirestoreQuery} from "util/types";
 import {AuthCheck, useUser} from "reactfire";
 import ErrorMessage from "../Common/ErrorMessage";
 import {ErrorBoundary} from "react-error-boundary";
 import {Query} from "util/utils";
 import PostList from "../Common/PostList/PostList.lazy";
+import {Types} from "../Common/Post/types";
 
 const path = COLLECTIONS.posts;
 const orderBy = Query.orderByCreated;
@@ -24,7 +25,7 @@ const UserHub = () => {
     const {data: user} = useUser();
     if (!user) return null;
 
-    const filter = ((post: ItemInterface) => post.uid !== user.uid);
+    const filter = ((post: Types) => post.uid !== user.uid);
 
     return (
         <PostList path={path}

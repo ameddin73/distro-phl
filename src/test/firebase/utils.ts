@@ -1,12 +1,9 @@
-import {TypesMocks} from "test/mocks/type.mock";
-import {ItemInterface, ItemTypeInterface, ItemTypes} from "util/types";
 import {clearFirestoreData, initializeAdminApp, initializeTestApp} from "@firebase/rules-unit-testing";
 import firebase from "firebase";
 import {UserMocks} from "../mocks/user.mock";
-import {Mutable} from "../types";
 import {COLLECTIONS} from "util/config";
-import {ItemMocks} from "../mocks/item.mock";
-import _ from "lodash";
+import {PostMocks} from "../mocks/post.mock";
+import {Post} from "../../components/Common/Post/types";
 
 const PROJECT_ID = `${process.env.TEST_PROJECT}`;
 
@@ -25,26 +22,16 @@ export function getFirestoreUser({uid = UserMocks.defaultUser.uid, name = UserMo
 
 export async function setupFirestore(typesMock: boolean, itemMock: boolean) {
     const firestoreAdmin: firebase.firestore.Firestore = initializeAdminApp({projectId: PROJECT_ID}).firestore();
-    if (typesMock) await setTypes(firestoreAdmin, TypesMocks.defaultTypes);
-    if (itemMock) await setItems(firestoreAdmin, ItemMocks.defaultItem, ItemMocks.secondaryItem);
+    if (itemMock) await setItems(firestoreAdmin, PostMocks.defaultPost, PostMocks.secondaryPost);
 }
 
 export function teardownFirestore() {
     return clearFirestoreData({projectId: PROJECT_ID});
 }
 
-async function setItems(firestoreAdmin: firebase.firestore.Firestore, mock: ItemInterface, mock2: ItemInterface) {
+async function setItems(firestoreAdmin: firebase.firestore.Firestore, mock: Post, mock2: Post) {
     for (let i: number = 0; i < 5; i++) { // @ts-ignore
         await firestoreAdmin.collection(COLLECTIONS.posts).doc('preset-item-' + i).set(mock);
     }
     await firestoreAdmin.collection(COLLECTIONS.posts).doc(mock2.id).set(mock2);
-}
-
-async function setTypes(firestoreAdmin: firebase.firestore.Firestore, mock: ItemTypes) {
-    for (const mockType of Object.values(mock)) {
-        const id = mockType.id;
-        const mocDoc: Mutable<ItemTypeInterface> = _.clone(mockType);
-        delete mocDoc.id;
-        await firestoreAdmin.collection(COLLECTIONS.types).doc(id).set(mocDoc);
-    }
 }

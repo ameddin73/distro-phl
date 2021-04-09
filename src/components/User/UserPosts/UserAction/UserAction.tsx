@@ -2,11 +2,8 @@ import React, {useContext, useState} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
 import {Button, CardActions, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
-import {ItemInterface} from "util/types";
-import {Converters} from "util/utils";
 import {SnackbarContext} from "../../../Common/SnackbarProvider/SnackbarProvider";
-import useFirestoreUpdate from "util/hooks/useFirestoreUpdate";
-import {COLLECTIONS} from "../../../../util/config";
+import {PostProps} from "../../../Common/Post/Post";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -18,28 +15,26 @@ const useStyles = makeStyles((theme) => ({
     confirmDelete: {
         background: theme.palette.error.main,
         '&:hover': {
-            // @ts-ignore
-            background: theme.palette.error.secondary,
+            background: theme.palette.error.light,
         }
     },
 }));
 
-const UserAction = ({id}: ItemInterface) => {
+const UserAction = ({post}: PostProps) => {
     const classes = useStyles();
 
     const [deleteAlert, setDeleteAlert] = useState(false);
     const openSnackbar = useContext(SnackbarContext);
-    const setInactive = useFirestoreUpdate(COLLECTIONS.posts, id, Converters.itemConverter);
 
     const clickDelete = () => setDeleteAlert(true);
     const closeDeleteAlert = (doDelete: boolean) => {
         setDeleteAlert(false);
         if (doDelete) {
-            setInactive({active: false})
+            post.setActive(false)
                 .then(() => openSnackbar('success', 'Deleted Successfully.'))
                 .catch(error => {
                     console.error(error);
-                    openSnackbar('error', 'PostComponent failed to delete.');
+                    openSnackbar('error', 'Post failed to delete.');
                 });
         }
     };

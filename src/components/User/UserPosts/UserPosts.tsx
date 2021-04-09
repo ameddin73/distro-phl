@@ -2,9 +2,10 @@ import React from 'react';
 import PostList from "../../Common/PostList/PostList.lazy";
 import {COLLECTIONS} from "util/config";
 import UserAction from "./UserAction/UserAction.lazy";
-import {FirestoreQuery, FirestoreQueryWhere, ItemInterface} from "util/types";
+import {FirestoreQuery, FirestoreQueryWhere} from "util/types";
 import {useUser} from "reactfire";
 import {Query} from "util/utils";
+import {PostProps} from "../../Common/Post/Post";
 
 const UserPosts = () => {
     const {data: user} = useUser();
@@ -24,7 +25,7 @@ const UserPosts = () => {
 
     return (
         <PostList path={path} query={query}
-                  postAction={(post: ItemInterface) => (<UserAction {...post}/>)}/>
+                  postAction={(post: PostProps) => (<UserAction {...post}/>)}/>
     )
 };
 
