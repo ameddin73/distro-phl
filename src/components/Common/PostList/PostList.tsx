@@ -1,7 +1,7 @@
 import React from 'react';
 import {Container, Grid} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
-import NothingHere from "../NothingHere/NothingHere.lazy";
+import NothingHere from "../NothingHere/NothingHere";
 import {FirestoreQuery} from "util/types";
 import {Converters} from "util/utils";
 import useFirestoreCollectionBuilder from "util/hooks/useFirestoreCollectionBuilder";
@@ -36,9 +36,8 @@ export type PostListProps = {
     postAction?: (post: PostProps) => JSX.Element,
 }
 
-const IList = ({path, query, filter, postAction}: PostListProps) => {
-    const {data} = useFirestoreCollectionBuilder(path, query, Converters.PostConverter);
-    const posts = data as PostInterface[];
+const PList = ({path, query, filter, postAction}: PostListProps) => {
+    const {data: posts} = useFirestoreCollectionBuilder(path, query, Converters.PostConverter);
 
     if (!posts || posts.length === 0)
         return (<NothingHere/>);
@@ -59,10 +58,10 @@ const PostList = (props: PostListProps) => {
         <Container className={classes.container} maxWidth="md">
             <Grid container
                   alignItems="center"
-                  justify="center"
+                  justify="space-evenly"
                   spacing={2}
                   className={classes.container}>
-                <IList {...props}/>
+                <PList {...props}/>
             </Grid>
         </Container>
     );

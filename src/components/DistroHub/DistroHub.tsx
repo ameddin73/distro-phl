@@ -5,7 +5,7 @@ import {AuthCheck, useUser} from "reactfire";
 import ErrorMessage from "../Common/ErrorMessage";
 import {ErrorBoundary} from "react-error-boundary";
 import {Query} from "util/utils";
-import PostList from "../Common/PostList/PostList.lazy";
+import PostList from "../Common/PostList/PostList";
 import {PostInterface} from "../Common/Post/types";
 
 const path = COLLECTIONS.posts;

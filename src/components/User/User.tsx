@@ -1,10 +1,10 @@
 import React from 'react';
 import {PATHS} from "util/config";
-import Login from "./Login/Login.lazy";
-import UserPosts from "./UserPosts/UserPosts.lazy";
-import AddItem from "./UserPosts/NewPost/AddItem.lazy";
+import Login from "./Login/Login";
+import UserPosts from "./UserPosts/UserPosts";
 import {Route, Switch, useRouteMatch} from "react-router-dom";
 import PrivateRoute from "../Common/PrivateRoute";
+import NewPost from "./UserPosts/NewPost/NewPost";
 
 const User = () => {
     const match = useRouteMatch();
@@ -18,7 +18,7 @@ const User = () => {
                 <UserPosts/>
             </PrivateRoute>
             <PrivateRoute path={`${match.path}${PATHS.user.new}`}>
-                <AddItem/>
+                <NewPost/>
             </PrivateRoute>
         </Switch>
     )

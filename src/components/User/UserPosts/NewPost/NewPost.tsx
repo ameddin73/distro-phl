@@ -1,6 +1,6 @@
 import React, {SyntheticEvent, useState} from 'react';
 import {postStyle} from "util/styles";
-import {Button, Card, CardContent, CardMedia, Grid, IconButton, TextField, Typography} from "@material-ui/core";
+import {Button, Card, CardContent, CardMedia, FormControlLabel, Grid, IconButton, Switch, TextField, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import {CameraAlt} from "@material-ui/icons";
 import {grey} from "@material-ui/core/colors";
@@ -9,13 +9,13 @@ import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers"
 import 'date-fns';
 import DateFnsUtils from "@date-io/date-fns";
 import theme from "util/theme";
+import firebase from "firebase/app";
 import 'firebase/storage';
 import {Converters, getFileWithUUID} from "util/utils";
 import {useStorage, useUser} from "reactfire";
-import firebase from "firebase";
 import {useHistory} from "react-router-dom";
 import useFirestoreAdd from "util/hooks/useFirestoreAdd";
-import {PostBuilder} from "../../../Common/Post/types";
+import {Post, PostInterface} from "../../../Common/Post/types";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -37,10 +37,17 @@ const useStyles = makeStyles((theme) => ({
     },
     input: {
         width: '100%',
+        paddingBottom: theme.spacing(2),
+        float: 'left',
     },
     body: {
         fontSize: theme.typography.body2.fontSize,
-    }
+    },
+    error: {
+        color: theme.palette.error.light,
+        padding: theme.spacing(1),
+        maxWidth: '240px',
+    },
 }));
 
 interface HTMLInputEvent extends SyntheticEvent {
@@ -56,7 +63,15 @@ const NewPost = () => {
     const history = useHistory();
     const storage = useStorage();
 
-    const post = new PostBuilder({uid: user.uid, userName: user.displayName || 'Distro User'});
+    const [post, _setPost] = useState<Post>({active: true, description: '', name: '', hasExpiration: false, uid: user.uid, userName: user.displayName || 'Distro User'});
+
+    function setPost<T extends keyof Post>(key: T, value: Post[T]) {
+        _setPost({
+            ...post,
+            [key]: value,
+        })
+    }
+
     let postRef: firebase.firestore.DocumentReference;
 
     const [newPost] = useFirestoreAdd(path, Converters.PostConverter);
@@ -98,12 +113,12 @@ const NewPost = () => {
     };
     const submit = (event: SyntheticEvent) => {
         event.preventDefault();
+        setError('');
 
-        const complete = post.isComplete();
-        if (complete !== true) {
-            setError(complete);
-            return;
-        }
+        if (!post.description) setError('Description cannot be empty.');
+        if (!post.name) setError('Post name cannot be empty.');
+        if (post.hasExpiration && !post.expires) setError('Expiration cannot be empty.');
+        if (error) return;
 
         if (storageRef) {
             post.image = storageRef.fullPath;
@@ -112,7 +127,7 @@ const NewPost = () => {
                 cleanup(error);
             });
         }
-        newPost(post).then(ref => {
+        newPost(post as PostInterface).then(ref => {
             postRef = ref;
         }).catch(error => {
             setError('Something went wrong uploading post.');
@@ -128,19 +143,7 @@ const NewPost = () => {
                   direction="column"
                   alignItems="center"
                   className={classes.container}>
-                <Grid item xs>
-                    <Typography variant="h5" color="primary" align="center" gutterBottom>
-                        New Post
-                    </Typography>
-                </Grid>
-                {error && (
-                    <Grid item xs>
-                        <Typography variant="h5" color="primary" align="center" gutterBottom>
-                            {error}
-                        </Typography>
-                    </Grid>
-                )}
-                <Grid item xs>
+                <Grid item xs className={classes.container}>
                     <Card className={postClasses.card}>
                         <form onSubmit={submit}>
                             {localImgUrl ?
@@ -163,7 +166,7 @@ const NewPost = () => {
                             }
                             <CardContent>
                                 <TextField value={post.name}
-                                           onChange={event => post.name = event.target.value}
+                                           onChange={event => setPost('name', event.target.value)}
                                            inputProps={{className: classes.title}}
                                            margin="dense"
                                            fullWidth
@@ -172,24 +175,8 @@ const NewPost = () => {
                                            placeholder="Item Name"
                                            label="Name"
                                 />
-                                {post.hasExpiration && (
-                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                        <KeyboardDatePicker value={post.expires}
-                                                            onChange={date => post.expires = date as Date}
-                                                            className={classes.input}
-                                                            disableToolbar
-                                                            format="MM/dd/yyyy"
-                                                            margin="dense"
-                                                            id="expiration-date-picker"
-                                                            label="Expiration Date"
-                                                            KeyboardButtonProps={{
-                                                                'aria-label': 'change expires',
-                                                            }}
-                                        />
-                                    </MuiPickersUtilsProvider>
-                                )}
                                 <TextField value={post.description}
-                                           onChange={event => post.description = event.target.value}
+                                           onChange={event => setPost('description', event.target.value)}
                                            className={classes.input}
                                            inputProps={{
                                                className: classes.body,
@@ -204,10 +191,39 @@ const NewPost = () => {
                                            label="Description"
                                            helperText={post.description && post.description.length > 0 ? "Characters remaining: " + (DESCRIPTION_LENGTH - post.description.length) : ""}
                                 />
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            checked={post.hasExpiration}
+                                            onChange={event => setPost('hasExpiration', event.target.checked)}
+                                            name="has-expiration"
+                                            color="primary"
+                                            inputProps={{'aria-label': 'expiration-checkbox'}}
+                                        />
+                                    }
+                                    label="Expires"
+                                    className={classes.input}
+                                />
+                                {post.hasExpiration && (
+                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                        <KeyboardDatePicker value={post.expires}
+                                                            onChange={date => setPost('expires', date as Date)}
+                                                            className={classes.input}
+                                                            disableToolbar
+                                                            format="MM/dd/yyyy"
+                                                            margin="dense"
+                                                            id="expiration-date-picker"
+                                                            label="Expiration Date"
+                                                            KeyboardButtonProps={{
+                                                                'aria-label': 'change expires',
+                                                            }}
+                                        />
+                                    </MuiPickersUtilsProvider>
+                                )}
                                 <Grid container direction="column">
                                     <Grid item xs style={{display: 'flex', alignItems: 'center'}}>
-                                        <Typography variant="body2" noWrap style={{paddingRight: theme.spacing(1)}}>
-                                            Supplied by:
+                                        <Typography variant="body2" color="textSecondary" noWrap style={{paddingRight: theme.spacing(1)}}>
+                                            Posted by
                                         </Typography>
                                         <Typography variant="button" noWrap>
                                             {user.displayName}
@@ -215,6 +231,7 @@ const NewPost = () => {
                                     </Grid>
                                 </Grid>
                             </CardContent>
+                            <Typography variant="subtitle2" className={classes.error} noWrap={false}>{error}</Typography>
                             <Button type="submit"
                                     variant="contained"
                                     disableElevation

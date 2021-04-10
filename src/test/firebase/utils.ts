@@ -1,5 +1,5 @@
 import {clearFirestoreData, initializeAdminApp, initializeTestApp} from "@firebase/rules-unit-testing";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import {UserMocks} from "../mocks/user.mock";
 import {COLLECTIONS} from "util/config";
 import {PostMocks} from "../mocks/post.mock";
