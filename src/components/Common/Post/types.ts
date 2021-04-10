@@ -28,8 +28,6 @@ export class PostInterface implements Post {
     readonly userName: string;
     private readonly documentRef;
 
-    private readonly collectionRef = firebase.app().firestore().collection(COLLECTIONS.posts).withConverter(Converters.PostConverter);
-
     constructor(post: Required<Post>) {
         this.active = post.active;
         this.created = post.created;
@@ -44,7 +42,7 @@ export class PostInterface implements Post {
         this.id = post.id;
         this.image = post.image;
 
-        this.documentRef = this.collectionRef.doc(post.id);
+        this.documentRef = firebase.app().firestore().collection(COLLECTIONS.posts).withConverter(Converters.PostConverter).doc(post.id);
         this.uid = post.uid;
         this.userName = post.userName;
     }

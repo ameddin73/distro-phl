@@ -20,18 +20,18 @@ export function getFirestoreUser({uid = UserMocks.defaultUser.uid, name = UserMo
     return initializeTestApp({projectId: PROJECT_ID, auth: {uid: uid, name: name, email: email}}).firestore();
 }
 
-export async function setupFirestore(typesMock: boolean, itemMock: boolean) {
+export async function setupFirestore(typesMock: boolean, postMock: boolean) {
     const firestoreAdmin: firebase.firestore.Firestore = initializeAdminApp({projectId: PROJECT_ID}).firestore();
-    if (itemMock) await setItems(firestoreAdmin, PostMocks.defaultPost, PostMocks.secondaryPost);
+    if (postMock) await setPosts(firestoreAdmin, PostMocks.defaultPost, PostMocks.secondaryPost);
 }
 
 export function teardownFirestore() {
     return clearFirestoreData({projectId: PROJECT_ID});
 }
 
-async function setItems(firestoreAdmin: firebase.firestore.Firestore, mock: Post, mock2: Post) {
+async function setPosts(firestoreAdmin: firebase.firestore.Firestore, mock: Post, mock2: Post) {
     for (let i: number = 0; i < 5; i++) { // @ts-ignore
-        await firestoreAdmin.collection(COLLECTIONS.posts).doc('preset-item-' + i).set(mock);
+        await firestoreAdmin.collection(COLLECTIONS.posts).doc('preset-post-' + i).set(mock);
     }
     await firestoreAdmin.collection(COLLECTIONS.posts).doc(mock2.id).set(mock2);
 }
