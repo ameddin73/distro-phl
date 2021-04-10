@@ -1,7 +1,7 @@
 import {FirestoreQuery, FirestoreQueryWhere} from "./types";
 import {v4} from "uuid";
-import firebase from "firebase";
-import {Post, PostBuilder, PostInterface} from "../components/Common/Post/types";
+import firebase from "firebase/app";
+import {Post, PostInterface} from "../components/Common/Post/types";
 
 export const getFileWithUUID = (file: File): File => {
     Object.defineProperty(file, 'name', {
@@ -35,15 +35,15 @@ export namespace Query {
 
 export namespace Converters {
 
-    export const PostConverter: firebase.firestore.FirestoreDataConverter<Post> = {
-        toFirestore(post: PostBuilder): firebase.firestore.DocumentData {
+    export const PostConverter: firebase.firestore.FirestoreDataConverter<PostInterface> = {
+        toFirestore(post: Post): firebase.firestore.DocumentData {
             return {
                 ...post,
                 ...(post.hasExpiration && post.expires && {expires: firebase.firestore.Timestamp.fromDate(post.expires)}),
                 created: firebase.firestore.FieldValue.serverTimestamp(),
             };
         },
-        fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): Post {
+        fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): PostInterface {
             const data = snapshot.data(options);
             return new PostInterface(data as Required<Post>)
         },

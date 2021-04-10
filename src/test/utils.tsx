@@ -5,7 +5,7 @@ import {FIREBASE_CONFIG} from "util/config";
 import theme from "util/theme";
 import {render, RenderOptions, screen} from "@testing-library/react";
 import SnackbarProvider from "../components/Common/SnackbarProvider/SnackbarProvider";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import Loading from "../components/Common/Loading";
 import {BrowserRouter as Router} from "react-router-dom";
 import {UserMocks} from "./mocks/user.mock";

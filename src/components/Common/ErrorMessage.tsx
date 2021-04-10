@@ -14,12 +14,13 @@ const useStyles = makeStyles({
 const ErrorMessage = ({error}: FallbackProps) => {
     const classes = useStyles();
     const history = useHistory();
+    console.error(error)
 
     return (
         <>
             <Grid container direction="column" alignItems="center" alignContent="center" spacing={2} className={classes.body}>
                 <Grid item xs>
-                    <Typography role="alert" variant="h5" color="primary" align="center">{error.message}</Typography>
+                    <Typography role="alert" variant="h5" color="primary" align="center">Something went wrong.</Typography>
                 </Grid>
                 <Grid item xs>
                     <Button variant="contained" color="primary"

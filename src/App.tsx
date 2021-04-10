@@ -3,22 +3,22 @@ import {ThemeProvider} from '@material-ui/core';
 import 'firebase/auth';
 import 'firebase/firestore';
 import theme from "util/theme";
-import TopBar from "./components/Common/TopBar/TopBar.lazy";
-import DistroHub from "./components/DistroHub/DistroHub.lazy";
+import TopBar from "./components/Common/TopBar/TopBar";
+import DistroHub from "./components/DistroHub/DistroHub";
 import {PATHS} from "util/config";
-import User from "./components/User/User.lazy";
+import User from "./components/User/User";
 import {FirebaseAppProvider} from "reactfire";
 import {ErrorBoundary} from "react-error-boundary";
 import ErrorMessage from "./components/Common/ErrorMessage";
 import Loading from "./components/Common/Loading";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
-import SnackbarProvider from "./components/Common/SnackbarProvider/SnackbarProvider.lazy";
+import SnackbarProvider from "./components/Common/SnackbarProvider/SnackbarProvider";
 
 function App({config}: { config: Object }) {
 
     return (
         <ThemeProvider theme={theme}>
-            <FirebaseAppProvider firebaseConfig={config}>
+            <FirebaseAppProvider firebaseConfig={config} suspense={true}>
                 <ErrorBoundary FallbackComponent={ErrorMessage}>
                     <Router>
                         <TopBar/>

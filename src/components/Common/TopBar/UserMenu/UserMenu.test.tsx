@@ -4,7 +4,7 @@ import {customRender, setupFirebase, signIn} from "test/utils";
 import {fireEvent, screen, waitFor} from "@testing-library/react";
 import {UserMocks} from "../../../../test/mocks/user.mock";
 import {PATHS} from "util/config";
-import firebase from "firebase";
+import firebase from "firebase/app";
 
 beforeAll(setupFirebase);
 beforeEach(async () => {

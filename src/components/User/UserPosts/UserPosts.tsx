@@ -1,7 +1,7 @@
 import React from 'react';
-import PostList from "../../Common/PostList/PostList.lazy";
+import PostList from "../../Common/PostList/PostList";
 import {COLLECTIONS} from "util/config";
-import UserAction from "./UserAction/UserAction.lazy";
+import UserAction from "./UserAction/UserAction";
 import {FirestoreQuery, FirestoreQueryWhere} from "util/types";
 import {useUser} from "reactfire";
 import {Query} from "util/utils";

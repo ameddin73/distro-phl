@@ -4,10 +4,13 @@ import {makeStyles} from "@material-ui/styles";
 
 const useStyles = makeStyles({
     body: {
-        position: 'absolute',
-        left: '50%',
-        top: '25%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
+    progress: {
+        marginTop: '25%'
+    }
 });
 
 const Loading = () => {
@@ -15,7 +18,7 @@ const Loading = () => {
 
     return (
         <div className={classes.body}>
-            <CircularProgress id="loading"/>
+            <CircularProgress id="loading" className={classes.progress}/>
         </div>
     )
 };

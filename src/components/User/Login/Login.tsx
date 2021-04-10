@@ -3,7 +3,7 @@ import {Button, Card, Divider, FormControl, Grid, Input, InputLabel, Link, Typog
 import GoogleButton from "react-google-button";
 import {makeStyles} from "@material-ui/core/styles";
 import {CustomTheme} from "util/theme";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import {useAuth, useUser} from "reactfire";
 import {Redirect, useHistory} from "react-router-dom";
 import {PATHS} from "util/config";
@@ -158,8 +158,9 @@ const Login = () => {
                                 <Grid item xs>
                                     <GoogleButton
                                         onClick={() => {
-                                            auth.signInWithPopup(googleAuthProvider);
-                                            history.replace(referrer);
+                                            auth.signInWithPopup(googleAuthProvider).then(() =>
+                                                history.replace(referrer)
+                                            );
                                         }}/>
                                 </Grid>
                             </Grid>

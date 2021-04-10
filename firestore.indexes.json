@@ -1,7 +1,7 @@
 {
   "indexes": [
     {
-      "collectionGroup": "items",
+      "collectionGroup": "posts",
       "queryScope": "COLLECTION",
       "fields": [
         {
@@ -15,7 +15,7 @@
       ]
     },
     {
-      "collectionGroup": "items",
+      "collectionGroup": "posts",
       "queryScope": "COLLECTION",
       "fields": [
         {
@@ -33,7 +33,7 @@
       ]
     },
     {
-      "collectionGroup": "items",
+      "collectionGroup": "posts",
       "queryScope": "COLLECTION",
       "fields": [
         {
@@ -51,7 +51,7 @@
       ]
     },
     {
-      "collectionGroup": "items",
+      "collectionGroup": "posts",
       "queryScope": "COLLECTION",
       "fields": [
         {
