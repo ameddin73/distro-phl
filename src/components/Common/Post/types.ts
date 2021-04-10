@@ -26,8 +26,9 @@ export class PostInterface implements Post {
     readonly name: string;
     readonly uid: string;
     readonly userName: string;
-    private collectionRef = firebase.app().firestore().collection(COLLECTIONS.posts).withConverter(Converters.PostConverter);
     private readonly documentRef;
+
+    private readonly collectionRef = firebase.app().firestore().collection(COLLECTIONS.posts).withConverter(Converters.PostConverter);
 
     constructor(post: Required<Post>) {
         this.active = post.active;
@@ -48,7 +49,7 @@ export class PostInterface implements Post {
         this.userName = post.userName;
     }
 
-    setActive(active: boolean): Promise<void> {
+    setActive = (active: boolean): Promise<void> => {
         if (this.documentRef)
             return this.documentRef.update({active});
         return new Promise<void>(() => {

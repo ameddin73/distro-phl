@@ -45,6 +45,7 @@ export namespace Converters {
         },
         fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): PostInterface {
             const data = snapshot.data(options);
+            data.id = snapshot.id;
             return new PostInterface(data as Required<Post>)
         },
     };
