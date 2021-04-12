@@ -57,7 +57,6 @@ interface HTMLInputEvent extends SyntheticEvent {
 const NewPost = () => {
     const classes = useStyles();
     const postClasses = postStyle();
-    const path = COLLECTIONS.posts;
 
     const {data: user} = useUser();
     const history = useHistory();
@@ -72,9 +71,7 @@ const NewPost = () => {
         })
     }
 
-    let postRef: firebase.firestore.DocumentReference;
-
-    const [newPost] = useFirestoreAdd(path, Converters.PostConverter);
+    const [newPost] = useFirestoreAdd(COLLECTIONS.posts, Converters.PostConverter);
 
     const [error, setError] = useState<string | null>(null);
     const [localImgUrl, setLocalImgUrl] = useState<string>();
@@ -100,15 +97,21 @@ const NewPost = () => {
         setError('Something went wrong uploading image.');
         throw new Error('Error uploading image. Image file or storage reference was not defined.');
     };
+
+    let postRef: firebase.firestore.DocumentReference;
     const cleanup = (error: Error) => {
         console.error(error);
-        if (storageRef) storageRef.delete().then(() => console.warn('Image deleted successfully.'))
-            .catch((error: Error) => {
-                console.error(error);
-                console.error('Delete failed for: ' + storageRef.fullPath + '. File may be orphaned.');
-            });
+        if (storageRef) {
+            storageRef.delete().then(() => console.warn('Image deleted successfully.'))
+                .catch((error: Error) => {
+                    console.error(error);
+                    console.error('Delete failed for: ' + storageRef.fullPath + '. File may be orphaned.');
+                });
+        }
         if (postRef) {
-            postRef.delete();
+            postRef.delete().then(result => {
+                console.warn(result);
+            });
         }
     };
     const submit = (event: SyntheticEvent) => {
@@ -125,16 +128,19 @@ const NewPost = () => {
             uploadImg().catch((error: Error) => {
                 setError('Something went wrong uploading image.');
                 cleanup(error);
+                return;
             });
         }
         newPost(post as PostInterface).then(ref => {
             postRef = ref;
+            if (error !== '') cleanup(new Error('Error occurred during creation.'));
         }).catch(error => {
             setError('Something went wrong uploading post.');
             cleanup(error);
+            return;
         })
 
-        history.push(PATHS.public.userPosts, {addSuccess: true});
+        history.push(PATHS.public.userPosts);
     };
 
     return (
@@ -167,7 +173,7 @@ const NewPost = () => {
                             <CardContent>
                                 <TextField value={post.name}
                                            onChange={event => setPost('name', event.target.value)}
-                                           inputProps={{className: classes.title}}
+                                           inputProps={{className: classes.title, "aria-label": "name"}}
                                            margin="dense"
                                            fullWidth
                                            required
@@ -181,6 +187,7 @@ const NewPost = () => {
                                            inputProps={{
                                                className: classes.body,
                                                maxLength: DESCRIPTION_LENGTH,
+                                               "aria-label": "description",
                                            }}
                                            fullWidth
                                            required
@@ -213,10 +220,9 @@ const NewPost = () => {
                                                             format="MM/dd/yyyy"
                                                             margin="dense"
                                                             id="expiration-date-picker"
+                                                            aria-label="expiration-date-picker"
                                                             label="Expiration Date"
-                                                            KeyboardButtonProps={{
-                                                                'aria-label': 'change expires',
-                                                            }}
+                                                            inputProps={{'data-testid': 'expiration-date-picker'}}
                                         />
                                     </MuiPickersUtilsProvider>
                                 )}

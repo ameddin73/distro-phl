@@ -9,7 +9,7 @@ service cloud.firestore {
             allow create: if createPostRules();
             allow update: if updatePostRules();
             allow read: if readPostRules();
-            allow delete: if false;
+            allow delete: if request.auth.uid == resource.data.uid;
 
             function validatePostFields() {
                 let hasOnly = request.resource.data.keys().hasOnly(["active" , "created" , "description" , "name" , "hasExpiration" , "expires" , "image" , "uid" , "userName"]) ;

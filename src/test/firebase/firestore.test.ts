@@ -363,6 +363,30 @@ describe('read post rules', () => {
     })
 });
 
+describe('delete post rules', () => {
+    beforeAll(async () => {
+        await buildFirestore();
+    });
+    beforeEach(async () => {
+        await setupFirestore(true, false);
+        await queryAuthed.set(mocDoc);
+        await queryAuthed2.set(mocDoc2);
+    });
+    afterEach(async () => {
+        await teardownFirestore();
+    });
+
+    it('tests a valid delete', async () => {
+        await assertSucceeds(updateQueryAuthed.delete());
+    });
+
+    it('tests uidEqual rule', async () => {
+        const newName: firebase.firestore.Firestore = initializeTestApp({projectId: PROJECT_ID, auth: {uid: UserMocks.userTwo.uid, name: UserMocks.userTwo.name, email: UserMocks.userTwo.email}}).firestore();
+        const nameQuery = newName.collection(COLLECTIONS.posts).doc(mockPost.id);
+        await assertFails(nameQuery.delete());
+    });
+});
+
 async function buildFirestore() {
     const stores = await startFirestore();
     firestore = stores.firestore;

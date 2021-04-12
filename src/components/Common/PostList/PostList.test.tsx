@@ -21,6 +21,18 @@ const props = {path, query};
 beforeAll(setupFirebase);
 afterEach(async () => await resetFirebase());
 
+// Mock storage
+// @ts-ignore
+jest.mock('rxfire/storage', () => ({
+    ...jest.requireActual('rxfire/storage'),
+    getDownloadURL: () => {
+        const {Observable} = require('rxjs');
+        return new Observable((subscriber: any) => {
+            subscriber.next('public/logo192.png'); // TODO local default image
+        });
+    }
+}));
+
 it('should mount', async () => {
     customRender(<PostList {...props}/>);
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull(), {timeout: 60000})

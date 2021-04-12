@@ -75,7 +75,7 @@ export namespace Converters {
         fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): PostInterface {
             const data = snapshot.data(options);
             data.id = snapshot.id;
-            data.created = (data.created as firebase.firestore.Timestamp).toDate();
+            data.created = data.created ? (data.created as firebase.firestore.Timestamp).toDate() : undefined;
             data.expires = data.expires ? (data.expires as firebase.firestore.Timestamp).toDate() : undefined;
             return new PostInterface(data as Required<Post>)
         },
