@@ -17,15 +17,15 @@ it('should mount', async () => {
 });
 
 it('renders all items', async () => {
-    const items = screen.getAllByText('Supplied by:');
-    expect(items.length).toBeGreaterThanOrEqual(3);
+    const items = screen.getAllByText('Posted by');
+    expect(items.length).toBeGreaterThanOrEqual(5);
 });
 
 describe('when signed in', () => {
     beforeAll(async () => await signIn());
 
     it('filters items', async () => {
-        const items = screen.getAllByText('Supplied by:');
+        const items = screen.getAllByText('Posted by');
         expect(items.length).toBe(1);
     });
 })

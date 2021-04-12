@@ -36,7 +36,7 @@ export const PATHS = {
 };
 
 export const DESCRIPTION_LENGTH = 250;
-export const DEFAULT_IMAGE = 'images/posts/8df1bb3e-15c4-4896-be46-f1a14cd5cd94.24.05_pm.png'
+export const DEFAULT_IMAGE = 'images/posts/bread.JPG'
 
 export const STORAGE = {
     postImages: 'images/posts/',

@@ -5,7 +5,7 @@ import {FIREBASE_CONFIG} from "util/config";
 import theme from "util/theme";
 import {render, RenderOptions, screen} from "@testing-library/react";
 import SnackbarProvider from "../components/Common/SnackbarProvider/SnackbarProvider";
-import firebase from "firebase/app";
+import firebase from "firebase";
 import Loading from "../components/Common/Loading";
 import {BrowserRouter as Router} from "react-router-dom";
 import {UserMocks} from "./mocks/user.mock";
@@ -58,3 +58,15 @@ const Providers = ({children}: PropsWithChildren<any>) => (
         </FirebaseAppProvider>
     </ThemeProvider>
 );
+
+// Mock storage
+// @ts-ignore
+jest.mock('rxfire/storage', () => ({
+    ...jest.requireActual('rxfire/storage'),
+    getDownloadURL: () => {
+        const {Observable} = require('rxjs');
+        return new Observable((subscriber: any) => {
+            subscriber.next('public/logo192.png'); // TODO local default image
+        });
+    }
+}));

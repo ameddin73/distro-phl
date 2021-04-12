@@ -30,20 +30,20 @@ describe('when user logged in', () => {
 
     it('render drawer when clicked if signed in', async () => {
         fireEvent.click(screen.getByText(UserMocks.defaultUser.name));
-        screen.getByText('Post an Post');
-        screen.getByText('My Items');
+        screen.getByText('New Post');
+        screen.getByText('My Posts');
         screen.getByText('Sign Out');
     });
 
-    it('navigates to add item', async () => {
+    it('navigates to new post', async () => {
         fireEvent.click(screen.getByText(UserMocks.defaultUser.name));
-        fireEvent.click(screen.getByText('Post an Post'));
+        fireEvent.click(screen.getByText('New Post'));
         expect(window.location.pathname).toBe(PATHS.public.newPost);
     });
 
-    it('navigates to my items', async () => {
+    it('navigates to my posts', async () => {
         fireEvent.click(screen.getByText(UserMocks.defaultUser.name));
-        fireEvent.click(screen.getByText('My Items'));
+        fireEvent.click(screen.getByText('My Posts'));
         expect(window.location.pathname).toBe(PATHS.public.userPosts);
     });
 

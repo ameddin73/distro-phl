@@ -21,7 +21,7 @@ it('should mount', () => {
 });
 
 it('renders all posts', async () => {
-    const posts = screen.getAllByText('Supplied by:');
+    const posts = screen.getAllByText('Posted by');
     expect(posts.length).toBe(1);
 });
 
