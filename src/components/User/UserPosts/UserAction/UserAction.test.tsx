@@ -4,14 +4,15 @@
 import React from 'react';
 import UserAction from './UserAction';
 import {customRender, getFirebase, resetFirebase, setupFirebase, signIn} from "test/utils";
-import {COLLECTIONS, DEFAULT_IMAGE} from "util/config";
+import {COLLECTIONS} from "util/config";
 import {Converters} from "util/utils";
 import {UserMocks} from "test/mocks/user.mock";
-import {TypesMocks} from "test/mocks/type.mock";
 import {fireEvent, screen, waitFor, waitForElementToBeRemoved} from "@testing-library/react";
 import {v4} from 'uuid';
+import {PostInterface} from "../../../Common/Post/types";
 
 let doc: any;
+let post: PostInterface;
 
 beforeAll(async () => {
     await setupFirebase()
@@ -22,18 +23,16 @@ beforeEach(async () => {
     await doc.set({
         active: true,
         description: "",
-        displayName: "",
+        name: "",
         hasExpiration: false,
-        image: DEFAULT_IMAGE,
-        type: Object.keys(TypesMocks.defaultTypes)[0],
         uid: UserMocks.defaultUser.uid,
         userName: UserMocks.defaultUser.name,
     });
     const documentSnapshot = await doc.get();
     // @ts-ignore
-    const item = documentSnapshot.data();
+    post = documentSnapshot.data();
 
-    customRender(<UserAction {...item}/>)
+    customRender(<UserAction post={post}/>)
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull(), {timeout: 5000})
 });
 afterAll(async () => {
@@ -53,13 +52,13 @@ it('should close modal if canceled', async () => {
     await waitForElementToBeRemoved(() => screen.getByText("This can't be undone."))
 });
 
-it('should set item inactive', (done) => {
+it('should set post inactive', (done) => {
     doDelete();
 
     doc.onSnapshot((doc: any) => {
         // @ts-ignore
-        const item = doc.data();
-        if (!item.active) done();
+        const post = doc.data();
+        if (!post.active) done();
     });
 });
 
@@ -69,16 +68,10 @@ it('should open success snackbar', async () => {
 })
 
 it('should open fail snackbar', async () => {
-    getFirebase().firestore().collection = jest.fn().mockReturnValue({
-        doc: () => ({
-            withConverter: () => ({
-                update: jest.fn().mockImplementation(() => {
-                    return new Promise(() => {
-                        throw new Error('Mock error')
-                    });
-                }),
-            }),
-        }),
+    post.setActive = jest.fn().mockImplementation(() => {
+        return new Promise(() => {
+            throw new Error('Mock Error')
+        })
     });
     doDelete();
     await waitFor(() => screen.getByText('Post failed to delete.'));

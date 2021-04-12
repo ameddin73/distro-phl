@@ -9,7 +9,7 @@ import {fireEvent, screen, waitFor} from "@testing-library/react";
 // @ts-ignore
 global.File = class MockFile {
     name: string;
-    constructor(parts: (string | Blob | ArrayBuffer | ArrayBufferView)[], filename: string, properties ?: FilePropertyBag) {
+    constructor(parts: (string | Blob | ArrayBuffer | ArrayBufferView)[], filename: string) {
         this.name = filename;
     }
 }
@@ -29,9 +29,7 @@ it('should mount', () => {
 });
 
 it('renders all fields', () => {
-    screen.getByText('Post a new item.');
     screen.getByText('Name');
-    screen.getByText('Type');
     screen.getByText('Description');
     screen.getByText('Submit');
 });

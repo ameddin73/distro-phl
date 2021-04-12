@@ -12,15 +12,14 @@ const UserPosts = () => {
     if (!user) return null;
 
     const path = COLLECTIONS.posts;
-    const orderBy = Query.orderByCreated;
     const where: FirestoreQueryWhere = {
         fieldPath: 'uid',
         opStr: '==',
         value: user.uid,
     };
     const query: FirestoreQuery = {
-        where: [Query.whereActive, where],
-        orderBy,
+        where: [Query.where.active, where],
+        orderBy: [Query.orderBy.created],
     };
 
     return (

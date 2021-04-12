@@ -20,7 +20,7 @@ service cloud.firestore {
                 && request.resource.data.hasExpiration is bool //
                 && ((!request.resource.data.hasExpiration && !("expires" in request.resource.data.keys())) || //
                 (request.resource.data.expires is timestamp && request.resource.data.expires > request.time)) //
-                && (!("image" in request.resource.data.keys()) || request.resource.data.image.matches('images/posts/[0-9a-f-.]*.[a-z.]*')) //
+                && (!("image" in request.resource.data.keys()) || request.resource.data.image.matches('images/posts/[0-9a-f-.]*.[a-zA-Z.]*')) //
                 && request.resource.data.uid is string //
                 && request.auth.token.name == request.resource.data.userName;
                 return hasOnly && types;
@@ -38,16 +38,14 @@ service cloud.firestore {
                 let uidEqual = request.auth.uid == resource.data.uid;
                 let hasOnly = request.resource.data.diff(resource.data).affectedKeys().hasOnly(["active" , "description" , "name" , "expires" , "image" , "userName"]) ;
                 let activeOnly = !request.resource.data.diff(resource.data).affectedKeys().hasAny(["active"]) || request.resource.data.diff(resource.data).affectedKeys().hasOnly(["active"]);
+                let updateInactive = !request.resource.data.active || request.resource.data.diff(resource.data).affectedKeys().hasNone(["description" , "name" , "expires" , "image" , "userName"]);
                 let hasExpirationOrNoExpires = resource.data.hasExpiration || !request.resource.data.diff(resource.data).affectedKeys().hasAny(["expires"]);
-                return validatePostFields() && uidEqual && hasOnly && activeOnly && hasExpirationOrNoExpires;
+                return validatePostFields() && uidEqual && hasOnly && activeOnly && updateInactive && hasExpirationOrNoExpires;
             }
 
             function readPostRules() {
                 let seeActive = resource.data.active == true || request.auth.uid == resource.data.uid;
-                let seeUnexpired = !resource.data.hasExpiration || //
-                (request.time < resource.data.expires) || //
-                request.auth.uid == resource.data.uid; //
-                return seeActive && seeUnexpired;
+                return seeActive ;
             }
         }
     }

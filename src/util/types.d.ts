@@ -7,12 +7,13 @@ export type FirestoreQueryWhere = {
     fieldPath: string | FieldPath,
     opStr: WhereFilterOp,
     value: any
-}
+};
+export type FirestoreQueryOrderBy = {
+    fieldPath: string | FieldPath,
+    directionStr?: OrderByDirection
+};
 export type FirestoreQuery = {
-    where: FirestoreQueryWhere[],
-    orderBy?: {
-        fieldPath: string | FieldPath,
-        directionStr?: OrderByDirection
-    },
+    where?: FirestoreQueryWhere[],
+    orderBy?: FirestoreQueryOrderBy[],
     limit?: number,
-}
+};

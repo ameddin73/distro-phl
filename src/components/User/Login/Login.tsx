@@ -157,11 +157,7 @@ const Login = () => {
                                 </Grid>
                                 <Grid item xs>
                                     <GoogleButton
-                                        onClick={() => {
-                                            auth.signInWithPopup(googleAuthProvider).then(() =>
-                                                history.replace(referrer)
-                                            );
-                                        }}/>
+                                        onClick={() => auth.signInWithPopup(googleAuthProvider).then(() => <Redirect to={referrer}/>)}/>
                                 </Grid>
                             </Grid>
                         </form>

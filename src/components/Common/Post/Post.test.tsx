@@ -6,8 +6,9 @@ import {screen, waitFor} from "@testing-library/react";
 import {customRender, resetFirebase, setupFirebase} from "test/utils";
 import Post from "./Post";
 import {PostMocks} from "test/mocks/post.mock";
+import {PostInterface} from "./types";
 
-const mockDefaultPost = PostMocks.defaultPost;
+const mockDefaultPost = PostMocks.defaultPost as PostInterface;
 const testPostActionText = 'test post action text';
 
 const TestPostAction = () => (
@@ -15,7 +16,7 @@ const TestPostAction = () => (
 )
 beforeAll(setupFirebase);
 beforeEach(async () => {
-    customRender(<Post id={mockDefaultPost.id}/>);
+    customRender(<Post post={mockDefaultPost}/>);
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull(), {timeout: 60000})
 }, 60000);
 afterEach(async () => await resetFirebase());
@@ -30,6 +31,6 @@ it('renders post details properly', async () => {
 });
 
 it('renders post action properly', async () => {
-    customRender(<Post id={mockDefaultPost.id} postAction={TestPostAction}/>);
+    customRender(<Post post={mockDefaultPost} postAction={TestPostAction}/>);
     await waitFor(() => screen.getByText(testPostActionText));
 });

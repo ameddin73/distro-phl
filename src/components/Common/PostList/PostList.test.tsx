@@ -12,10 +12,9 @@ import {UserMocks} from "test/mocks/user.mock";
 import {PostInterface} from "../Post/types";
 
 const path = COLLECTIONS.posts;
-const orderBy = Query.orderByCreated;
 const query = {
-    where: [Query.whereActive, Query.whereNoExpiration],
-    orderBy,
+    where: [Query.where.active],
+    orderBy: [Query.orderBy.created],
 }
 const props = {path, query};
 
@@ -30,7 +29,7 @@ it('should mount', async () => {
 it('renders all posts', async () => {
     customRender(<PostList {...props}/>);
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
-    const posts = screen.getAllByText('Supplied by:');
+    const posts = screen.getAllByText('Posted by');
     expect(posts.length).toBeGreaterThanOrEqual(3);
 });
 
@@ -38,7 +37,7 @@ it('filters posts', async () => {
     const filter = ((post: PostInterface) => post.uid !== UserMocks.defaultUser.uid);
     customRender(<PostList {...props} filter={filter}/>);
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
-    const posts = screen.getAllByText('Supplied by:');
+    const posts = screen.getAllByText('Posted by');
     expect(posts.length).toBe(1);
 });
 
@@ -49,7 +48,7 @@ it('renders NothingHere if query returns empty list', async () => {
         value: 'fake-name',
     }
     const newQuery = {
-        where: [Query.whereActive, Query.whereNoExpiration, newWhere],
+        where: [Query.where.active, newWhere],
     };
     customRender(<PostList path={path} query={newQuery}/>);
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull())

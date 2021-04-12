@@ -104,17 +104,18 @@ describe('sign in with google', () => {
     it('redirect successfully', async () => {
         await cleanup();
         await load(PATHS.public.newPost);
-        googleSignIn();
+        await googleSignIn();
         await waitFor(() => expect(window.location.pathname).toBe(PATHS.public.newPost));
     });
 
-    function googleSignIn() {
+    async function googleSignIn() {
         getFirebase().auth().signInWithPopup = jest.fn().mockImplementation(() => {
             const {getFirebase: fb} = require("test/utils");
             const {UserMocks: UM} = require("test/mocks/user.mock");
             return fb().auth().signInWithEmailAndPassword(UM.defaultUser.email, UM.defaultUser.password);
         });
         fireEvent.click(screen.getByText('Sign in with Google'));
+        await getFirebase().auth().currentUser;
     }
 });
 
