@@ -58,15 +58,3 @@ const Providers = ({children}: PropsWithChildren<any>) => (
         </FirebaseAppProvider>
     </ThemeProvider>
 );
-
-// Mock storage
-// @ts-ignore
-jest.mock('rxfire/storage', () => ({
-    ...jest.requireActual('rxfire/storage'),
-    getDownloadURL: () => {
-        const {Observable} = require('rxjs');
-        return new Observable((subscriber: any) => {
-            subscriber.next('public/logo192.png'); // TODO local default image
-        });
-    }
-}));
