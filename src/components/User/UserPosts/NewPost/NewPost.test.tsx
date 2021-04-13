@@ -5,10 +5,10 @@ import React from 'react';
 import NewPost from './NewPost';
 import {customRender, getFirebase, resetFirebase, setupFirebase, signIn} from "test/utils";
 import {fireEvent, screen, waitFor} from "@testing-library/react";
-import {PostMocks} from "../../../../test/mocks/post.mock";
-import {COLLECTIONS, PATHS, STORAGE} from "../../../../util/config";
+import {PostMocks} from "test/mocks/post.mock";
+import {COLLECTIONS, PATHS, STORAGE} from "util/config";
 import {v4} from "uuid";
-import {Converters} from "../../../../util/utils";
+import {Converters} from "util/utils";
 import firebase from "firebase/app";
 
 // @ts-ignore

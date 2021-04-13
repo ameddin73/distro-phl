@@ -2,22 +2,10 @@
  * @jest-environment test/jest-env
  */
 import React from 'react';
-import UserPosts from './UserPosts';
 import {customRender, resetFirebase, setupFirebase, signIn} from "test/utils";
 import {screen, waitFor} from "@testing-library/react";
 import {UserMocks} from "../../../test/mocks/user.mock";
-
-// Mock storage
-// @ts-ignore
-jest.mock('rxfire/storage', () => ({
-    ...jest.requireActual('rxfire/storage'),
-    getDownloadURL: () => {
-        const {Observable} = require('rxjs');
-        return new Observable((subscriber: any) => {
-            subscriber.next('public/logo192.png'); // TODO local default image
-        });
-    }
-}));
+import UserPosts from './UserPosts';
 
 beforeAll(async () => {
     await setupFirebase()

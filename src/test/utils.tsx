@@ -13,6 +13,18 @@ import {UserMocks} from "./mocks/user.mock";
 const PROJECT_ID = `${process.env.TEST_PROJECT}`;
 let firebaseApp: firebase.app.App;
 
+// Mock storage
+// @ts-ignore
+jest.mock('rxfire/storage', () => ({
+    ...jest.requireActual('rxfire/storage'),
+    getDownloadURL: () => {
+        const {Observable} = require('rxjs');
+        return new Observable((subscriber: any) => {
+            subscriber.next('public/logo192.png'); // TODO local default image
+        });
+    }
+}));
+
 export function setupFirebase() {
     const firebaseConfig = FIREBASE_CONFIG;
     firebaseConfig.projectId = PROJECT_ID;
