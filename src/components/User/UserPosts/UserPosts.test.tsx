@@ -4,7 +4,7 @@
 import React from 'react';
 import {customRender, resetFirebase, setupFirebase, signIn} from "test/utils";
 import {screen, waitFor} from "@testing-library/react";
-import {UserMocks} from "../../../test/mocks/user.mock";
+import {UserMocks} from "test/mocks/user.mock";
 import UserPosts from './UserPosts';
 
 beforeAll(async () => {

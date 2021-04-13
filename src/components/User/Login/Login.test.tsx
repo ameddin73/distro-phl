@@ -15,6 +15,7 @@ beforeAll(async () => {
 });
 
 afterEach(async () => await resetFirebase());
+afterAll(async () => await resetFirebase(true));
 
 it('should mount', () => {
     customRender(<Login/>);
