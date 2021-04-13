@@ -3,11 +3,12 @@
  */
 import React from 'react';
 import {fireEvent, screen} from "@testing-library/react";
-import {customRender, rendersNothingHere, setupFirebase} from "test/utils";
+import {customRender, rendersNothingHere, setupFirebase, teardownFirebase} from "test/utils";
 import NothingHere from "./NothingHere";
 import {PATHS} from "../../../util/config";
 
 beforeAll(setupFirebase);
+afterAll(teardownFirebase);
 
 it('should mount', () => {
     customRender(<NothingHere/>);

@@ -8,6 +8,7 @@ import TopBar from "./TopBar";
 import {PATHS} from "../../../util/config";
 
 beforeAll(setupFirebase);
+afterAll(teardownFirebase);
 
 it('should mount', () => {
     customRender(<TopBar/>);

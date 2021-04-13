@@ -42,6 +42,11 @@ export async function resetFirebase(signOut?: boolean) {
     if (signOut) await firebase.auth().signOut();
 }
 
+export async function teardownFirebase() {
+    await resetFirebase(true);
+    await firebaseApp.delete();
+}
+
 export function getFirebase() {
     return firebaseApp;
 }

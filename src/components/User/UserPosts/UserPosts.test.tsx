@@ -2,7 +2,7 @@
  * @jest-environment test/jest-env
  */
 import React from 'react';
-import {customRender, resetFirebase, setupFirebase, signIn} from "test/utils";
+import {customRender, setupFirebase, signIn, teardownFirebase} from "test/utils";
 import {screen, waitFor} from "@testing-library/react";
 import {UserMocks} from "test/mocks/user.mock";
 import UserPosts from './UserPosts';
@@ -15,7 +15,7 @@ beforeEach(async () => {
     customRender(<UserPosts/>)
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull(), {timeout: 60000})
 }, 60000); // This is slow because the emulator has to create a new index
-afterAll(async () => await resetFirebase(true));
+afterAll(teardownFirebase);
 
 it('should mount', () => {
 });
