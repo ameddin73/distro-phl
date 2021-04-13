@@ -144,7 +144,6 @@ const NewPost = () => {
         }).catch(error => {
             setError('Something went wrong uploading post.');
             cleanup(error);
-            return;
         })
     };
 

@@ -23,6 +23,8 @@ global.URL.createObjectURL = jest.fn();
 global.URL.createObjectURL = ({name}) => name;
 
 let postRef: firebase.firestore.Query;
+let unsubscribe = () => {
+};
 
 beforeAll(async () => {
     await setupFirebase();
@@ -33,8 +35,14 @@ beforeEach(async () => {
     customRender(<NewPost/>);
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
 });
-afterEach(async () => await resetFirebase());
-afterAll(teardownFirebase);
+afterEach(async () => {
+    unsubscribe();
+    await resetFirebase()
+});
+afterAll(async () => {
+    await new Promise(r => setTimeout(r, 30000));
+    await teardownFirebase();
+}, 40000);
 
 describe('validate form', () => {
     it('should mount', () => {
@@ -146,11 +154,11 @@ async function setupFailure(putPromise: Promise<void>, path: string) {
     fireEvent.click(screen.getByLabelText('upload-image'));
     fireEvent.change(screen.getByTestId('image-input'), {target: {files: [new File(['parts'], 'filename.jpeg')]}})
 
-    const testName = createPost(false);
+    const testName = await createPost(false);
     await waitFor(() => expect(deleteSpy).toBeCalled());
 
     let gone = false;
-    postRef.onSnapshot(snapshot => {
+    unsubscribe = postRef.onSnapshot(snapshot => {
         if (!snapshot.docs.find(post => post.data().name === testName)) gone = true;
     });
     await waitFor(() => gone);

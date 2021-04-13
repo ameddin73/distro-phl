@@ -15,6 +15,8 @@ import {wait} from "@testing-library/user-event/dist/utils";
 
 const PROJECT_ID = `${process.env.TEST_PROJECT}`;
 let firebaseApp: firebase.app.App;
+let firestore: firebase.firestore.Firestore;
+let auth: firebase.auth.Auth;
 
 // Mock storage
 // @ts-ignore
@@ -29,29 +31,31 @@ jest.mock('rxfire/storage', () => ({
 }));
 
 export function setupFirebase() {
-    const firebaseConfig = FIREBASE_CONFIG;
-    firebaseConfig.projectId = PROJECT_ID;
-    firebaseApp = firebase.initializeApp(firebaseConfig);
-    firebaseApp.firestore().useEmulator('localhost', 8080);
-    firebaseApp.auth().useEmulator('http://localhost:9099');
+    firebaseApp = firebase.initializeApp({apiKey: FIREBASE_CONFIG.apiKey, projectId: PROJECT_ID, storageBucket: 'fake-bucket'});
+    firestore = firebaseApp.firestore();
+    auth = firebaseApp.auth();
+    firestore.useEmulator('localhost', 8080);
+    auth.useEmulator('http://localhost:9099');
 }
 
 export async function resetFirebase(signOut?: boolean) {
-    const firestore = firebaseApp.firestore();
     await firestore.terminate();
     await firestore.clearPersistence();
-    firebaseApp.firestore().useEmulator('localhost', 8080);
+    firestore = firebaseApp.firestore();
+    firestore.useEmulator('localhost', 8080);
 
-    if (signOut) await firebaseApp.auth().signOut();
+    if (signOut) await auth.signOut();
 }
 
 export async function teardownFirebase() {
     await wait();
-    const firestore = firebaseApp.firestore();
     await firestore.terminate();
     await firestore.clearPersistence();
-    await firebaseApp.auth().signOut();
+    await auth.signOut();
     await firebaseApp.delete();
+    for (const app of firebase.apps) {
+        await app.delete();
+    }
 }
 
 export function getFirebase() {
@@ -61,7 +65,7 @@ export function getFirebase() {
 export const customRender = (ui: React.ReactElement, options?: RenderOptions) => render(ui, {wrapper: Providers, ...options});
 
 export function signIn(user: UserMocks.UserType = UserMocks.defaultUser) {
-    return firebaseApp.auth().signInWithEmailAndPassword(user.email, user.password);
+    return auth.signInWithEmailAndPassword(user.email, user.password);
 }
 
 export const rendersNothingHere = () => {

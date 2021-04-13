@@ -13,6 +13,8 @@ import {PostInterface} from "../../../Common/Post/types";
 
 let doc: any;
 let post: PostInterface;
+let unsubscribe = () => {
+};
 
 beforeAll(async () => {
     await setupFirebase()
@@ -36,6 +38,7 @@ beforeEach(async () => {
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull(), {timeout: 5000})
 });
 afterAll(async () => {
+    unsubscribe();
     await resetFirebase(true)
 });
 
@@ -55,7 +58,7 @@ it('should close modal if canceled', async () => {
 it('should set post inactive', (done) => {
     doDelete();
 
-    doc.onSnapshot((doc: any) => {
+    unsubscribe = doc.onSnapshot((doc: any) => {
         // @ts-ignore
         const post = doc.data();
         if (!post.active) done();
