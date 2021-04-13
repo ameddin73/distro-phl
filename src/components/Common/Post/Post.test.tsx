@@ -24,7 +24,7 @@ afterEach(async () => await resetFirebase());
 it('should mount', async () => {
 });
 
-it('renders post details properly', async () => {
+it('renders post details properly', () => {
     screen.getByText(mockDefaultPost.name);
     screen.getByText(mockDefaultPost.description);
     screen.getByText(mockDefaultPost.userName);

@@ -2,7 +2,6 @@
  * @jest-environment test/jest-env
  */
 import React from 'react';
-import PostList from "./PostList";
 import {customRender, rendersNothingHere, resetFirebase, setupFirebase} from "test/utils";
 import {screen, waitFor} from "@testing-library/react";
 import {COLLECTIONS} from "util/config";
@@ -10,6 +9,7 @@ import {Query} from "util/utils";
 import {FirestoreQueryWhere} from "util/types";
 import {UserMocks} from "test/mocks/user.mock";
 import {PostInterface} from "../Post/types";
+import PostList from "./PostList";
 
 const path = COLLECTIONS.posts;
 const query = {
@@ -20,18 +20,6 @@ const props = {path, query};
 
 beforeAll(setupFirebase);
 afterEach(async () => await resetFirebase());
-
-// Mock storage
-// @ts-ignore
-jest.mock('rxfire/storage', () => ({
-    ...jest.requireActual('rxfire/storage'),
-    getDownloadURL: () => {
-        const {Observable} = require('rxjs');
-        return new Observable((subscriber: any) => {
-            subscriber.next('public/logo192.png'); // TODO local default image
-        });
-    }
-}));
 
 it('should mount', async () => {
     customRender(<PostList {...props}/>);
