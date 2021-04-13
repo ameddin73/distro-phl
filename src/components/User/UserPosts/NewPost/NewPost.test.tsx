@@ -83,6 +83,14 @@ describe('firebase functionality', () => {
     });
 
     it('creates new post with image', async () => {
+        // @ts-ignore
+        getFirebase().storage().ref = () => ({
+            child: (path: string) => getFirebase().storage().ref(path),
+            // @ts-ignore
+            put: () => new Promise(() => {
+            }),
+            fullPath: `${STORAGE.postImages}filename.jpg`,
+        });
         fireEvent.click(screen.getByLabelText('upload-image'));
         fireEvent.change(screen.getByTestId('image-input'), {target: {files: [new File(['parts'], 'filename.jpeg')]}})
         const post = await createPost();
