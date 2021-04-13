@@ -11,7 +11,6 @@ import {UserMocks} from "./mocks/user.mock";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import {wait} from "@testing-library/user-event/dist/utils";
 
 const PROJECT_ID = `${process.env.TEST_PROJECT}`;
 let firebaseApp: firebase.app.App;
@@ -48,7 +47,6 @@ export async function resetFirebase(signOut?: boolean) {
 }
 
 export async function teardownFirebase() {
-    await wait();
     await firestore.terminate();
     await firestore.clearPersistence();
     await auth.signOut();
