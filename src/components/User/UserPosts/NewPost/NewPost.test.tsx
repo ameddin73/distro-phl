@@ -39,10 +39,7 @@ afterEach(async () => {
     unsubscribe();
     await resetFirebase()
 });
-afterAll(async () => {
-    await new Promise(r => setTimeout(r, 30000));
-    await teardownFirebase();
-}, 40000);
+afterAll(teardownFirebase);
 
 describe('validate form', () => {
     it('should mount', () => {
