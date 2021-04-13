@@ -2,7 +2,7 @@
  * @jest-environment test/jest-env
  */
 import React from 'react';
-import {customRender, rendersNothingHere, resetFirebase, setupFirebase} from "test/utils";
+import {customRender, rendersNothingHere, resetFirebase, setupFirebase, teardownFirebase} from "test/utils";
 import {screen, waitFor} from "@testing-library/react";
 import {COLLECTIONS} from "util/config";
 import {Query} from "util/utils";

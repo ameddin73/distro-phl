@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import Login from './Login';
-import {customRender, getFirebase, resetFirebase, setupFirebase, signIn} from "test/utils";
+import {customRender, getFirebase, resetFirebase, setupFirebase, signIn, teardownFirebase} from "test/utils";
 import {PATHS} from "util/config";
 import {cleanup, fireEvent, screen, waitFor} from "@testing-library/react";
 import {useHistory} from "react-router-dom";
