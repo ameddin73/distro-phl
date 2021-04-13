@@ -2,7 +2,7 @@
  * @jest-environment test/jest-env
  */
 import React from 'react';
-import {customRender, getFirebase, resetFirebase, setupFirebase, signIn} from "test/utils";
+import {customRender, getFirebase, resetFirebase, setupFirebase, signIn, teardownFirebase} from "test/utils";
 import {fireEvent, screen, waitFor} from "@testing-library/react";
 import {PostMocks} from "test/mocks/post.mock";
 import {COLLECTIONS, PATHS, STORAGE} from "util/config";
@@ -34,7 +34,7 @@ beforeEach(async () => {
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
 });
 afterEach(async () => await resetFirebase());
-afterAll(async () => await resetFirebase(true));
+afterAll(teardownFirebase);
 
 describe('validate form', () => {
     it('should mount', () => {
@@ -94,6 +94,7 @@ describe('firebase functionality', () => {
         fireEvent.click(screen.getByLabelText('expiration-checkbox'));
         fireEvent.change(screen.getByTestId('expiration-date-picker'), {target: {value: '04/20/2099'}});
         const post = await createPost();
+        // @ts-ignore
         expect(post.data().expires.getFullYear()).toBe((new Date('2099-04-20')).getFullYear());
     });
 

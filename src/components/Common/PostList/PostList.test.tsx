@@ -20,6 +20,7 @@ const props = {path, query};
 
 beforeAll(setupFirebase);
 afterEach(async () => await resetFirebase());
+afterAll(teardownFirebase);
 
 it('should mount', async () => {
     customRender(<PostList {...props}/>);

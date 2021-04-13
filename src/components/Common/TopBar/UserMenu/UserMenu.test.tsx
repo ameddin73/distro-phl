@@ -11,6 +11,7 @@ beforeEach(async () => {
     customRender(<UserMenu/>);
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
 });
+afterAll(teardownFirebase);
 
 it('should mount', async () => {
     screen.getByText('Sign In');
