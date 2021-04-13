@@ -82,7 +82,7 @@ describe('signs in with email/password', () => {
         fireEvent.change(screen.getByLabelText('password'), {target: {value: 'bad password'}});
         fireEvent.click(screen.getByLabelText('sign-in'));
         await waitFor(() => screen.getByText('The password is invalid or the user does not have a password.'));
-    });
+    }, 10000); //Sometimes TOs on ci
 
     it('resets again', () => {
     }); //Not sure what's going on, but cleanup doesn't work without this.
