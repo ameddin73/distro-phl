@@ -111,6 +111,9 @@ const NewPost = () => {
         if (postRef) {
             postRef.delete().then(result => {
                 console.warn(result);
+            }).catch((error: Error) => {
+                console.error(error);
+                console.error('Delete failed for: ' + postRef.id + '. Post may be orphaned.');
             });
         }
     };
