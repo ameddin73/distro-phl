@@ -12,6 +12,7 @@ beforeEach(async () => {
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull(), {timeout: 60000})
 }, 60000);
 afterEach(async () => await resetFirebase());
+afterAll(async () => await resetFirebase(true));
 
 it('should mount', async () => {
 });

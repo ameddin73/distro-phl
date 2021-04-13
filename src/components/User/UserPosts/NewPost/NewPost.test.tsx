@@ -34,6 +34,7 @@ beforeEach(async () => {
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
 });
 afterEach(async () => await resetFirebase());
+afterAll(async () => await resetFirebase(true));
 
 describe('validate form', () => {
     it('should mount', () => {
@@ -91,11 +92,9 @@ describe('firebase functionality', () => {
 
     it('creates new post with expiration', async () => {
         fireEvent.click(screen.getByLabelText('expiration-checkbox'));
-        fireEvent.change(screen.getByTestId('expiration-date-picker'), {target: {value: '04/20/2070'}});
+        fireEvent.change(screen.getByTestId('expiration-date-picker'), {target: {value: '04/20/2099'}});
         const post = await createPost();
-        // @ts-ignore
-        expect(post.data().expires.setHours(0, 0, 0, 0).valueOf()).toBe((new Date('2070-04-21')).setHours(0, 0, 0, 0).valueOf());
-        // Weird time thing here with date comparison cause of UTC or GMT or something... idk i'll fix it if the test ever fails
+        expect(post.data().expires.getFullYear()).toBe((new Date('2099-04-20')).getFullYear());
     });
 
     it('cleans up if image upload error', async () => {
