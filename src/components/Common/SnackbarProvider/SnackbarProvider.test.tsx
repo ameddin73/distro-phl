@@ -14,6 +14,13 @@ it('Opens correctly', async () => {
     screen.getByText(successMessage);
 });
 
+it('Opens twice', async () => {
+    customRender(<TestSnackbar testSnack={testSnack}/>);
+    testSnack.testSnackbar();
+    testSnack.testSnackbar();
+    screen.getByText(successMessage);
+});
+
 it('Autohides', async () => {
     customRender(<TestSnackbar testSnack={testSnack}/>);
     testSnack.testSnackbar();
