@@ -13,14 +13,7 @@ class JestEnv extends JSDOMEnvironment {
             }),
         );
     }
-
     // see more https://github.com/firebase/firebase-admin-node/issues/1135
-    async setup() {
-    }
-
-    async teardown() {
-    }
-
 }
 
 module.exports = JestEnv;

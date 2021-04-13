@@ -2,13 +2,13 @@
  * @jest-environment test/jest-env
  */
 import React from 'react';
-import {customRender, getFirebase, resetFirebase, setupFirebase, signIn, teardownFirebase} from "test/utils";
 import {fireEvent, screen, waitFor} from "@testing-library/react";
 import {PostMocks} from "test/mocks/post.mock";
 import {COLLECTIONS, PATHS, STORAGE} from "util/config";
 import {v4} from "uuid";
 import {Converters} from "util/utils";
 import firebase from "firebase/app";
+import {customRender, getFirebase, resetFirebase, setupFirebase, signIn, teardownFirebase} from "test/utils";
 import NewPost from './NewPost';
 
 // @ts-ignore
@@ -74,7 +74,7 @@ describe('validate form', () => {
         fireEvent.change(screen.getByLabelText('description'), {target: {value: PostMocks.defaultPost.description}});
         fireEvent.click(screen.getByText('Submit'));
         await waitFor(() => expect(window.location.pathname).toBe(PATHS.public.userPosts));
-    });
+    }, 10000);
 });
 
 describe('firebase functionality', () => {

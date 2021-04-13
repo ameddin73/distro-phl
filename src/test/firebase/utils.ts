@@ -1,5 +1,5 @@
 import firebase from "firebase";
-import {clearFirestoreData, initializeAdminApp, initializeTestApp} from "@firebase/rules-unit-testing";
+import {apps, clearFirestoreData, initializeAdminApp, initializeTestApp} from "@firebase/rules-unit-testing";
 import {UserMocks} from "../mocks/user.mock";
 import {COLLECTIONS} from "util/config";
 import {PostMocks} from "../mocks/post.mock";
@@ -27,6 +27,12 @@ export async function setupFirestore(typesMock: boolean, postMock: boolean) {
 
 export function teardownFirestore() {
     return clearFirestoreData({projectId: PROJECT_ID});
+}
+
+export async function teardownFirebase() {
+    for (const app of apps()) {
+        await app.delete();
+    }
 }
 
 async function setPosts(firestoreAdmin: firebase.firestore.Firestore, mock: Post, mock2: Post) {
