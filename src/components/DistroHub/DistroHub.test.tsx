@@ -2,7 +2,7 @@
  * @jest-environment test/jest-env
  */
 import React from 'react';
-import {customRender, resetFirebase, setupFirebase, signIn} from "test/utils";
+import {customRender, resetFirebase, setupFirebase, signIn, teardownFirebase} from "test/utils";
 import {screen, waitFor} from "@testing-library/react";
 import DistroHub from "./DistroHub";
 

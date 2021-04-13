@@ -1,6 +1,6 @@
 import React from 'react';
 import UserMenu from './UserMenu';
-import {customRender, setupFirebase, signIn} from "test/utils";
+import {customRender, setupFirebase, signIn, teardownFirebase} from "test/utils";
 import {fireEvent, screen, waitFor} from "@testing-library/react";
 import {UserMocks} from "../../../../test/mocks/user.mock";
 import {PATHS} from "util/config";

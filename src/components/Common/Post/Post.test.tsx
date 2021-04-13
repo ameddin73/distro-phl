@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import {screen, waitFor} from "@testing-library/react";
-import {customRender, resetFirebase, setupFirebase} from "test/utils";
+import {customRender, resetFirebase, setupFirebase, teardownFirebase} from "test/utils";
 import Post from "./Post";
 import {PostMocks} from "test/mocks/post.mock";
 import {PostInterface} from "./types";
