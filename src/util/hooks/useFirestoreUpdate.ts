@@ -1,4 +1,5 @@
 import firebase from "firebase/app";
+import "firebase/firestore";
 import {useFirestore} from "reactfire";
 
 function useFirestoreUpdate<T>(

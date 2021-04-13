@@ -6,6 +6,7 @@ import {StorageImage} from "reactfire";
 import Loading from "../Loading";
 import {PostInterface} from "./types";
 import theme from "../../../util/theme";
+import {ErrorBoundary} from "react-error-boundary";
 
 export type PostProps = {
     post: PostInterface
@@ -21,21 +22,32 @@ const Post = ({post, postAction = (() => (<div/>))}: PostProps) => {
         // TODO what does click do?
     };
 
+    const storageParams = {
+        storagePath: image,
+        onError: () => {
+        },
+    }
+    storageParams.onError = () => storageParams.storagePath = DEFAULT_IMAGE;
+
     return (
         <Grid item xs>
-                <Card className={classes.card}>
-                    <CardActionArea onClick={clickCard}>
+            <Card className={classes.card}>
+                <CardActionArea onClick={clickCard}>
+                    <ErrorBoundary fallback={
+                        <StorageImage suspense={true} placeHolder={<Loading/>} storagePath={DEFAULT_IMAGE} className={classes.media} alt={image ? post.name : 'Default Image'}/>
+                    }>
                         <StorageImage suspense={true} placeHolder={<Loading/>} storagePath={image || DEFAULT_IMAGE} className={classes.media} alt={image ? post.name : 'Default Image'}/>
-                        <CardContent>
-                            <Typography variant="h5" component="h2">
-                                {name}
-                            </Typography>
-                            <Typography gutterBottom
-                                        variant="body2"
-                                        color="textPrimary">
-                                {description}
-                            </Typography>
-                            <div style={{display: 'flex', alignItems: 'center'}}>
+                    </ErrorBoundary>
+                    <CardContent>
+                        <Typography variant="h5" component="h2">
+                            {name}
+                        </Typography>
+                        <Typography gutterBottom
+                                    variant="body2"
+                                    color="textPrimary">
+                            {description}
+                        </Typography>
+                        <div style={{display: 'flex', alignItems: 'center'}}>
                                 <Typography variant="body2" color="textSecondary" noWrap style={{paddingRight: theme.spacing(1)}}>
                                     Posted by
                                 </Typography>

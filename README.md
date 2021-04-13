@@ -48,6 +48,12 @@ Debug a test with a breakpoint set after `setupFirestore(true,true)`
 
 #### `firebase --project test-project emulators:export src/test/firebase`
 
+### Update Dependencies
+
+`npx npm-check-updates -u && npm i`
+
+**⚠️ Rollback updates on @date-io/date-fns**
+
 ## Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

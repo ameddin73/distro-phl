@@ -133,14 +133,16 @@ const NewPost = () => {
         }
         newPost(post as PostInterface).then(ref => {
             postRef = ref;
-            if (error !== '') cleanup(new Error('Error occurred during creation.'));
+            if (error && error !== '') {
+                cleanup(new Error('Error occurred during creation.'));
+            } else {
+                history.push(PATHS.public.userPosts);
+            }
         }).catch(error => {
             setError('Something went wrong uploading post.');
             cleanup(error);
             return;
         })
-
-        history.push(PATHS.public.userPosts);
     };
 
     return (

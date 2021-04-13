@@ -1,4 +1,5 @@
 import firebase from "firebase/app";
+import "firebase/firestore";
 import {COLLECTIONS} from "util/config";
 import {Converters} from "util/utils";
 

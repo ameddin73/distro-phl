@@ -11,12 +11,12 @@
     "@material-ui/styles": "^4.11.3",
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react-hooks": "^5.1.1",
-    "@testing-library/user-event": "^13.1.1",
+    "@testing-library/user-event": "^13.1.2",
     "@types/node": "^14.14.37",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
-    "date-fns": "^2.19.0",
-    "firebase": "^8.3.2",
+    "date-fns": "^2.20.2",
+    "firebase": "^8.4.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-error-boundary": "^3.1.1",
@@ -24,7 +24,6 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "reactfire": "^3.0.0-rc.0",
-    "save-dev": "0.0.1-security",
     "util": "file:src/util",
     "uuid": "^8.3.2",
     "web-vitals": "^1.1.1"
@@ -57,7 +56,7 @@
     ]
   },
   "devDependencies": {
-    "@firebase/rules-unit-testing": "^1.2.6",
+    "@firebase/rules-unit-testing": "^1.2.9",
     "@testing-library/react": "^11.2.6",
     "@types/lodash": "^4.14.168",
     "@types/react-router-dom": "^5.1.7",
@@ -69,6 +68,6 @@
     "rxjs": "^6.6.7",
     "test": "file:src/test",
     "ts-jest": "^26.5.4",
-    "typescript": "^4.2.3"
+    "typescript": "^4.2.4"
   }
 }
