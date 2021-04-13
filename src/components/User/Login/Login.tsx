@@ -1,9 +1,10 @@
 import React, {SyntheticEvent, useState} from 'react';
+import firebase from "firebase/app";
+import "firebase/auth";
 import {Button, Card, Divider, FormControl, Grid, Input, InputLabel, Link, Typography} from "@material-ui/core";
 import GoogleButton from "react-google-button";
 import {makeStyles} from "@material-ui/core/styles";
 import {CustomTheme} from "util/theme";
-import firebase from "firebase/app";
 import {useAuth, useUser} from "reactfire";
 import {Redirect, useHistory} from "react-router-dom";
 import {PATHS} from "util/config";

@@ -1,6 +1,7 @@
 import {FirestoreQueryOrderBy, FirestoreQueryWhere} from "./types";
 import {v4} from "uuid";
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/firestore";
 import {Post, PostInterface} from "../components/Common/Post/types";
 
 export const getFileWithUUID = (file: File): File => {
