@@ -17,6 +17,7 @@ let firebaseApp: firebase.app.App;
 let firestore: firebase.firestore.Firestore;
 let auth: firebase.auth.Auth;
 
+jest.setTimeout(10000);
 // Mock storage
 // @ts-ignore
 jest.mock('rxfire/storage', () => ({
@@ -47,6 +48,7 @@ export async function resetFirebase(signOut?: boolean) {
 }
 
 export async function teardownFirebase() {
+    await new Promise(r => setTimeout(r, 5000)) // TODO this hack solves a socket issue i'm not smart enough to fix
     await firestore.terminate();
     await firestore.clearPersistence();
     await auth.signOut();
