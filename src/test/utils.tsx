@@ -53,9 +53,6 @@ export async function teardownFirebase() {
     await firestore.clearPersistence();
     await auth.signOut();
     await firebaseApp.delete();
-    for (const app of firebase.apps) {
-        await app.delete();
-    }
 }
 
 export function getFirebase() {
