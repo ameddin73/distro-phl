@@ -18,7 +18,7 @@ function App({config}: { config: Object }) {
 
     return (
         <ThemeProvider theme={theme}>
-            <FirebaseAppProvider firebaseConfig={config} suspense={true}>
+            <FirebaseAppProvider firebaseConfig={config} suspense>
                 <ErrorBoundary FallbackComponent={ErrorMessage}>
                     <Router>
                         <TopBar/>

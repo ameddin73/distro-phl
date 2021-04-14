@@ -92,11 +92,6 @@ const NewPost = () => {
             setError('Something went wrong attaching image.');
         }
     };
-    const uploadImg = () => {
-        if (imgFile && storageRef) return storageRef.put(imgFile);
-        setError('Something went wrong uploading image.');
-        throw new Error('Error uploading image. Image file or storage reference was not defined.');
-    };
 
     let postRef: firebase.firestore.DocumentReference;
     const cleanup = (error: Error) => {
@@ -117,7 +112,7 @@ const NewPost = () => {
             });
         }
     };
-    const submit = (event: SyntheticEvent) => {
+    const submit = async (event: SyntheticEvent) => {
         event.preventDefault();
         setError('');
 
@@ -126,25 +121,27 @@ const NewPost = () => {
         if (post.hasExpiration && !post.expires) setError('Expiration cannot be empty.');
         if (error) return;
 
-        if (storageRef) {
+        if (imgFile && storageRef) {
             post.image = storageRef.fullPath;
-            uploadImg().catch((error: Error) => {
+            try {
+                await storageRef.put(imgFile);
+            } catch (error) {
                 setError('Something went wrong uploading image.');
                 cleanup(error);
                 return;
-            });
+            }
         }
-        newPost(post as PostInterface).then(ref => {
-            postRef = ref;
+        try {
+            postRef = await newPost(post as PostInterface);
             if (error && error !== '') {
-                cleanup(new Error('Error occurred during creation.'));
+                cleanup(new Error('Error occurred during creation: ' + error));
             } else {
                 history.push(PATHS.public.userPosts);
             }
-        }).catch(error => {
+        } catch (error) {
             setError('Something went wrong uploading post.');
             cleanup(error);
-        })
+        }
     };
 
     return (
