@@ -66,6 +66,7 @@
     "firebase-admin": "^9.6.0",
     "jest-environment-jsdom": "^26.6.2",
     "lodash": "^4.17.21",
+    "mockdate": "^3.0.5",
     "rxjs": "^6.6.7",
     "test": "file:src/test",
     "typescript": "^4.2.4"

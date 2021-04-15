@@ -6,7 +6,7 @@ import theme from "util/theme";
 import {render, RenderOptions, screen} from "@testing-library/react";
 import SnackbarProvider from "../components/Common/SnackbarProvider/SnackbarProvider";
 import Loading from "../components/Common/Loading";
-import {BrowserRouter as Router} from "react-router-dom";
+import {BrowserRouter as Router, useHistory} from "react-router-dom";
 import {UserMocks} from "./mocks/user.mock";
 import firebase from "firebase/app";
 import "firebase/auth";
@@ -83,3 +83,9 @@ const Providers = ({children}: PropsWithChildren<any>) => (
         </FirebaseAppProvider>
     </ThemeProvider>
 );
+
+export const HistoryWrapper = ({component, path, referrer}: { component: JSX.Element, path: string, referrer?: string }) => {
+    const history = useHistory();
+    history.replace(path, {referrer: referrer});
+    return (component);
+}

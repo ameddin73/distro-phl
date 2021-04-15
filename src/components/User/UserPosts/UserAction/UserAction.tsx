@@ -4,6 +4,8 @@ import {Button, CardActions, Dialog, DialogActions, DialogContent, DialogContent
 import {Delete} from "@material-ui/icons";
 import {SnackbarContext} from "../../../Common/SnackbarProvider/SnackbarProvider";
 import {PostProps} from "../../../Common/Post/PostCard/PostCard";
+import {useHistory} from "react-router-dom";
+import {PATHS} from "../../../../util/config";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -25,13 +27,17 @@ const UserAction = ({post}: PostProps) => {
 
     const [deleteAlert, setDeleteAlert] = useState(false);
     const openSnackbar = useContext(SnackbarContext);
+    const history = useHistory();
 
     const clickDelete = () => setDeleteAlert(true);
     const closeDeleteAlert = (doDelete: boolean) => {
         setDeleteAlert(false);
         if (doDelete) {
             post.setActive(false)
-                .then(() => openSnackbar('success', 'Deleted Successfully.'))
+                .then(() => {
+                    openSnackbar('success', 'Deleted Successfully.');
+                    history.replace(PATHS.public.userPosts);
+                })
                 .catch(error => {
                     console.error(error);
                     openSnackbar('error', 'Post failed to delete.');
