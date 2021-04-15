@@ -1,8 +1,8 @@
 import React, {lazy, Suspense} from 'react';
 import Loading from "../../Loading";
-import {PostProps} from "../Post";
 import {postStyle} from "./styles";
 import {Card, Grid} from "@material-ui/core";
+import {PostProps} from "./PostCard";
 
 const LazyPostCard = lazy(() => import('./PostCard'));
 

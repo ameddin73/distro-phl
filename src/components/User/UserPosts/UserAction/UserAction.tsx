@@ -3,7 +3,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import {Button, CardActions, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {SnackbarContext} from "../../../Common/SnackbarProvider/SnackbarProvider";
-import {PostProps} from "../../../Common/Post/Post";
+import {PostProps} from "../../../Common/Post/PostCard/PostCard";
 
 const useStyles = makeStyles((theme) => ({
     root: {

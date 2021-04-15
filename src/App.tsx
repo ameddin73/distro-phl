@@ -33,11 +33,11 @@ function App({config}: { config: Object }) {
                                         <Route path={PATHS.public.distro}>
                                             <DistroHub/>
                                         </Route>
+                                        <Route path={`${PATHS.public.posts}/:id`}>
+                                            <Post/>
+                                        </Route>
                                         <Route path={PATHS.public.base}>
                                             <DistroHub/>
-                                        </Route>
-                                        <Route path={PATHS.public.posts + '/:id'}>
-                                            <Post/>
                                         </Route>
                                     </Switch>
                                 </SnackbarProvider>

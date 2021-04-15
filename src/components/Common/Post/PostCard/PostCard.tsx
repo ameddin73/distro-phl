@@ -5,8 +5,13 @@ import {DEFAULT_IMAGE, PATHS} from "util/config";
 import {StorageImage} from "reactfire";
 import {ErrorBoundary} from "react-error-boundary";
 import Loading from "../../Loading";
-import {PostProps} from "../Post";
 import RouterLink from "../../RouterLink";
+import {PostInterface} from "../types";
+
+export type PostProps = {
+    post: PostInterface
+    postAction?: (post: PostProps) => JSX.Element,
+}
 
 const PostCard = ({post}: PostProps) => {
     const classes = postStyle();
