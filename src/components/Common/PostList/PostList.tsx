@@ -7,7 +7,7 @@ import {Converters} from "util/utils";
 import useFirestoreCollectionBuilder from "util/hooks/useFirestoreCollectionBuilder";
 import PostCard from '../Post/PostCard/PostCard.lazy';
 import {PostInterface} from "../Post/types";
-import {PostProps} from "../Post/Post";
+import {PostProps} from "../Post/PostCard/PostCard";
 
 const useStyles = makeStyles((theme) => ({
     root: {

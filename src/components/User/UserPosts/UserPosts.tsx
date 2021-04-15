@@ -5,7 +5,7 @@ import UserAction from "./UserAction/UserAction";
 import {FirestoreQuery, FirestoreQueryWhere} from "util/types";
 import {useUser} from "reactfire";
 import {Query} from "util/utils";
-import {PostProps} from "../../Common/Post/Post";
+import {PostProps} from "../../Common/Post/PostCard/PostCard";
 
 const UserPosts = () => {
     const {data: user} = useUser();

@@ -3,8 +3,8 @@ import firebase from "firebase/app";
 import {useFirestore, useFirestoreCollectionData} from "reactfire";
 
 function useFirestoreCollectionBuilder<T>(path: string,
-                                          query: FirestoreQuery | undefined,
-                                          converter: firebase.firestore.FirestoreDataConverter<T> | undefined) {
+                                          query?: FirestoreQuery,
+                                          converter?: firebase.firestore.FirestoreDataConverter<T>) {
     const firestore = useFirestore();
     let _query: firebase.firestore.Query = firestore.collection(path);
 
