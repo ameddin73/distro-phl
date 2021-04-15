@@ -3,10 +3,9 @@
  */
 import React from 'react';
 import Login from './Login';
-import {customRender, getFirebase, resetFirebase, setupFirebase, signIn, teardownFirebase} from "test/utils";
+import {customRender, getFirebase, HistoryWrapper, resetFirebase, setupFirebase, signIn, teardownFirebase} from "test/utils";
 import {PATHS} from "util/config";
 import {cleanup, fireEvent, screen, waitFor} from "@testing-library/react";
-import {useHistory} from "react-router-dom";
 import {UserMocks} from "test/mocks/user.mock";
 import {v4} from "uuid";
 
@@ -164,12 +163,6 @@ describe('register with email/password', () => {
 });
 
 async function load(referrer?: string) {
-    customRender(<HistoryWrapper referrer={referrer}/>);
+    customRender(<HistoryWrapper component={<Login/>} path={PATHS.public.login} referrer={referrer}/>);
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
-}
-
-const HistoryWrapper = ({referrer}: { referrer?: string }) => {
-    const history = useHistory();
-    history.replace(PATHS.public.login, {referrer: referrer});
-    return (<Login/>);
 }

@@ -4,7 +4,7 @@
 import React from 'react';
 import UserAction from './UserAction';
 import {customRender, getFirebase, resetFirebase, setupFirebase, signIn} from "test/utils";
-import {COLLECTIONS} from "util/config";
+import {COLLECTIONS, PATHS} from "util/config";
 import {Converters} from "util/utils";
 import {UserMocks} from "test/mocks/user.mock";
 import {fireEvent, screen, waitFor, waitForElementToBeRemoved} from "@testing-library/react";
@@ -68,6 +68,11 @@ it('should set post inactive', (done) => {
 it('should open success snackbar', async () => {
     doDelete();
     await waitFor(() => screen.getByText('Deleted Successfully.'));
+})
+
+it('redirects to user posts', async () => {
+    doDelete();
+    expect(window.location.pathname).toBe(PATHS.public.userPosts);
 })
 
 it('should open fail snackbar', async () => {

@@ -3,35 +3,46 @@
  */
 import React from 'react';
 import {screen, waitFor} from "@testing-library/react";
-import {customRender, resetFirebase, setupFirebase, teardownFirebase} from "test/utils";
+import {customRender, HistoryWrapper, resetFirebase, setupFirebase, signIn, teardownFirebase} from "test/utils";
 import Post from "./Post";
 import {PostMocks} from "test/mocks/post.mock";
 import {PostInterface} from "./types";
+import {PATHS} from "../../../util/config";
+import {Route} from "react-router-dom";
+import {UserMocks} from "../../../test/mocks/user.mock";
 
-const mockDefaultPost = PostMocks.defaultPost as PostInterface;
-const testPostActionText = 'test post action text';
+const mockDefaultPost = PostMocks.secondaryPost as PostInterface;
 
-const TestPostAction = () => (
-    <div>{testPostActionText}</div>
-)
 beforeAll(setupFirebase);
-beforeEach(async () => {
-    customRender(<Post post={mockDefaultPost}/>);
-    await waitFor(() => expect(document.querySelector('#loading')).toBeNull(), {timeout: 60000})
-}, 60000);
 afterEach(async () => await resetFirebase());
 afterAll(teardownFirebase);
 
-it('should mount', async () => {
+it('renders 404 if item not found', async () => {
+    await load(`${PATHS.public.posts}/bad-id`);
+    screen.getByText('404');
 });
 
-it('renders post details properly', () => {
-    screen.getByText(mockDefaultPost.name);
-    screen.getByText(mockDefaultPost.description);
-    screen.getByText(mockDefaultPost.userName);
+describe('post exists', () => {
+    beforeEach(async () => {
+        await load(`${PATHS.public.posts}/${mockDefaultPost.id}`);
+    }, 60000);
+
+    it('should mount', async () => {
+    });
+
+    it('renders post details properly', () => {
+        screen.getByText(mockDefaultPost.name);
+        screen.getByText(mockDefaultPost.description);
+        screen.getByText(mockDefaultPost.userName);
+    });
+
+    it('renders post action properly', async () => {
+        await signIn(UserMocks.userTwo);
+        await waitFor(() => screen.getByLabelText('delete'));
+    });
 });
 
-it('renders post action properly', async () => {
-    customRender(<Post post={mockDefaultPost} postAction={TestPostAction}/>);
-    await waitFor(() => screen.getByText(testPostActionText));
-});
+async function load(path: string) {
+    customRender(<HistoryWrapper component={<Route path={`${PATHS.public.posts}/:id`}><Post/></Route>} path={path}/>);
+    await waitFor(() => expect(document.querySelector('#loading')).toBeNull(), {timeout: 60000});
+}

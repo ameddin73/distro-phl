@@ -10,6 +10,7 @@ import {Converters, Query} from "util/utils";
 import useFirestoreDocumentBuilder from "util/hooks/useFirestoreDocumentBuilder";
 import {PostInterface} from "./types";
 import useFirestoreCollectionBuilder from "../../../util/hooks/useFirestoreCollectionBuilder";
+import UserAction from "../../User/UserPosts/UserAction/UserAction";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -43,11 +44,17 @@ const useStyles = makeStyles((theme) => ({
 
 const PostDetails = ({id}: { id: string }) => {
     const classes = useStyles();
-    const user = useUser();
+    const {data: user} = useUser();
 
-    const res = useFirestoreDocumentBuilder(COLLECTIONS.posts, id, Converters.PostConverter);
-    const {name, description, image, hasExpiration, expires, userName} = res.data;
+    const {data: post} = useFirestoreDocumentBuilder(COLLECTIONS.posts, id, Converters.PostConverter);
+    const {name, description, image, hasExpiration, expires, userName, uid} = post;
 
+    let postAction;
+    if (user && user.uid === uid) {
+        postAction = <UserAction post={post}/>;
+    } else {
+        postAction = <div>todo</div>;
+    }
     return (
         <>
             <div className={classes.hero}>
@@ -75,6 +82,7 @@ const PostDetails = ({id}: { id: string }) => {
                     )}
                     <InfoItem title="Posted by" body={userName}/>
                 </Grid>
+                {postAction}
             </Container>
         </>
     )

@@ -24,8 +24,3 @@ it('renders all posts', async () => {
     const posts = screen.getAllByText('Posted by');
     expect(posts.length).toBe(1);
 });
-
-it('renders user action', async () => {
-    const posts = screen.getAllByLabelText('delete');
-    expect(posts.length).toBe(1);
-});
