@@ -1,5 +1,4 @@
 import React, {SyntheticEvent, useState} from 'react';
-import {postStyle} from "util/styles";
 import {Button, Card, CardContent, CardMedia, FormControlLabel, Grid, IconButton, Switch, TextField, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import {CameraAlt} from "@material-ui/icons";
@@ -16,6 +15,7 @@ import {useStorage, useUser} from "reactfire";
 import {useHistory} from "react-router-dom";
 import useFirestoreAdd from "util/hooks/useFirestoreAdd";
 import {Post, PostInterface} from "../../../Common/Post/types";
+import {postStyle} from "../../../Common/Post/PostCard/styles";
 
 const useStyles = makeStyles((theme) => ({
     root: {

@@ -5,7 +5,7 @@ import NothingHere from "../NothingHere/NothingHere";
 import {FirestoreQuery} from "util/types";
 import {Converters} from "util/utils";
 import useFirestoreCollectionBuilder from "util/hooks/useFirestoreCollectionBuilder";
-import Post from '../Post/Post.lazy';
+import PostCard from '../Post/PostCard/PostCard.lazy';
 import {PostInterface} from "../Post/types";
 import {PostProps} from "../Post/Post";
 
@@ -47,7 +47,7 @@ const PList = ({path, query, filter, postAction}: PostListProps) => {
     if (postList.length === 0)
         return (<NothingHere/>);
     return (<>
-        {postList.map((post: PostInterface) => (<Post key={post.id} post={post} postAction={postAction}/>))}
+        {postList.map((post: PostInterface) => (<PostCard key={post.id} post={post} postAction={postAction}/>))}
     </>)
 }
 

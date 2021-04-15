@@ -13,6 +13,7 @@ import ErrorMessage from "./components/Common/ErrorMessage";
 import Loading from "./components/Common/Loading";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import SnackbarProvider from "./components/Common/SnackbarProvider/SnackbarProvider";
+import Post from "./components/Common/Post/Post";
 
 function App({config}: { config: Object }) {
 
@@ -34,6 +35,9 @@ function App({config}: { config: Object }) {
                                         </Route>
                                         <Route path={PATHS.public.base}>
                                             <DistroHub/>
+                                        </Route>
+                                        <Route path={PATHS.public.posts + '/:id'}>
+                                            <Post/>
                                         </Route>
                                     </Switch>
                                 </SnackbarProvider>
