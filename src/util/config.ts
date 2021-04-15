@@ -24,6 +24,7 @@ export const PATHS = {
         base: '/',
         distro: '/distro',
         user: '/user',
+        posts: '/posts',
         login: `${userPaths.base}${userPaths.login}`,
         userPosts: `${userPaths.base}${userPaths.posts}`,
         newPost: `${userPaths.base}${userPaths.new}`,
