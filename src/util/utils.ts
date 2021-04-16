@@ -2,7 +2,7 @@ import {FirestoreQueryOrderBy, FirestoreQueryWhere} from "./types";
 import {v4} from "uuid";
 import firebase from "firebase/app";
 import "firebase/firestore";
-import {Post, PostInterface} from "../components/Common/Post/types";
+import {Offer, OfferInterface, Post, PostInterface} from "../components/Common/Post/types";
 
 export const getFileWithUUID = (file: File): File => {
     Object.defineProperty(file, 'name', {
@@ -64,7 +64,6 @@ export namespace Filters {
 }
 
 export namespace Converters {
-
     export const PostConverter: firebase.firestore.FirestoreDataConverter<PostInterface> = {
         toFirestore(post: Post): firebase.firestore.DocumentData {
             return {
@@ -78,7 +77,22 @@ export namespace Converters {
             data.id = snapshot.id;
             data.created = data.created ? (data.created as firebase.firestore.Timestamp).toDate() : undefined;
             data.expires = data.expires ? (data.expires as firebase.firestore.Timestamp).toDate() : undefined;
-            return new PostInterface(data as Required<Post>)
+            return new PostInterface(data as Required<Post>);
+        },
+    };
+
+    export const OfferConverter: firebase.firestore.FirestoreDataConverter<OfferInterface> = {
+        toFirestore(offer: Offer): firebase.firestore.DocumentData {
+            return {
+                ...offer,
+                created: firebase.firestore.FieldValue.serverTimestamp(),
+            };
+        },
+        fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): OfferInterface {
+            const data = snapshot.data(options);
+            data.id = snapshot.id;
+            data.created = data.created ? (data.created as firebase.firestore.Timestamp).toDate() : undefined;
+            return new OfferInterface(data as Required<Offer>);
         },
     };
 }

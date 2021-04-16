@@ -2,14 +2,14 @@
  * @jest-environment test/jest-env
  */
 import React from 'react';
-import UserAction from './UserAction';
+import DistroAction from './DistroAction';
 import {customRender, getFirebase, resetFirebase, setupFirebase, signIn} from "test/utils";
 import {COLLECTIONS, PATHS} from "util/config";
 import {Converters} from "util/utils";
 import {UserMocks} from "test/mocks/user.mock";
 import {fireEvent, screen, waitFor, waitForElementToBeRemoved} from "@testing-library/react";
 import {v4} from 'uuid';
-import {PostInterface} from "../../../Common/Post/types";
+import {PostInterface} from "../../Common/Post/types";
 
 let doc: any;
 let post: PostInterface;
@@ -34,7 +34,7 @@ beforeEach(async () => {
     // @ts-ignore
     post = documentSnapshot.data();
 
-    customRender(<UserAction post={post}/>)
+    customRender(<DistroAction post={post}/>)
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull(), {timeout: 5000})
 });
 afterAll(async () => {

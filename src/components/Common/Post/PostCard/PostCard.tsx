@@ -1,6 +1,6 @@
 import React from 'react';
 import {CardActionArea, Grid, Typography} from "@material-ui/core";
-import {postStyle} from "./styles";
+import {postCardStyle} from "./styles";
 import {DEFAULT_IMAGE, PATHS} from "util/config";
 import {StorageImage} from "reactfire";
 import {ErrorBoundary} from "react-error-boundary";
@@ -14,7 +14,7 @@ export type PostProps = {
 }
 
 const PostCard = ({post}: PostProps) => {
-    const classes = postStyle();
+    const classes = postCardStyle();
 
     const {name, id, image, hasExpiration, expires, userName} = post;
 

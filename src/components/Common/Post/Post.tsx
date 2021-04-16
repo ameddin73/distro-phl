@@ -9,8 +9,9 @@ import {Container, Grid, Typography} from "@material-ui/core";
 import {Converters, Query} from "util/utils";
 import useFirestoreDocumentBuilder from "util/hooks/useFirestoreDocumentBuilder";
 import {PostInterface} from "./types";
-import useFirestoreCollectionBuilder from "../../../util/hooks/useFirestoreCollectionBuilder";
+import useFirestoreCollectionBuilder from "util/hooks/useFirestoreCollectionBuilder";
 import UserAction from "../../User/UserPosts/UserAction/UserAction";
+import DistroAction from "../../DistroHub/DistroAction/DistroAction";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -40,6 +41,11 @@ const useStyles = makeStyles((theme) => ({
     body: {
         padding: theme.spacing(2),
     },
+    action: {
+        paddingTop: theme.spacing(2),
+        marginLeft: "auto",
+        width: '100%',
+    }
 }));
 
 const PostDetails = ({id}: { id: string }) => {
@@ -53,7 +59,7 @@ const PostDetails = ({id}: { id: string }) => {
     if (user && user.uid === uid) {
         postAction = <UserAction post={post}/>;
     } else {
-        postAction = <div>todo</div>;
+        postAction = <DistroAction post={post}/>;
     }
     return (
         <>
@@ -82,7 +88,9 @@ const PostDetails = ({id}: { id: string }) => {
                     )}
                     <InfoItem title="Posted by" body={userName}/>
                 </Grid>
-                {postAction}
+                <div className={classes.action}>
+                    {postAction}
+                </div>
             </Container>
         </>
     )

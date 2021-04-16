@@ -28,6 +28,7 @@ export class PostInterface implements Post {
     readonly uid: string;
     readonly userName: string;
     private readonly documentRef;
+    private readonly offersRef: firebase.firestore.CollectionReference;
 
     constructor(post: Required<Post>) {
         this.active = post.active;
@@ -44,6 +45,7 @@ export class PostInterface implements Post {
         this.image = post.image;
 
         this.documentRef = firebase.app().firestore().collection(COLLECTIONS.posts).withConverter(Converters.PostConverter).doc(post.id);
+        this.offersRef = this.documentRef.collection(COLLECTIONS.offers).withConverter(Converters.OfferConverter);
         this.uid = post.uid;
         this.userName = post.userName;
     }
@@ -54,5 +56,32 @@ export class PostInterface implements Post {
         return new Promise<void>(() => {
             throw new Error('Document reference not defined.')
         });
+    }
+}
+
+export interface Offer {
+    id?: string,
+    created?: string,
+    posterId: string,
+    offerId: string,
+    userName: string,
+    message: string,
+}
+
+export class OfferInterface implements Offer {
+    readonly id: string;
+    readonly created: string;
+    readonly posterId: string;
+    readonly offerId: string;
+    readonly userName: string;
+    readonly message: string;
+
+    constructor({id, created, posterId, offerId, userName, message}: Required<Offer>) {
+        this.id = id;
+        this.created = created;
+        this.posterId = posterId;
+        this.offerId = offerId;
+        this.userName = userName;
+        this.message = message;
     }
 }
