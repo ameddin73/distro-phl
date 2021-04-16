@@ -1,13 +1,13 @@
 import React, {lazy, Suspense} from 'react';
 import Loading from "../../Loading";
-import {postStyle} from "./styles";
+import {postCardStyle} from "./styles";
 import {Card, Grid} from "@material-ui/core";
 import {PostProps} from "./PostCard";
 
 const LazyPostCard = lazy(() => import('./PostCard'));
 
 const PostCard = (props: PostProps) => {
-    const classes = postStyle();
+    const classes = postCardStyle();
     return (
         <Grid item xs>
             <Card className={classes.card} variant="outlined">

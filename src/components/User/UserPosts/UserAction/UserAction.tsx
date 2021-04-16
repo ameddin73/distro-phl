@@ -1,18 +1,18 @@
 import React, {useContext, useState} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
-import {Button, CardActions, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton} from "@material-ui/core";
-import {Delete} from "@material-ui/icons";
+import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
 import {SnackbarContext} from "../../../Common/SnackbarProvider/SnackbarProvider";
 import {PostProps} from "../../../Common/Post/PostCard/PostCard";
 import {useHistory} from "react-router-dom";
-import {PATHS} from "../../../../util/config";
+import {PATHS} from "util/config";
 
 const useStyles = makeStyles((theme) => ({
     root: {
         padding: theme.spacing(2),
     },
     delete: {
-        marginLeft: 'auto'
+        width: '100%',
+        padding: theme.spacing(2),
     },
     confirmDelete: {
         background: theme.palette.error.main,
@@ -47,18 +47,17 @@ const UserAction = ({post}: PostProps) => {
 
     return (
         <>
-            <CardActions disableSpacing>
-                <IconButton onClick={clickDelete} aria-label="delete" className={classes.delete} color="primary">
-                    <Delete/>
-                </IconButton>
-            </CardActions>
+            <Button variant="contained" onClick={clickDelete} aria-label="delete" className={classes.delete} color="primary">
+                Delete Post
+            </Button>
             <Dialog
+                maxWidth="sm"
                 open={deleteAlert}
-                onClose={closeDeleteAlert}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
+                onClose={() => closeDeleteAlert(false)}
+                aria-labelledby="delete-dialog-title"
+                aria-describedby="delete-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">{"Are you sure you want to delete this item?"}</DialogTitle>
+                <DialogTitle id="delete-dialog-title">{"Are you sure you want to delete this item?"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         This can't be undone.

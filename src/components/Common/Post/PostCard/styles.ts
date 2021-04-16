@@ -1,7 +1,7 @@
 import {makeStyles} from "@material-ui/core/styles";
 
 const CARD_SQUARE = 286;
-export const postStyle = makeStyles((theme) => ({
+export const postCardStyle = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
         paddingBottom: 0,

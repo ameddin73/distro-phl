@@ -1,5 +1,5 @@
 import React, {SyntheticEvent, useState} from 'react';
-import {Button, Card, CardContent, CardMedia, FormControlLabel, Grid, IconButton, Switch, TextField, Typography} from "@material-ui/core";
+import {Button, CardContent, CardMedia, Container, FormControlLabel, Grid, IconButton, Switch, TextField, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import {CameraAlt} from "@material-ui/icons";
 import {grey} from "@material-ui/core/colors";
@@ -15,7 +15,7 @@ import {useStorage, useUser} from "reactfire";
 import {useHistory} from "react-router-dom";
 import useFirestoreAdd from "util/hooks/useFirestoreAdd";
 import {Post, PostInterface} from "../../../Common/Post/types";
-import {postStyle} from "../../../Common/Post/PostCard/styles";
+import {postCardStyle} from "../../../Common/Post/PostCard/styles";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -56,7 +56,7 @@ interface HTMLInputEvent extends SyntheticEvent {
 
 const NewPost = () => {
     const classes = useStyles();
-    const postClasses = postStyle();
+    const postClasses = postCardStyle();
 
     const {data: user} = useUser();
     const history = useHistory();
@@ -146,111 +146,104 @@ const NewPost = () => {
 
     return (
         <>
-            <Grid container
-                  direction="column"
-                  alignItems="center"
-                  className={classes.container}>
-                <Grid item xs className={classes.container}>
-                    <Card className={postClasses.card}>
-                        <form onSubmit={submit}>
-                            {localImgUrl ?
-                                <CardMedia
-                                    className={postClasses.media}
-                                    image={localImgUrl}
-                                    aria-label="uploaded-image"
-                                    title="Uploaded Image"/>
-                                :
-                                <Grid container
-                                      alignItems="center"
-                                      direction="column"
-                                      className={`${classes.mediaBox} ${postClasses.media}`}>
-                                    <IconButton aria-label="upload-image" onClick={() => {
-                                        if (uploadRef) uploadRef.click();
-                                    }}>
-                                        <CameraAlt className={classes.upload}/>
-                                    </IconButton>
-                                </Grid>
-                            }
-                            <CardContent>
-                                <TextField value={post.name}
-                                           onChange={event => setPost('name', event.target.value)}
-                                           inputProps={{className: classes.title, "aria-label": "name"}}
-                                           margin="dense"
-                                           fullWidth
-                                           required
-                                           id="name"
-                                           placeholder="Item Name"
-                                           label="Name"
-                                />
-                                <TextField value={post.description}
-                                           onChange={event => setPost('description', event.target.value)}
-                                           className={classes.input}
-                                           inputProps={{
-                                               className: classes.body,
-                                               maxLength: DESCRIPTION_LENGTH,
-                                               "aria-label": "description",
-                                           }}
-                                           fullWidth
-                                           required
-                                           multiline
-                                           margin="dense"
-                                           id="description"
-                                           placeholder="Description"
-                                           label="Description"
-                                           helperText={post.description && post.description.length > 0 ? "Characters remaining: " + (DESCRIPTION_LENGTH - post.description.length) : ""}
-                                />
-                                <FormControlLabel
-                                    control={
-                                        <Switch
-                                            checked={post.hasExpiration}
-                                            onChange={event => setPost('hasExpiration', event.target.checked)}
-                                            name="has-expiration"
-                                            color="primary"
-                                            inputProps={{'aria-label': 'expiration-checkbox'}}
-                                        />
-                                    }
-                                    label="Expires"
-                                    className={classes.input}
-                                />
-                                {post.hasExpiration && (
-                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                        <KeyboardDatePicker value={post.expires}
-                                                            onChange={date => setPost('expires', date as Date)}
-                                                            className={classes.input}
-                                                            disableToolbar
-                                                            format="MM/dd/yyyy"
-                                                            margin="dense"
-                                                            id="expiration-date-picker"
-                                                            aria-label="expiration-date-picker"
-                                                            label="Expiration Date"
-                                                            inputProps={{'data-testid': 'expiration-date-picker'}}
-                                        />
-                                    </MuiPickersUtilsProvider>
-                                )}
-                                <Grid container direction="column">
-                                    <Grid item xs style={{display: 'flex', alignItems: 'center'}}>
-                                        <Typography variant="body2" color="textSecondary" noWrap style={{paddingRight: theme.spacing(1)}}>
-                                            Posted by
-                                        </Typography>
-                                        <Typography variant="button" noWrap>
-                                            {user.displayName}
-                                        </Typography>
-                                    </Grid>
-                                </Grid>
-                            </CardContent>
-                            <Typography variant="subtitle2" className={classes.error} noWrap={false}>{error}</Typography>
-                            <Button type="submit"
-                                    variant="contained"
-                                    disableElevation
+            <Container maxWidth="sm" className={classes.container}>
+                <form onSubmit={submit}>
+                    {localImgUrl ?
+                        <CardMedia
+                            className={postClasses.media}
+                            image={localImgUrl}
+                            aria-label="uploaded-image"
+                            title="Uploaded Image"/>
+                        :
+                        <Grid container
+                              alignItems="center"
+                              direction="column"
+                              className={`${classes.mediaBox} ${postClasses.media}`}>
+                            <IconButton aria-label="upload-image" onClick={() => {
+                                if (uploadRef) uploadRef.click();
+                            }}>
+                                <CameraAlt className={classes.upload}/>
+                            </IconButton>
+                        </Grid>
+                    }
+                    <CardContent>
+                        <TextField value={post.name}
+                                   onChange={event => setPost('name', event.target.value)}
+                                   inputProps={{className: classes.title, "aria-label": "name"}}
+                                   margin="dense"
+                                   fullWidth
+                                   required
+                                   id="name"
+                                   placeholder="Item Name"
+                                   label="Name"
+                        />
+                        <TextField value={post.description}
+                                   onChange={event => setPost('description', event.target.value)}
+                                   className={classes.input}
+                                   inputProps={{
+                                       className: classes.body,
+                                       maxLength: DESCRIPTION_LENGTH,
+                                       "aria-label": "description",
+                                   }}
+                                   fullWidth
+                                   required
+                                   multiline
+                                   margin="dense"
+                                   id="description"
+                                   placeholder="Description"
+                                   label="Description"
+                                   helperText={post.description && post.description.length > 0 ? "Characters remaining: " + (DESCRIPTION_LENGTH - post.description.length) : ""}
+                        />
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={post.hasExpiration}
+                                    onChange={event => setPost('hasExpiration', event.target.checked)}
+                                    name="has-expiration"
                                     color="primary"
-                                    className={classes.input}
-                                    style={{padding: theme.spacing(1.5)}}>
-                                Submit
-                            </Button>
-                        </form>
-                    </Card>
-                </Grid>
-            </Grid>
+                                    inputProps={{'aria-label': 'expiration-checkbox'}}
+                                />
+                            }
+                            label="Expires"
+                            className={classes.input}
+                        />
+                        {post.hasExpiration && (
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <KeyboardDatePicker value={post.expires}
+                                                    onChange={date => setPost('expires', date as Date)}
+                                                    className={classes.input}
+                                                    disableToolbar
+                                                    format="MM/dd/yyyy"
+                                                    margin="dense"
+                                                    id="expiration-date-picker"
+                                                    aria-label="expiration-date-picker"
+                                                    label="Expiration Date"
+                                                    inputProps={{'data-testid': 'expiration-date-picker'}}
+                                />
+                            </MuiPickersUtilsProvider>
+                        )}
+                        <Grid container direction="column">
+                            <Grid item xs style={{display: 'flex', alignItems: 'center'}}>
+                                <Typography variant="body2" color="textSecondary" noWrap style={{paddingRight: theme.spacing(1)}}>
+                                    Posted by
+                                </Typography>
+                                <Typography variant="button" noWrap>
+                                    {user.displayName}
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                    </CardContent>
+                    <Typography variant="subtitle2" className={classes.error} noWrap={false}>{error}</Typography>
+                    <Button type="submit"
+                            variant="contained"
+                            disableElevation
+                            color="primary"
+                            className={classes.input}
+                            style={{padding: theme.spacing(1.5)}}>
+                        Submit
+                    </Button>
+                </form>
+            </Container>
             <input hidden id="imageInput" data-testid="image-input" type="file" accept="image/*"
                    onChange={changeFile}
                    ref={(ref) => setUploadRef(ref)}/>

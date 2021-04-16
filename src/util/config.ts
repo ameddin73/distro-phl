@@ -9,7 +9,7 @@ export const FIREBASE_CONFIG = {
 
 export const COLLECTIONS = {
     posts: '/posts/',
-    reservations: '/reservations/',
+    offers: '/offers/',
     confirmations: '/confirmations',
 }
 
