@@ -30,15 +30,11 @@ This will start the app and connect to the firebase dev project. Run firestore &
 
 **Test firestore rules:**
 
-#### `firebase --project test-project emulators:start --only firestore`
-
-#### `npm test -- --watchAll-false --testPathPattern="irestore.test.ts --forceExit`
+#### `npm run test-firestore`
 
 **Test React app:**
 
-#### `firebase --project test-project emulators:start --only firestore,auth --import src/test/firebase`
-
-#### `npm test -- --testPathIgnorePatterns="firestore.test.ts"`
+#### `npm run test-react-app`
 
 **Update Firestore Data**
 
