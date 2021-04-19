@@ -1,17 +1,16 @@
 import React from 'react';
 import {COLLECTIONS} from "util/config";
-import {FirestoreQuery} from "util/types";
+import {FirestoreQuery, PostInterface} from "util/types";
 import {AuthCheck, useUser} from "reactfire";
 import ErrorMessage from "../Common/ErrorMessage";
 import {ErrorBoundary} from "react-error-boundary";
-import {Filters, Query} from "util/utils";
-import PostList from "../Common/PostList/PostList";
-import {PostInterface} from "../Common/Post/types";
+import {Filters, PostQuery} from "util/utils";
+import PostList from "../Common/Post/PostList/PostList";
 
 const path = COLLECTIONS.posts;
 const query: FirestoreQuery = {
-    where: [Query.where.active, Query.includeField.created],
-    orderBy: [Query.orderBy.created],
+    where: [PostQuery.where.active, PostQuery.includeField.created],
+    orderBy: [PostQuery.orderBy.created],
 };
 
 

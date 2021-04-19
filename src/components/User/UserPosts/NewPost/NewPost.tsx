@@ -14,8 +14,8 @@ import {Converters, getFileWithUUID} from "util/utils";
 import {useStorage, useUser} from "reactfire";
 import {useHistory} from "react-router-dom";
 import useFirestoreAdd from "util/hooks/useFirestoreAdd";
-import {Post, PostInterface} from "../../../Common/Post/types";
 import {postCardStyle} from "../../../Common/Post/PostCard/styles";
+import {Post, PostInterface} from "util/types";
 
 const useStyles = makeStyles((theme) => ({
     root: {

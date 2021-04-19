@@ -9,7 +9,7 @@ import {Converters} from "util/utils";
 import {UserMocks} from "test/mocks/user.mock";
 import {fireEvent, screen, waitFor, waitForElementToBeRemoved} from "@testing-library/react";
 import {v4} from 'uuid';
-import {PostInterface} from "../../../Common/Post/types";
+import {PostInterface} from "util/types";
 
 let doc: any;
 let post: PostInterface;

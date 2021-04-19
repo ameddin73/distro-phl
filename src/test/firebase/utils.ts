@@ -3,7 +3,7 @@ import {apps, clearFirestoreData, initializeAdminApp, initializeTestApp} from "@
 import {UserMocks} from "../mocks/user.mock";
 import {COLLECTIONS} from "util/config";
 import {PostMocks} from "../mocks/post.mock";
-import {Post} from "../../components/Common/Post/types";
+import {Post} from "util/types";
 
 const PROJECT_ID = `${process.env.TEST_PROJECT}`;
 

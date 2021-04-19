@@ -6,10 +6,10 @@ import {screen, waitFor} from "@testing-library/react";
 import {customRender, HistoryWrapper, resetFirebase, setupFirebase, signIn, teardownFirebase} from "test/utils";
 import Post from "./Post";
 import {PostMocks} from "test/mocks/post.mock";
-import {PostInterface} from "./types";
 import {PATHS} from "../../../util/config";
 import {Route} from "react-router-dom";
 import {UserMocks} from "../../../test/mocks/user.mock";
+import {PostInterface} from "util/types";
 
 const mockDefaultPost = PostMocks.secondaryPost as PostInterface;
 

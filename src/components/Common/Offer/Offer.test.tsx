@@ -5,7 +5,7 @@ import React from 'react';
 import {fireEvent, screen, waitFor} from "@testing-library/react";
 import {customRender, resetFirebase, setupFirebase, teardownFirebase} from "test/utils";
 import {PostMocks} from "test/mocks/post.mock";
-import PostCard from "./PostCard";
+import Offer from "./Offer";
 import {PATHS} from "util/config";
 import * as MockDate from "mockdate";
 import {PostInterface} from "util/types";
@@ -22,7 +22,7 @@ afterEach(async () => await resetFirebase());
 afterAll(teardownFirebase);
 
 it('does not render expires if no expiration', async () => {
-    customRender(<PostCard post={mockSecondaryPost}/>);
+    customRender(<Offer post={mockSecondaryPost}/>);
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull(), {timeout: 60000})
     screen.getByText(mockSecondaryPost.name);
     expect(screen.queryByText('Expires')).toBeNull();
@@ -31,7 +31,7 @@ it('does not render expires if no expiration', async () => {
 
 describe('post with expires', () => {
     beforeEach(async () => {
-        customRender(<PostCard post={mockDefaultPost}/>);
+        customRender(<Offer post={mockDefaultPost}/>);
         await waitFor(() => expect(document.querySelector('#loading')).toBeNull(), {timeout: 60000})
     }, 60000);
 
