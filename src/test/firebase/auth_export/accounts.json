@@ -9,7 +9,7 @@
       "photoUrl": "",
       "passwordHash": "fakeHash:salt=fakeSaltRLfwKUrS6hc6hpjj7nfq:password=secondary password",
       "salt": "fakeSaltRLfwKUrS6hc6hpjj7nfq",
-      "passwordUpdatedAt": 1618115117350,
+      "passwordUpdatedAt": 1618859908546,
       "providerUserInfo": [
         {
           "providerId": "password",
@@ -20,11 +20,33 @@
           "photoUrl": ""
         }
       ],
-      "validSince": "1618115117",
+      "validSince": "1618859908",
       "email": "secondary@gmail.com",
       "emailVerified": false,
-      "disabled": false,
-      "lastRefreshAt": "2021-04-11T05:32:04.582Z"
+      "disabled": false
+    },
+    {
+      "localId": "pYTea318sLYzFG5eDuiB32UTkN3Z",
+      "createdAt": "1618860066427",
+      "lastLoginAt": "1618860066427",
+      "displayName": "tertiary user",
+      "photoUrl": "",
+      "emailVerified": false,
+      "email": "tertiary@gmail.com",
+      "salt": "fakeSaltelrARsW0PUYU1IGsiE8q",
+      "passwordHash": "fakeHash:salt=fakeSaltelrARsW0PUYU1IGsiE8q:password=tertiary password",
+      "passwordUpdatedAt": 1618860066427,
+      "validSince": "1618860066",
+      "providerUserInfo": [
+        {
+          "providerId": "password",
+          "email": "tertiary@gmail.com",
+          "federatedId": "tertiary@gmail.com",
+          "rawId": "tertiary@gmail.com",
+          "displayName": "tertiary user",
+          "photoUrl": ""
+        }
+      ]
     },
     {
       "localId": "yIEcR6DWPlKQ57X8l1xgdxKTiOjn",
@@ -34,7 +56,7 @@
       "photoUrl": "",
       "passwordHash": "fakeHash:salt=fakeSaltAIA48oL4OJSsurI3xqka:password=primary password",
       "salt": "fakeSaltAIA48oL4OJSsurI3xqka",
-      "passwordUpdatedAt": 1618115117351,
+      "passwordUpdatedAt": 1618859908546,
       "providerUserInfo": [
         {
           "providerId": "password",
@@ -45,11 +67,10 @@
           "photoUrl": ""
         }
       ],
-      "validSince": "1618115117",
+      "validSince": "1618859908",
       "email": "primary@gmail.com",
       "emailVerified": false,
-      "disabled": false,
-      "lastRefreshAt": "2021-04-11T05:33:08.251Z"
+      "disabled": false
     }
   ]
 }

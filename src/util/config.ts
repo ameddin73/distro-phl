@@ -37,7 +37,7 @@ export const PATHS = {
 };
 
 export const DESCRIPTION_LENGTH = 250;
-export const DEFAULT_IMAGE = 'images/posts/default-post.jpg'
+export const DEFAULT_IMAGE = 'images/posts/a0.jpg'
 
 export const STORAGE = {
     postImages: 'images/posts/',

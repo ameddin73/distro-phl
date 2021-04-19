@@ -4,7 +4,7 @@
 // this test has to be run in a node environment because @firebase/rules-testing-library
 // uses grpc and doesn't work in JSDOM. See more:
 // https://github.com/firebase/firebase-admin-node/issues/1135#issuecomment-765766020
-import {setupFirestore, startFirestore, teardownFirestore} from "./utils";
+import {initFirebase, setupFirestore, startFirestore, teardownFirestore} from "./utils";
 import firebase from "firebase";
 import {COLLECTIONS} from "util/config";
 import {Converters} from "util/utils";
@@ -22,8 +22,6 @@ let firestore: firebase.firestore.Firestore;
 let firestoreAuth: firebase.firestore.Firestore;
 let firestoreAuth2: firebase.firestore.Firestore;
 let firestoreAdmin: firebase.firestore.Firestore;
-let unsubscribe = () => {
-};
 const mockPost = PostMocks.defaultPost;
 const mockPost2 = PostMocks.secondaryPost;
 const mocDoc: Mutable<Post> = _.clone(mockPost);
@@ -38,21 +36,15 @@ let queryAuthed: firebase.firestore.DocumentReference<firebase.firestore.Documen
 let queryAuthed2: firebase.firestore.DocumentReference<firebase.firestore.DocumentData>;
 let updateQueryAuthed: firebase.firestore.DocumentReference<firebase.firestore.DocumentData>;
 
-beforeAll(() => firebase.initializeApp({projectId: PROJECT_ID}));
-
+beforeAll(initFirebase)
 describe('testing framework', () => {
-
     beforeAll(async () => {
         const stores = await startFirestore();
         firestore = stores.firestore;
         firestoreAdmin = stores.firestoreAdmin;
+        await setupFirestore(true);
     })
-    beforeEach(async () => await setupFirestore(true, true));
-    afterEach(async () => {
-        unsubscribe();
-        await teardownFirestore();
-    });
-    afterAll(async () => await teardownFirestore);
+    afterAll(teardownFirestore);
 
     it('tests populates posts', async () => {
         const testPost: Mutable<PostInterface> = _.clone(PostMocks.defaultPost);
@@ -78,7 +70,7 @@ describe('create post rules', () => {
     beforeAll(async () => {
         await buildFirestore();
     });
-    beforeEach(async () => await setupFirestore(true, false));
+    beforeEach(async () => await setupFirestore(false));
     afterEach(async () => {
         await teardownFirestore();
     });
@@ -226,7 +218,7 @@ describe('update post rules', () => {
         await buildFirestore();
     });
     beforeEach(async () => {
-        await setupFirestore(true, false);
+        await setupFirestore(false);
         await queryAuthed.set(mocDoc);
         await queryAuthed2.set(mocDoc2);
     });
@@ -300,7 +292,7 @@ describe('update post rules', () => {
 describe('read post rules', () => {
     beforeAll(async () => {
         await buildFirestore();
-        await setupFirestore(true, true);
+        await setupFirestore(true);
         await queryAuthed.set(mocDoc);
         await queryAuthed.update({active: false});
     });
@@ -368,7 +360,7 @@ describe('delete post rules', () => {
         await buildFirestore();
     });
     beforeEach(async () => {
-        await setupFirestore(true, false);
+        await setupFirestore(false);
         await queryAuthed.set(mocDoc);
         await queryAuthed2.set(mocDoc2);
     });
@@ -399,5 +391,5 @@ async function buildFirestore() {
     queryAuthed2 = firestoreAuth2.collection(COLLECTIONS.posts).doc(mockPost2.id).withConverter(Converters.PostConverter);
     updateQueryAuthed = firestoreAuth.collection(COLLECTIONS.posts).doc(mockPost.id);
 
-    await setupFirestore(true, false);
+    await setupFirestore(false);
 }

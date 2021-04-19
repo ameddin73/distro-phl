@@ -17,4 +17,10 @@ export namespace UserMocks {
         email: 'secondary@gmail.com',
         password: 'secondary password',
     }
+    export const userThree: UserType = {
+        uid: 'pYTea318sLYzFG5eDuiB32UTkN3Z',
+        name: 'tertiary user',
+        email: 'tertiary@gmail.com',
+        password: 'tertiary password',
+    }
 }
