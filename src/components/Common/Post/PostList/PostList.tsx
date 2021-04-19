@@ -1,13 +1,12 @@
 import React from 'react';
 import {Container, Grid} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
-import NothingHere from "../NothingHere/NothingHere";
-import {FirestoreQuery} from "util/types";
+import NothingHere from "../../NothingHere/NothingHere";
+import {FirestoreQuery, PostInterface} from "util/types";
 import {Converters} from "util/utils";
 import useFirestoreCollectionBuilder from "util/hooks/useFirestoreCollectionBuilder";
-import PostCard from '../Post/PostCard/PostCard.lazy';
-import {PostInterface} from "../Post/types";
-import {PostProps} from "../Post/PostCard/PostCard";
+import PostCard from '../PostCard/PostCard.lazy';
+import {PostProps} from "../PostCard/PostCard";
 
 const useStyles = makeStyles((theme) => ({
     root: {

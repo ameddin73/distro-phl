@@ -1,10 +1,9 @@
-import {FirestoreQueryOrderBy, FirestoreQueryWhere} from "./types";
+import {FirestoreQueryOrderBy, FirestoreQueryWhere, Offer, OfferInterface, Post, PostInterface} from "./types";
 import {v4} from "uuid";
 import firebase from "firebase/app";
 import "firebase/firestore";
-import {Offer, OfferInterface, Post, PostInterface} from "../components/Common/Post/types";
 
-export const getFileWithUUID = (file: File): File => {
+export function getFileWithUUID(file: File): File {
     Object.defineProperty(file, 'name', {
         writable: true,
         value: file.name.replace(/^[^.]*/, v4()),
@@ -12,7 +11,11 @@ export const getFileWithUUID = (file: File): File => {
     return file;
 }
 
-export namespace Query {
+export function getFormattedDate(date: Date): string {
+    return date.toLocaleDateString('en-US', {month: 'long', day: 'numeric'});
+}
+
+export namespace PostQuery {
     export namespace where {
         export const active: FirestoreQueryWhere = {
             fieldPath: 'active',
@@ -57,6 +60,16 @@ export namespace Query {
     }
 }
 
+export namespace OfferQuery {
+    export namespace where {
+        export const userOffer = (value: string) => ({
+            fieldPath: 'offerId',
+            opStr: '==',
+            value: value,
+        } as FirestoreQueryWhere);
+    }
+}
+
 export namespace Filters {
     export function unexpired(post: PostInterface) {
         return !post.hasExpiration || (post.expires !== undefined && post.expires > new Date());
@@ -75,7 +88,7 @@ export namespace Converters {
         fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): PostInterface {
             const data = snapshot.data(options);
             data.id = snapshot.id;
-            data.created = data.created ? (data.created as firebase.firestore.Timestamp).toDate() : undefined;
+            data.created = (data.created as firebase.firestore.Timestamp).toDate();
             data.expires = data.expires ? (data.expires as firebase.firestore.Timestamp).toDate() : undefined;
             return new PostInterface(data as Required<Post>);
         },
@@ -91,7 +104,7 @@ export namespace Converters {
         fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): OfferInterface {
             const data = snapshot.data(options);
             data.id = snapshot.id;
-            data.created = data.created ? (data.created as firebase.firestore.Timestamp).toDate() : undefined;
+            data.created = (data.created as firebase.firestore.Timestamp).toDate();
             return new OfferInterface(data as Required<Offer>);
         },
     };

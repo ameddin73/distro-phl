@@ -1,6 +1,6 @@
 import {UserMocks} from "./user.mock";
 import {DEFAULT_IMAGE} from "../../util/config";
-import {Post} from "../../components/Common/Post/types";
+import {Post} from "util/types";
 
 export namespace PostMocks {
     export const defaultPost: Post = {

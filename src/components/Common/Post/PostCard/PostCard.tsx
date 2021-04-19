@@ -6,7 +6,7 @@ import {StorageImage} from "reactfire";
 import {ErrorBoundary} from "react-error-boundary";
 import Loading from "../../Loading";
 import RouterLink from "../../RouterLink";
-import {PostInterface} from "../types";
+import {PostInterface} from "util/types";
 
 export type PostProps = {
     post: PostInterface

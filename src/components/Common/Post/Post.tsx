@@ -6,12 +6,13 @@ import {makeStyles} from "@material-ui/core/styles";
 import {useParams} from "react-router-dom";
 import Loading from "../Loading";
 import {Container, Grid, Typography} from "@material-ui/core";
-import {Converters, Query} from "util/utils";
+import {Converters, PostQuery} from "util/utils";
 import useFirestoreDocumentBuilder from "util/hooks/useFirestoreDocumentBuilder";
-import {PostInterface} from "./types";
 import useFirestoreCollectionBuilder from "util/hooks/useFirestoreCollectionBuilder";
 import UserAction from "../../User/UserPosts/UserAction/UserAction";
 import DistroAction from "../../DistroHub/DistroAction/DistroAction";
+import {PostInterface} from "util/types";
+import theme from "util/theme";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     },
     gradient: {
         position: "absolute",
-        width: '101%',
+        width: '100%',
         height: '99%',
         background: "linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(0, 0, 0, 1))",
     },
@@ -56,17 +57,20 @@ const PostDetails = ({id}: { id: string }) => {
     const {name, description, image, hasExpiration, expires, userName, uid} = post;
 
     let postAction;
+    let offerTitle;
     if (user && user.uid === uid) {
         postAction = <UserAction post={post}/>;
+        offerTitle = 'Offers';
     } else {
         postAction = <DistroAction post={post}/>;
+        offerTitle = '';
     }
     return (
         <>
             <div className={classes.hero}>
                 <div className={classes.gradient}/>
                 <Container maxWidth="sm">
-                    <Typography variant="h3" className={classes.title}>
+                    <Typography variant="h4" className={classes.title}>
                         {name}
                     </Typography>
                 </Container>
@@ -82,11 +86,12 @@ const PostDetails = ({id}: { id: string }) => {
                       justify="flex-start"
                       spacing={2}
                       alignItems="flex-start">
-                    <InfoItem title="Description" body={description}/>
+                    <InfoItem title="Posted by" body={userName} inline/>
                     {hasExpiration && expires?.getFullYear() === (new Date()).getFullYear() && (
-                        <InfoItem title="Expires" body={'' + expires?.toLocaleDateString('en-US', {month: 'long', day: 'numeric'})}/>
+                        <InfoItem inline title="Expires" body={'' + expires?.toLocaleDateString('en-US', {month: 'long', day: 'numeric'})}/>
                     )}
-                    <InfoItem title="Posted by" body={userName}/>
+                    <InfoItem title="Description" body={description}/>
+                    <InfoItem title={offerTitle} body=""/>
                 </Grid>
                 <div className={classes.action}>
                     {postAction}
@@ -96,12 +101,12 @@ const PostDetails = ({id}: { id: string }) => {
     )
 };
 
-const InfoItem = ({title, body}: { title: string, body: string }) => (
-    <Grid item>
-        <Typography variant="h6" color="textSecondary">
+const InfoItem = ({title, body, inline = false}: { title: string, body: string, inline?: boolean }) => (
+    <Grid item style={inline ? {display: 'flex', alignItems: 'center'} : undefined}>
+        <Typography variant="subtitle1" color="textSecondary">
             {title}
         </Typography>
-        <Typography>
+        <Typography variant="body1" style={inline ? {paddingLeft: theme.spacing(1)} : undefined}>
             {body}
         </Typography>
     </Grid>
@@ -109,7 +114,7 @@ const InfoItem = ({title, body}: { title: string, body: string }) => (
 
 const Post = () => {
     const {id} = useParams<{ id: string | undefined }>();
-    const {data: posts} = useFirestoreCollectionBuilder<PostInterface>(COLLECTIONS.posts, {where: [Query.where.active]});
+    const {data: posts} = useFirestoreCollectionBuilder<PostInterface>(COLLECTIONS.posts, {where: [PostQuery.where.active]});
 
     if (!id || !posts.some(doc => doc.id === id)) return (<div>404</div>)
 

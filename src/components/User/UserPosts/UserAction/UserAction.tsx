@@ -5,14 +5,15 @@ import {SnackbarContext} from "../../../Common/SnackbarProvider/SnackbarProvider
 import {PostProps} from "../../../Common/Post/PostCard/PostCard";
 import {useHistory} from "react-router-dom";
 import {PATHS} from "util/config";
+import OfferList from "../../../Common/Offer/OfferList/OfferList";
 
-const useStyles = makeStyles((theme) => ({
+export const actionStyles = makeStyles((theme) => ({
     root: {
         padding: theme.spacing(2),
     },
     delete: {
         width: '100%',
-        padding: theme.spacing(2),
+        padding: theme.spacing(1),
     },
     confirmDelete: {
         background: theme.palette.error.main,
@@ -23,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const UserAction = ({post}: PostProps) => {
-    const classes = useStyles();
+    const classes = actionStyles();
 
     const [deleteAlert, setDeleteAlert] = useState(false);
     const openSnackbar = useContext(SnackbarContext);
@@ -38,7 +39,7 @@ const UserAction = ({post}: PostProps) => {
                     openSnackbar('success', 'Deleted Successfully.');
                     history.replace(PATHS.public.userPosts);
                 })
-                .catch(error => {
+                .catch((error: Error) => {
                     console.error(error);
                     openSnackbar('error', 'Post failed to delete.');
                 });
@@ -47,6 +48,7 @@ const UserAction = ({post}: PostProps) => {
 
     return (
         <>
+            <OfferList offersRef={post.offersRef}/>
             <Button variant="contained" onClick={clickDelete} aria-label="delete" className={classes.delete} color="primary">
                 Delete Post
             </Button>
@@ -57,7 +59,7 @@ const UserAction = ({post}: PostProps) => {
                 aria-labelledby="delete-dialog-title"
                 aria-describedby="delete-dialog-description"
             >
-                <DialogTitle id="delete-dialog-title">{"Are you sure you want to delete this item?"}</DialogTitle>
+                <DialogTitle id="delete-dialog-title">{"Are you sure you want to delete this post?"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         This can't be undone.

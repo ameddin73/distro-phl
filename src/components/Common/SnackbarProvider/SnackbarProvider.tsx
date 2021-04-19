@@ -21,7 +21,7 @@ const SnackbarProvider: React.FC = (props) => {
     return (
         <SnackbarContext.Provider value={openSnackbar}>
             {props.children}
-            <Snackbar open={open} aria-label="snackbar" autoHideDuration={3000} onClose={closeSnackbar} TransitionComponent={SlideTransition}>
+            <Snackbar style={{position: 'absolute'}} open={open} aria-label="snackbar" autoHideDuration={3000} onClose={closeSnackbar} TransitionComponent={SlideTransition}>
                 <Alert variant="filled" severity={color} onClose={closeSnackbar}>{privateMessage}</Alert>
             </Snackbar>
         </SnackbarContext.Provider>
