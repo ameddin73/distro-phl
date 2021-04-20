@@ -65,5 +65,16 @@
       ]
     }
   ],
-  "fieldOverrides": []
+  "fieldOverrides": [
+    {
+      "collectionGroup": "offers",
+      "fieldPath": "message",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "posts",
+      "fieldPath": "description",
+      "indexes": []
+    }
+  ]
 }

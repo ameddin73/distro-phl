@@ -164,6 +164,11 @@ describe('read offer rules', () => {
         await assertSucceeds(queryAuthed.get());
     });
 
+    it('tests poster list', async () => {
+        const testQuery = buildQuery(firestoreAuth);
+        await assertSucceeds(testQuery.where('posterId', '==', UserMocks.defaultUser.uid).get());
+    });
+
     it('tests unAuthed reading', async () => {
         await assertFails(query.get());
     });
