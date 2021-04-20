@@ -13,7 +13,7 @@ import {Converters} from "util/utils";
 import {Mutable} from "../types";
 import _ from "lodash";
 import {Offer, Post} from "util/types";
-import {assertSucceeds} from "@firebase/rules-unit-testing";
+import {assertFails, assertSucceeds} from "@firebase/rules-unit-testing";
 
 let firestore: firebase.firestore.Firestore;
 let firestoreAuth2: firebase.firestore.Firestore;
@@ -60,22 +60,40 @@ describe('testing framework', () => {
 });
 
 describe('create offer rules', () => {
-    beforeAll(async () => {
-        const stores = await startFirestore();
-    });
+    beforeAll(buildQueries);
     beforeEach(setDefaultPost)
     afterEach(teardownFirestore);
 
     it('tests creating default offer', async () => {
-        queryAuthed2 = buildQuery(firestoreAuth2).doc(mockOffer.id);
         await assertSucceeds(queryAuthed2.set(mocDoc));
     });
 
     it('tests creating secondary offer', async () => {
-        queryAuthed2 = buildQuery(firestoreAuth2).doc(mockOffer.id);
-        queryAuthed3 = buildQuery(firestoreAuth3).doc(mockOffer2.id);
         await assertSucceeds(queryAuthed2.set(mocDoc));
         await assertSucceeds(queryAuthed3.set(mocDoc2));
+    });
+
+    it('tests types are valid', async () => {
+        let testDoc: Mutable<Offer> = _.clone(mocDoc);
+        // @ts-ignore
+        testDoc.created = 'string';
+        await assertFails(buildQuery(firestoreAuth2, true).doc(mockOffer.id).set(testDoc));
+        testDoc = _.clone(mocDoc);
+        // @ts-ignore
+        testDoc.message = false;
+        await assertFails(queryAuthed2.set(testDoc));
+        testDoc = _.clone(mocDoc);
+        // @ts-ignore
+        testDoc.userName = false;
+        await assertFails(queryAuthed2.set(testDoc));
+        testDoc = _.clone(mocDoc);
+        // @ts-ignore
+        testDoc.postId = false;
+        await assertFails(queryAuthed2.set(testDoc));
+        testDoc = _.clone(mocDoc);
+        // @ts-ignore
+        testDoc.posterId = false;
+        await assertFails(queryAuthed2.set(testDoc));
     });
 });
 
@@ -85,6 +103,13 @@ async function setDefaultPost() {
     await firestoreAdmin.collection(COLLECTIONS.posts).doc(PostMocks.defaultPost.id).set(post);
 }
 
-function buildQuery(firestoreInstance: firebase.firestore.Firestore) {
-    return firestoreInstance.collection(COLLECTIONS.posts).doc(PostMocks.defaultPost.id).collection(COLLECTIONS.offers).withConverter(Converters.OfferConverter);
+function buildQueries() {
+    queryAuthed2 = buildQuery(firestoreAuth2).doc(mockOffer.id);
+    queryAuthed3 = buildQuery(firestoreAuth3).doc(mockOffer2.id);
+}
+
+function buildQuery(firestoreInstance: firebase.firestore.Firestore, noConverter?: boolean) {
+    const query = firestoreInstance.collection(COLLECTIONS.posts).doc(PostMocks.defaultPost.id).collection(COLLECTIONS.offers);
+    if (noConverter) return query;
+    return query.withConverter(Converters.OfferConverter);
 }
