@@ -42,7 +42,7 @@ export class PostInterface implements Post {
     readonly uid: string;
     readonly userName: string;
     readonly documentRef;
-    readonly offersRef: firebase.firestore.Query;
+    readonly offersRef: firebase.firestore.CollectionReference;
 
     constructor(post: Required<Post>) {
         this.active = post.active;

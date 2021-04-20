@@ -48,7 +48,7 @@ const UserAction = ({post}: PostProps) => {
 
     return (
         <>
-            <OfferList offersRef={post.offersRef}/>
+            <OfferList offersRef={post.offersRef.where('posterId', '==', post.uid)}/>
             <Button variant="contained" onClick={clickDelete} aria-label="delete" className={classes.delete} color="primary">
                 Delete Post
             </Button>

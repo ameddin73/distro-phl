@@ -1,6 +1,6 @@
 import React from 'react';
 import firebase from "firebase/app";
-import {Container, Grid} from "@material-ui/core";
+import {Container, Grid, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import {useFirestoreCollectionData} from "reactfire";
 import {OfferInterface} from "util/types";
@@ -30,7 +30,11 @@ const OfferList = ({offersRef}: { offersRef: firebase.firestore.Query }) => {
     const classes = useStyles();
     const {data: offers} = useFirestoreCollectionData<OfferInterface>(offersRef);
 
-    if (!offers || offers.length === 0) return <></>;
+    if (!offers || offers.length === 0) return (
+        <Typography align="center" variant="subtitle2" color="textSecondary" gutterBottom>
+            No offers yet.
+        </Typography>
+    )
 
     return (
         <Container className={classes.container} maxWidth="md">

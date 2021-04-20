@@ -39,10 +39,9 @@ export function setupFirebase() {
 }
 
 export async function resetFirebase(signOut?: boolean) {
-    await firestore.terminate();
-    await firestore.clearPersistence();
-    firestore = firebaseApp.firestore();
-    firestore.useEmulator('localhost', 8080);
+    // await firestore.terminate();
+    // firestore = firebaseApp.firestore();
+    // firestore.useEmulator('localhost', 8080);
 
     if (signOut) await auth.signOut();
 }
@@ -50,7 +49,6 @@ export async function resetFirebase(signOut?: boolean) {
 export async function teardownFirebase() {
     await new Promise(r => setTimeout(r, 5000)) // TODO this hack solves a socket issue i'm not smart enough to fix
     await firestore.terminate();
-    await firestore.clearPersistence();
     await auth.signOut();
     await firebaseApp.delete();
 }

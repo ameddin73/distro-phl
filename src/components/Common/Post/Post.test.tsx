@@ -4,18 +4,17 @@
 import React from 'react';
 import {screen, waitFor} from "@testing-library/react";
 import {customRender, HistoryWrapper, resetFirebase, setupFirebase, signIn, teardownFirebase} from "test/utils";
-import Post from "./Post";
 import {PostMocks} from "test/mocks/post.mock";
-import {PATHS} from "../../../util/config";
+import {PATHS} from "util/config";
 import {Route} from "react-router-dom";
-import {UserMocks} from "../../../test/mocks/user.mock";
+import {UserMocks} from "test/mocks/user.mock";
 import {PostInterface} from "util/types";
+import Post from "./Post";
 
 const mockDefaultPost = PostMocks.secondaryPost as PostInterface;
 
 beforeAll(setupFirebase);
-afterEach(async () => await resetFirebase());
-afterAll(teardownFirebase);
+afterEach(async () => await resetFirebase(true));
 
 it('renders 404 if item not found', async () => {
     await load(`${PATHS.public.posts}/bad-id`);
@@ -26,6 +25,7 @@ describe('post exists', () => {
     beforeEach(async () => {
         await load(`${PATHS.public.posts}/${mockDefaultPost.id}`);
     }, 60000);
+    afterAll(teardownFirebase);
 
     it('should mount', async () => {
     });
@@ -36,9 +36,15 @@ describe('post exists', () => {
         screen.getByText(mockDefaultPost.userName);
     });
 
-    it('renders post action properly', async () => {
+    it('renders user action properly', async () => {
         await signIn(UserMocks.userTwo);
-        await waitFor(() => screen.getByLabelText('delete'));
+        await waitFor(() => screen.getByText('Delete Post'));
+    });
+
+    it('renders distro action properly', async () => {
+        await waitFor(() => screen.getByText(/Respond/));
+        await signIn(UserMocks.defaultUser);
+        await waitFor(() => screen.getByText(/Respond/));
     });
 });
 

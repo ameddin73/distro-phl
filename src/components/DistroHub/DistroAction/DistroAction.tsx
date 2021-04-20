@@ -4,12 +4,9 @@ import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogT
 import {PostProps} from "../../Common/Post/PostCard/PostCard";
 import {SnackbarContext} from "../../Common/SnackbarProvider/SnackbarProvider";
 import useInput from "util/hooks/useInput";
-import useFirestoreAdd from "util/hooks/useFirestoreAdd";
-import {COLLECTIONS, PATHS} from "util/config";
-import {Converters, OfferQuery} from "util/utils";
-import {useUser} from "reactfire";
+import {PATHS} from "util/config";
+import {AuthCheck, useFirestoreDocData, useUser} from "reactfire";
 import {useHistory, useLocation} from "react-router-dom";
-import useFirestoreCollectionBuilder from "util/hooks/useFirestoreCollectionBuilder";
 import {Offer as OfferType, OfferInterface} from "util/types";
 import Offer from "../../Common/Offer/Offer.lazy";
 import {actionStyles} from "../../User/UserPosts/UserAction/UserAction";
@@ -95,8 +92,6 @@ const MakeOffer = ({post}: PostProps) => {
     const {value: message, bind: bindMessage} = useInput('');
     const messageLength = 10;
 
-    const [newOffer] = useFirestoreAdd(COLLECTIONS.offers, Converters.OfferConverter, post.documentRef);
-
     const clickOffer = () => {
         if (user) {
             setOfferAlert(true);
@@ -113,12 +108,11 @@ const MakeOffer = ({post}: PostProps) => {
             const offer: OfferType = {
                 posterId: post.uid,
                 postId: post.id,
-                offerId: user.uid,
                 userName: user.displayName || 'Distro User', // TODO we don't love this
                 message: message,
             }
             try {
-                await newOffer(offer as OfferInterface);
+                await post.offersRef.doc(user.uid).set(offer as OfferInterface);
                 openSnackbar('success', 'Response sent.')
                 history.go(0); // TODO this is a bad solution but i can't figure
                 // out how to force a refresh
@@ -168,19 +162,19 @@ const MakeOffer = ({post}: PostProps) => {
     )
 }
 
-const DistroAction = ({post}: PostProps) => {
+const AuthWrapper = ({post}: PostProps) => {
     const {data: user} = useUser();
-    const userId = user ? user.uid : 'no-auth';
-    const {data: offers} = useFirestoreCollectionBuilder(COLLECTIONS.offers,
-        {where: [OfferQuery.where.userOffer(userId)]},
-        Converters.OfferConverter,
-        post.documentRef);
+    const {data: offer} = useFirestoreDocData<OfferInterface>(post.offersRef.doc(user.uid), {idField: 'id'});
 
-    if (offers.length !== 0) {
-        return <ExistingOffer {...offers[0]}/>;
-    } else {
-        return <MakeOffer post={post}/>;
-    }
+    return offer.postId === post.id ? <ExistingOffer {...offer}/> : <MakeOffer post={post}/>;
+}
+
+const DistroAction = ({post}: PostProps) => {
+    return (
+        <AuthCheck fallback={<MakeOffer post={post}/>}>
+            <AuthWrapper post={post}/>
+        </AuthCheck>
+    )
 };
 
 export default DistroAction;

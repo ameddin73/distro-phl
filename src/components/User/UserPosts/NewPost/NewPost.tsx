@@ -3,7 +3,7 @@ import {Button, CardContent, CardMedia, Container, FormControlLabel, Grid, IconB
 import {makeStyles} from "@material-ui/core/styles";
 import {CameraAlt} from "@material-ui/icons";
 import {grey} from "@material-ui/core/colors";
-import {COLLECTIONS, DESCRIPTION_LENGTH, PATHS, STORAGE} from "util/config";
+import {COLLECTIONS, PATHS, POST_DESCRIPTION_LENGTH, POST_NAME_LENGTH, STORAGE} from "util/config";
 import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
 import 'date-fns';
 import DateFnsUtils from "@date-io/date-fns";
@@ -116,8 +116,8 @@ const NewPost = () => {
         event.preventDefault();
         setError('');
 
-        if (!post.description) setError('Description cannot be empty.');
-        if (!post.name) setError('Post name cannot be empty.');
+        if (!post.description || post.description === '') setError('Description cannot be empty.');
+        if (!post.name || post.name === '') setError('Post name cannot be empty.');
         if (post.hasExpiration && !post.expires) setError('Expiration cannot be empty.');
         if (error) return;
 
@@ -169,12 +169,16 @@ const NewPost = () => {
                     <CardContent>
                         <TextField value={post.name}
                                    onChange={event => setPost('name', event.target.value)}
-                                   inputProps={{className: classes.title, "aria-label": "name"}}
+                                   inputProps={{
+                                       className: classes.title,
+                                       maxLength: POST_NAME_LENGTH,
+                                       "aria-label": "name",
+                                   }}
                                    margin="dense"
                                    fullWidth
                                    required
                                    id="name"
-                                   placeholder="Item Name"
+                                   placeholder="Name"
                                    label="Name"
                         />
                         <TextField value={post.description}
@@ -182,7 +186,7 @@ const NewPost = () => {
                                    className={classes.input}
                                    inputProps={{
                                        className: classes.body,
-                                       maxLength: DESCRIPTION_LENGTH,
+                                       maxLength: POST_DESCRIPTION_LENGTH,
                                        "aria-label": "description",
                                    }}
                                    fullWidth
@@ -192,7 +196,7 @@ const NewPost = () => {
                                    id="description"
                                    placeholder="Description"
                                    label="Description"
-                                   helperText={post.description && post.description.length > 0 ? "Characters remaining: " + (DESCRIPTION_LENGTH - post.description.length) : ""}
+                                   helperText={post.description && post.description.length > 0 ? "Characters remaining: " + (POST_DESCRIPTION_LENGTH - post.description.length) : ""}
                         />
                         <FormControlLabel
                             control={

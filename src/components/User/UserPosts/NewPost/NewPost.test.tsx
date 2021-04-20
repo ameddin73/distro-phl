@@ -123,7 +123,7 @@ async function createPost(succeed: boolean = true) {
     fireEvent.click(screen.getByText('Submit'));
     const {docs: posts} = await postRef.get();
     if (succeed) {
-        expect(posts.find(post => post.data().name === testName)).toBeTruthy();
+        await waitFor(() => expect(posts.find(post => post.data().name === testName)).toBeTruthy());
         return posts.find(post => post.data().name === testName);
     } else {
         return testName;
