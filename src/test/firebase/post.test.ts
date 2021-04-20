@@ -4,7 +4,7 @@
 // this test has to be run in a node environment because @firebase/rules-testing-library
 // uses grpc and doesn't work in JSDOM. See more:
 // https://github.com/firebase/firebase-admin-node/issues/1135#issuecomment-765766020
-import {initFirebase, setupFirestore, startFirestore, teardownFirestore} from "./utils";
+import {destroyFirebase, initFirebase, setupFirestore, startFirestore, teardownFirestore} from "./utils";
 import firebase from "firebase";
 import {COLLECTIONS} from "util/config";
 import {Converters} from "util/utils";
@@ -22,6 +22,7 @@ let firestore: firebase.firestore.Firestore;
 let firestoreAuth: firebase.firestore.Firestore;
 let firestoreAuth2: firebase.firestore.Firestore;
 let firestoreAdmin: firebase.firestore.Firestore;
+
 const mockPost = PostMocks.defaultPost;
 const mockPost2 = PostMocks.secondaryPost;
 const mocDoc: Mutable<Post> = _.clone(mockPost);
@@ -36,7 +37,8 @@ let queryAuthed: firebase.firestore.DocumentReference<firebase.firestore.Documen
 let queryAuthed2: firebase.firestore.DocumentReference<firebase.firestore.DocumentData>;
 let updateQueryAuthed: firebase.firestore.DocumentReference<firebase.firestore.DocumentData>;
 
-beforeAll(initFirebase)
+beforeAll(initFirebase);
+afterAll(destroyFirebase);
 describe('testing framework', () => {
     beforeAll(async () => {
         const stores = await startFirestore();

@@ -55,11 +55,11 @@ service cloud.firestore {
                 allow delete: if accessOfferRules();
 
                 function accessOfferRules() {
-                    return request.auth.uid == resource.data.posterId || request.auth.uid == resource.data.offerId;
+                    return request.auth.uid == resource.data.posterId || request.auth.uid == offerId;
                 }
 
                 function validateOfferFields() {
-                    let fields = ["created" , "postId", "posterId", "offerId", "userName", "message"];
+                    let fields = ["created" , "postId", "posterId", "userName", "message"];
                     let hasAll = request.resource.data.keys() .hasAll(fields) ;
                     let hasOnly = request.resource.data.keys() .hasOnly(fields) ;
                     let types = request.resource.data.created is timestamp //
@@ -67,17 +67,17 @@ service cloud.firestore {
                     && request.resource.data.userName is string //
                     && request.resource.data.postId is string //
                     && request.resource.data.posterId is string //
-                    && request.resource.data.offerId is string //
                     && request.auth.token.name == request.resource.data.userName;
                     return hasOnly && types && hasAll && hasOnly;
                 }
 
                 function createOfferRules() {
-                    let uidEqual = request.auth.uid == resource.data.offerId;
-                    let postIdEqual = resource.data.postId == postId;
-                    let posterIdEqual = resource.data.posterId == get(/databases/$(database)/posts/$(postId)) .data.uid;
+                    let uidEqual = request.auth.uid == offerId;
+                    let postIdEqual = request.resource.data.postId == postId;
+                    let notPosterId = offerId != get(/databases/$(database)/documents/posts/$(postId)) .data.uid;
+                    let posterIdEqual = request.resource.data.posterId == get(/databases/$(database)/documents/posts/$(postId)) .data.uid;
                     let createdNow = request.resource.data.created == request.time;
-                    return validateOfferFields() && uidEqual && postIdEqual && posterIdEqual && createdNow;
+                    return validateOfferFields() && uidEqual && postIdEqual && notPosterId && posterIdEqual && createdNow;
                 }
             }
         }

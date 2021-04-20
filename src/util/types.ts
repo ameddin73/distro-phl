@@ -86,7 +86,6 @@ export interface Offer {
     created?: Date,
     postId: string,
     posterId: string,
-    offerId: string,
     userName: string,
     message: string,
 }
@@ -96,17 +95,15 @@ export class OfferInterface implements Offer {
     readonly created: Date;
     readonly postId: string;
     readonly posterId: string;
-    readonly offerId: string;
     readonly userName: string;
     readonly message: string;
     readonly documentRef;
 
-    constructor({id, created, postId, posterId, offerId, userName, message}: Required<Offer>) {
+    constructor({id, created, postId, posterId, userName, message}: Required<Offer>) {
         this.id = id;
         this.created = created;
         this.postId = postId;
         this.posterId = posterId;
-        this.offerId = offerId;
         this.userName = userName;
         this.message = message;
 
