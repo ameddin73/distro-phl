@@ -14,13 +14,18 @@ export function initFirebase() {
     firebase.initializeApp({projectId: PROJECT_ID});
 }
 
+export async function destroyFirebase() {
+    await firebase.app().delete();
+}
+
 export function startFirestore() {
     const firestore: firebase.firestore.Firestore = initializeTestApp({projectId: PROJECT_ID}).firestore();
     const firestoreAuth: firebase.firestore.Firestore = initializeTestApp({projectId: PROJECT_ID, auth: {uid: UserMocks.defaultUser.uid, name: UserMocks.defaultUser.name, email: UserMocks.defaultUser.email}}).firestore();
     const firestoreAuth2: firebase.firestore.Firestore = initializeTestApp({projectId: PROJECT_ID, auth: {uid: UserMocks.userTwo.uid, name: UserMocks.userTwo.name, email: UserMocks.userTwo.email}}).firestore();
+    const firestoreAuth3: firebase.firestore.Firestore = initializeTestApp({projectId: PROJECT_ID, auth: {uid: UserMocks.userThree.uid, name: UserMocks.userThree.name, email: UserMocks.userThree.email}}).firestore();
     const firestoreAdmin: firebase.firestore.Firestore = initializeAdminApp({projectId: PROJECT_ID}).firestore();
 
-    return {firestore, firestoreAuth, firestoreAuth2, firestoreAdmin};
+    return {firestore, firestoreAuth, firestoreAuth2, firestoreAuth3, firestoreAdmin};
 }
 
 export function getFirestoreUser({uid = UserMocks.defaultUser.uid, name = UserMocks.defaultUser.name, email = UserMocks.defaultUser.email}: { uid?: string, name?: string, email?: string }) {
