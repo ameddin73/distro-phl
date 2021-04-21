@@ -25,4 +25,14 @@ export namespace PostMocks {
         uid: UserMocks.userTwo.uid,
         userName: UserMocks.userTwo.name,
     };
+    export const tertiaryPost: Post = {
+        id: 'tertiary_post_id',
+        name: 'tertiary_post_displayName',
+        active: true,
+        created: new Date('01 Jan 1970 00:00:00 GMT'),
+        description: 'tertiary_post_description',
+        hasExpiration: false,
+        uid: UserMocks.userThree.uid,
+        userName: UserMocks.userThree.name,
+    };
 }

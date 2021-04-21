@@ -9,7 +9,7 @@
       "photoUrl": "",
       "passwordHash": "fakeHash:salt=fakeSaltRLfwKUrS6hc6hpjj7nfq:password=secondary password",
       "salt": "fakeSaltRLfwKUrS6hc6hpjj7nfq",
-      "passwordUpdatedAt": 1618974140194,
+      "passwordUpdatedAt": 1619029811118,
       "providerUserInfo": [
         {
           "providerId": "password",
@@ -20,7 +20,7 @@
           "photoUrl": ""
         }
       ],
-      "validSince": "1618974140",
+      "validSince": "1619029811",
       "email": "secondary@gmail.com",
       "emailVerified": false,
       "disabled": false
@@ -33,7 +33,7 @@
       "photoUrl": "",
       "passwordHash": "fakeHash:salt=fakeSaltelrARsW0PUYU1IGsiE8q:password=tertiary password",
       "salt": "fakeSaltelrARsW0PUYU1IGsiE8q",
-      "passwordUpdatedAt": 1618974140194,
+      "passwordUpdatedAt": 1619029811119,
       "providerUserInfo": [
         {
           "providerId": "password",
@@ -44,7 +44,7 @@
           "photoUrl": ""
         }
       ],
-      "validSince": "1618974140",
+      "validSince": "1619029811",
       "email": "tertiary@gmail.com",
       "emailVerified": false,
       "disabled": false
@@ -55,12 +55,9 @@
       "lastLoginAt": "1618974185143",
       "displayName": "quaternary user",
       "photoUrl": "",
-      "emailVerified": false,
-      "email": "quaternary@gmail.com",
-      "salt": "fakeSalt5E1WjKsRXwIa9ET1tm7U",
       "passwordHash": "fakeHash:salt=fakeSalt5E1WjKsRXwIa9ET1tm7U:password=quaternary password",
-      "passwordUpdatedAt": 1618974185144,
-      "validSince": "1618974185",
+      "salt": "fakeSalt5E1WjKsRXwIa9ET1tm7U",
+      "passwordUpdatedAt": 1619029811119,
       "providerUserInfo": [
         {
           "providerId": "password",
@@ -70,7 +67,11 @@
           "displayName": "quaternary user",
           "photoUrl": ""
         }
-      ]
+      ],
+      "validSince": "1619029811",
+      "email": "quaternary@gmail.com",
+      "emailVerified": false,
+      "disabled": false
     },
     {
       "localId": "yIEcR6DWPlKQ57X8l1xgdxKTiOjn",
@@ -80,7 +81,7 @@
       "photoUrl": "",
       "passwordHash": "fakeHash:salt=fakeSaltAIA48oL4OJSsurI3xqka:password=primary password",
       "salt": "fakeSaltAIA48oL4OJSsurI3xqka",
-      "passwordUpdatedAt": 1618974140194,
+      "passwordUpdatedAt": 1619029811119,
       "providerUserInfo": [
         {
           "providerId": "password",
@@ -91,7 +92,7 @@
           "photoUrl": ""
         }
       ],
-      "validSince": "1618974140",
+      "validSince": "1619029811",
       "email": "primary@gmail.com",
       "emailVerified": false,
       "disabled": false
