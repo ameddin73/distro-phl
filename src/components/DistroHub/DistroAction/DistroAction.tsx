@@ -51,7 +51,7 @@ const ExistingOffer = (offer: OfferInterface) => {
     return (
         <>
             <Offer {...offer}/>
-            <Button variant="contained" onClick={clickDelete} aria-label="offer-button" color="primary" className={classes.offer}>
+            <Button variant="contained" onClick={clickDelete} aria-label="delete-button" color="primary" className={classes.offer}>
                 Delete Response
             </Button>
             <Dialog
@@ -64,7 +64,7 @@ const ExistingOffer = (offer: OfferInterface) => {
                 <DialogTitle id="delete-dialog-title">{"Are you sure you want to delete this response?"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        You can respond again after this one is deleted.
+                        You can add a new response later.
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -139,10 +139,12 @@ const MakeOffer = ({post}: PostProps) => {
                 <DialogContent>
                     <TextField
                         {...bindMessage}
+                        inputProps={{'aria-label': 'message'}}
                         id="message-to-poster"
                         label="Message to poster"
                         rows={3}
                         multiline
+                        required
                         variant="outlined"
                         fullWidth
                         helperText={`${message.length < messageLength ? messageLength - message.length : 0} more characters required`}/>
