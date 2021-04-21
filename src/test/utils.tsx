@@ -63,6 +63,10 @@ export function signIn(user: UserMocks.UserType = UserMocks.defaultUser) {
     return auth.signInWithEmailAndPassword(user.email, user.password);
 }
 
+export function signOut() {
+    return auth.signOut();
+}
+
 export const rendersNothingHere = () => {
     screen.getByText('Oops, theres nothing here.');
     screen.getByText('Make a Post');
