@@ -86,6 +86,8 @@ it('should open fail snackbar', async () => {
     await waitFor(() => screen.getByText('Post failed to delete.'));
 })
 
+// TODO render offers
+
 function doDelete(incomplete?: boolean) {
     fireEvent.click(screen.getByLabelText('delete'));
     screen.getByText("This can't be undone.");

@@ -114,8 +114,6 @@ const MakeOffer = ({post}: PostProps) => {
             try {
                 await post.offersRef.doc(user.uid).set(offer as OfferInterface);
                 openSnackbar('success', 'Response sent.')
-                // history.go(0); // TODO this is a bad solution but i can't figure
-                // out how to force a refresh
             } catch (error) {
                 console.error(error);
                 openSnackbar('error', 'Response failed to send.')
