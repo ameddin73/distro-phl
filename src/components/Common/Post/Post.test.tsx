@@ -11,7 +11,7 @@ import {UserMocks} from "test/mocks/user.mock";
 import {PostInterface} from "util/types";
 import Post from "./Post";
 
-const mockDefaultPost = PostMocks.secondaryPost as PostInterface;
+const mockDefaultPost = PostMocks.defaultPost as PostInterface;
 
 beforeAll(setupFirebase);
 afterEach(async () => await resetFirebase(true));
@@ -23,7 +23,7 @@ it('renders 404 if item not found', async () => {
 
 describe('post exists', () => {
     beforeEach(async () => {
-        await load(`${PATHS.public.posts}/${mockDefaultPost.id}`);
+        await load(`${PATHS.public.posts}/preset-post-0`);
     }, 60000);
     afterAll(teardownFirebase);
 
@@ -37,13 +37,13 @@ describe('post exists', () => {
     });
 
     it('renders user action properly', async () => {
-        await signIn(UserMocks.userTwo);
+        await signIn(UserMocks.defaultUser);
         await waitFor(() => screen.getByText('Delete Post'));
     });
 
     it('renders distro action properly', async () => {
         await waitFor(() => screen.getByText(/Respond/));
-        await signIn(UserMocks.defaultUser);
+        await signIn(UserMocks.userTwo);
         await waitFor(() => screen.getByText(/Respond/));
     });
 });
