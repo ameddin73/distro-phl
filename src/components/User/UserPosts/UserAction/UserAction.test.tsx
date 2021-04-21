@@ -7,9 +7,10 @@ import {customRender, getFirebase, resetFirebase, setupFirebase, signIn} from "t
 import {COLLECTIONS, PATHS} from "util/config";
 import {Converters} from "util/utils";
 import {UserMocks} from "test/mocks/user.mock";
-import {fireEvent, screen, waitFor, waitForElementToBeRemoved} from "@testing-library/react";
+import {cleanup, fireEvent, screen, waitFor, waitForElementToBeRemoved} from "@testing-library/react";
 import {v4} from 'uuid';
 import {PostInterface} from "util/types";
+import {PostMocks} from "test/mocks/post.mock";
 
 let doc: any;
 let post: PostInterface;
@@ -44,6 +45,15 @@ afterAll(async () => {
 
 it('should mount', () => {
     screen.getByText('Delete Post')
+});
+
+it('should show offers', async () => {
+    cleanup()
+    const defaultPost = new PostInterface(PostMocks.defaultPost);
+    customRender(<UserAction post={defaultPost}/>)
+    await waitFor(() => expect(document.querySelector('#loading')).toBeNull(), {timeout: 5000})
+    const offers = screen.getAllByText('Offer by');
+    expect(offers.length).toBeGreaterThanOrEqual(1); // Non-deterministic because my dumb ass screws with this in DistroAction.test.tsx
 });
 
 it('should open modal when delete', () => {
