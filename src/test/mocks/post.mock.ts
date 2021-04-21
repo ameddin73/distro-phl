@@ -3,7 +3,7 @@ import {DEFAULT_IMAGE} from "../../util/config";
 import {Post} from "util/types";
 
 export namespace PostMocks {
-    export const defaultPost: Post = {
+    export const defaultPost: Required<Post> = {
         id: 'default_post_id',
         name: 'default_post_displayName',
         active: true,
