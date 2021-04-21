@@ -2,62 +2,52 @@
  * @jest-environment test/jest-env
  */
 import React from 'react';
-import {customRender, rendersNothingHere, resetFirebase, setupFirebase, teardownFirebase} from "src/test/utils";
+import {customRender, setupFirebase, signIn, teardownFirebase} from "test/utils";
 import {screen, waitFor} from "@testing-library/react";
-import {COLLECTIONS} from "src/util/config";
-import {PostQuery} from "src/util/utils";
-import {FirestoreQueryWhere, PostInterface} from "src/util/types";
-import {UserMocks} from "src/test/mocks/user.mock";
+import {PostInterface} from "util/types";
+import {UserMocks} from "test/mocks/user.mock";
 import OfferList from "./OfferList";
+import {PostMocks} from "test/mocks/post.mock";
+import firebase from "firebase/app";
+import "firebase/firestore";
 
-const path = COLLECTIONS.posts;
-const query = {
-    where: [PostQuery.where.active],
-    orderBy: [PostQuery.orderBy.created],
-}
-const props = {path, query};
+let offersRef: firebase.firestore.Query;
 
-beforeAll(setupFirebase);
-afterEach(async () => await resetFirebase());
+beforeAll(async () => {
+    await setupFirebase();
+    const post = new PostInterface(PostMocks.defaultPost);
+    offersRef = appendWhere(post.offersRef, UserMocks.defaultUser.uid);
+});
 afterAll(teardownFirebase);
 
-it('should mount', async () => {
-    customRender(<OfferList {...props}/>);
-    await waitFor(() => expect(document.querySelector('#loading')).toBeNull(), {timeout: 60000})
-}, 60000);
+it('renders no offers message if query returns empty list', async () => {
+    await signIn(UserMocks.userTwo);
+    // @ts-ignore
+    const post = new PostInterface(PostMocks.secondaryPost);
+    const tempRef = appendWhere(post.offersRef, UserMocks.userTwo.uid);
 
-it('renders all posts', async () => {
-    customRender(<OfferList {...props}/>);
-    await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
-    const posts = screen.getAllByText('Posted by');
-    expect(posts.length).toBeGreaterThanOrEqual(3);
+    await load(tempRef);
+    screen.getByText('No offers yet.');
 });
 
-it('filters posts', async () => {
-    const filter = ((post: PostInterface) => post.uid !== UserMocks.defaultUser.uid);
-    customRender(<OfferList {...props} filter={filter}/>);
-    await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
-    const posts = screen.getAllByText('Posted by');
-    expect(posts.length).toBe(1);
+describe('renders correctly', () => {
+    beforeAll(async () => signIn(UserMocks.defaultUser));
+    beforeEach(async () => await load(offersRef));
+
+    it('should mount', async () => {
+    });
+
+    it('renders all posts', async () => {
+        const posts = screen.getAllByText('Offer by');
+        expect(posts.length).toBeGreaterThanOrEqual(2);
+    });
 });
 
-it('renders NothingHere if query returns empty list', async () => {
-    const newWhere: FirestoreQueryWhere = {
-        fieldPath: 'displayName',
-        opStr: '==',
-        value: 'fake-name',
-    }
-    const newQuery = {
-        where: [PostQuery.where.active, newWhere],
-    };
-    customRender(<OfferList path={path} query={newQuery}/>);
+async function load(ref: firebase.firestore.Query) {
+    customRender(<OfferList offersRef={ref}/>);
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
-    screen.getByText('Oops, theres nothing here.');
-});
+}
 
-it('renders NothingHere if filter filters all posts', async () => {
-    const filter = (() => false);
-    customRender(<OfferList {...props} filter={filter}/>);
-    await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
-    rendersNothingHere();
-});
+function appendWhere(query: firebase.firestore.Query, uid: string) {
+    return query.where('posterId', '==', uid);
+}

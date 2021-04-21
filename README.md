@@ -38,6 +38,9 @@ This will start the app and connect to the firebase dev project. Run firestore &
 
 **Update Firestore Data**
 
+Changes to firestore data must be constructed programmatically using `populate.test.ts`
+in the test/firebase directory. After building the desired test data export wit the following command and commit both to git.
+
 #### `firebase --project test-project emulators:start --only firestore`
 
 Debug a test with a breakpoint set after `setupFirestore(true,true)`

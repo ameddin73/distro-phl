@@ -9,7 +9,7 @@
       "photoUrl": "",
       "passwordHash": "fakeHash:salt=fakeSaltRLfwKUrS6hc6hpjj7nfq:password=secondary password",
       "salt": "fakeSaltRLfwKUrS6hc6hpjj7nfq",
-      "passwordUpdatedAt": 1618859908546,
+      "passwordUpdatedAt": 1618955609328,
       "providerUserInfo": [
         {
           "providerId": "password",
@@ -20,7 +20,7 @@
           "photoUrl": ""
         }
       ],
-      "validSince": "1618859908",
+      "validSince": "1618955609",
       "email": "secondary@gmail.com",
       "emailVerified": false,
       "disabled": false
@@ -31,12 +31,9 @@
       "lastLoginAt": "1618860066427",
       "displayName": "tertiary user",
       "photoUrl": "",
-      "emailVerified": false,
-      "email": "tertiary@gmail.com",
-      "salt": "fakeSaltelrARsW0PUYU1IGsiE8q",
       "passwordHash": "fakeHash:salt=fakeSaltelrARsW0PUYU1IGsiE8q:password=tertiary password",
-      "passwordUpdatedAt": 1618860066427,
-      "validSince": "1618860066",
+      "salt": "fakeSaltelrARsW0PUYU1IGsiE8q",
+      "passwordUpdatedAt": 1618955609329,
       "providerUserInfo": [
         {
           "providerId": "password",
@@ -46,7 +43,11 @@
           "displayName": "tertiary user",
           "photoUrl": ""
         }
-      ]
+      ],
+      "validSince": "1618955609",
+      "email": "tertiary@gmail.com",
+      "emailVerified": false,
+      "disabled": false
     },
     {
       "localId": "yIEcR6DWPlKQ57X8l1xgdxKTiOjn",
@@ -56,7 +57,7 @@
       "photoUrl": "",
       "passwordHash": "fakeHash:salt=fakeSaltAIA48oL4OJSsurI3xqka:password=primary password",
       "salt": "fakeSaltAIA48oL4OJSsurI3xqka",
-      "passwordUpdatedAt": 1618859908546,
+      "passwordUpdatedAt": 1618955609329,
       "providerUserInfo": [
         {
           "providerId": "password",
@@ -67,7 +68,7 @@
           "photoUrl": ""
         }
       ],
-      "validSince": "1618859908",
+      "validSince": "1618955609",
       "email": "primary@gmail.com",
       "emailVerified": false,
       "disabled": false
