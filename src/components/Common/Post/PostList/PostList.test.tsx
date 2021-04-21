@@ -34,7 +34,7 @@ it('renders all posts', async () => {
 });
 
 it('filters posts', async () => {
-    const filter = ((post: PostInterface) => post.uid !== UserMocks.defaultUser.uid);
+    const filter = ((post: PostInterface) => post.uid === UserMocks.userThree.uid);
     customRender(<PostList {...props} filter={filter}/>);
     await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
     const posts = screen.getAllByText('Posted by');
