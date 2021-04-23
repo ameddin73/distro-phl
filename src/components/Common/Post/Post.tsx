@@ -13,6 +13,7 @@ import UserAction from "../../User/UserPosts/UserAction/UserAction";
 import DistroAction from "../../DistroHub/DistroAction/DistroAction";
 import {PostInterface} from "util/types";
 import theme from "util/theme";
+import NotFound from "../NotFound";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -116,7 +117,7 @@ const Post = () => {
     const {id} = useParams<{ id: string | undefined }>();
     const {data: posts} = useFirestoreCollectionBuilder<PostInterface>(COLLECTIONS.posts, {where: [PostQuery.where.active]});
 
-    if (!id || !posts.some(doc => doc.id === id)) return (<div>404</div>)
+    if (!id || !posts.some(doc => doc.id === id)) return (<NotFound/>);
 
     return <PostDetails id={id}/>;
 }

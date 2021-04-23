@@ -14,6 +14,7 @@ import Loading from "./components/Common/Loading";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import SnackbarProvider from "./components/Common/SnackbarProvider/SnackbarProvider";
 import Post from "./components/Common/Post/Post";
+import NotFound from "./components/Common/NotFound";
 
 function App({config}: { config: Object }) {
 
@@ -38,6 +39,9 @@ function App({config}: { config: Object }) {
                                         </Route>
                                         <Route path={PATHS.public.base}>
                                             <DistroHub/>
+                                        </Route>
+                                        <Route>
+                                            <NotFound/>
                                         </Route>
                                     </Switch>
                                 </SnackbarProvider>
