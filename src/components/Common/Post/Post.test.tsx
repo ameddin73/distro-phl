@@ -18,7 +18,7 @@ afterEach(async () => await resetFirebase(true));
 
 it('renders 404 if item not found', async () => {
     await load(`${PATHS.public.posts}/bad-id`);
-    screen.getByText('404');
+    screen.getByLabelText('404 not found');
 });
 
 describe('post exists', () => {
