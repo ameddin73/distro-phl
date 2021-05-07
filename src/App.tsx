@@ -1,5 +1,5 @@
 import React, {Suspense} from 'react';
-import {ThemeProvider} from '@material-ui/core';
+import {CssBaseline, ThemeProvider} from '@material-ui/core';
 import 'firebase/auth';
 import 'firebase/firestore';
 import theme from "util/theme";
@@ -20,6 +20,7 @@ function App({config}: { config: Object }) {
 
     return (
         <ThemeProvider theme={theme}>
+            <CssBaseline/>
             <FirebaseAppProvider firebaseConfig={config} suspense>
                 <ErrorBoundary FallbackComponent={ErrorMessage}>
                     <Router>

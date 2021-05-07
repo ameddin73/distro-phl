@@ -53,6 +53,10 @@ Debug a test with a breakpoint set after `setupFirestore(true,true)`
 
 **⚠️ Rollback updates on @date-io/date-fns**
 
+## Additional Information
+
+### [MUI Palette](https://material.io/resources/color/#!/?view.left=0&view.right=0&primary.color=FFA000&primary.text.color=000000&secondary.color=90A4AE)
+
 ## Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

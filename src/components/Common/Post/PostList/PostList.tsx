@@ -20,7 +20,8 @@ const useStyles = makeStyles((theme) => ({
     },
     container: {
         maxWidth: 'sm',
-        padding: theme.spacing(2),
+        padding: theme.spacing(1),
+        paddingTop: theme.spacing(4),
         alignItems: 'flex-start',
     },
     card: {

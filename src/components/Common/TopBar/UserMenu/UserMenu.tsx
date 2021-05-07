@@ -10,10 +10,10 @@ import {makeStyles} from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
     button: {
         whiteSpace: "nowrap",
+        color: "black",
     },
     paper: {
         minWidth: 240,
-        backgroundColor: theme.palette.primary.main,
     },
     closeMenuButton: {
         marginLeft: 'auto',
@@ -42,12 +42,12 @@ const UserMenu = () => {
                 pathname: PATHS.public.login,
                 state: {from: location}
             }} onClick={toggleDrawer(false)}>
-                <Button color="inherit"
-                        className={classes.button}>Sign In</Button>
+                <Button className={classes.button}>Sign In</Button>
             </RouterLink>
         }>
             {user &&
-            <Button aria-controls="menu"
+            <Button className={classes.button}
+                    aria-controls="menu"
                     aria-haspopup="true"
                     onClick={toggleDrawer(true)}
                     endIcon={<MenuIcon/>}>

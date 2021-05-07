@@ -16,7 +16,7 @@ export type PostProps = {
 const PostCard = ({post}: PostProps) => {
     const classes = postCardStyle();
 
-    const {name, id, image, hasExpiration, expires, userName} = post;
+    const {name, id, image, userName} = post;
 
     const storageParams = {
         storagePath: image,
@@ -33,28 +33,18 @@ const PostCard = ({post}: PostProps) => {
                 }>
                     <StorageImage suspense={true} placeHolder={<Loading/>} storagePath={image || DEFAULT_IMAGE} className={classes.media} alt={image ? post.name : 'Default Image'}/>
                 </ErrorBoundary>
-                <div className={classes.content}>
-                    <Typography variant="h5" component="h2">
+                <div className={classes.title}>
+                    <Typography variant="h6">
                         {name}
                     </Typography>
-                    {hasExpiration && expires?.getFullYear() === (new Date()).getFullYear() && (
-                        <div className={classes.detailContainer}>
-                            <Typography variant="body2" className={classes.detail}>
-                                Expires
-                            </Typography>
-                            <Typography variant="body2">
-                                {expires?.toLocaleDateString('en-US', {month: 'long', day: 'numeric'})}
-                            </Typography>
-                        </div>
-                    )}
                 </div>
             </Grid>
             <Grid item className={classes.userInfo}>
                 <div className={classes.detailContainer}>
-                    <Typography variant="body2" className={classes.detail}>
+                    <Typography variant="subtitle2" className={classes.detail}>
                         Posted by
                     </Typography>
-                    <Typography variant="button" noWrap>
+                    <Typography variant="body2" noWrap>
                         {userName}
                     </Typography>
                 </div>
