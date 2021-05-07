@@ -11,11 +11,10 @@ export const postCardStyle = makeStyles((theme) => ({
         display: "inline-block",
         maxWidth: 440,
         minWidth: CARD_SQUARE,
-        minHeight: CARD_SQUARE,
+        backgroundColor: theme.palette.background.default,
+        borderRadius: 16,
     },
     action: {
-        height: '100%',
-        minHeight: CARD_SQUARE,
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
@@ -26,9 +25,12 @@ export const postCardStyle = makeStyles((theme) => ({
         height: 140,
         objectFit: 'cover',
     },
-    content: {
+    title: {
         paddingLeft: theme.spacing(2),
-        paddingTop: theme.spacing(1),
+        fontWeight: "bold",
+    },
+    divider: {
+        marginLeft: theme.spacing(2) * -1,
     },
     detailContainer: {
         display: 'flex',
@@ -43,9 +45,6 @@ export const postCardStyle = makeStyles((theme) => ({
     detail: {
         color: theme.palette.text.secondary,
         paddingRight: theme.spacing(1),
-    },
-    postedBy: {
-        height: '100%',
     },
 }));
 
