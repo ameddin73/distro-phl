@@ -1,6 +1,7 @@
 import {makeStyles} from "@material-ui/core/styles";
 
 const CARD_SQUARE = 286;
+export const MEDIA_HEIGHT = 140;
 export const postCardStyle = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -11,6 +12,7 @@ export const postCardStyle = makeStyles((theme) => ({
         display: "inline-block",
         maxWidth: 440,
         minWidth: CARD_SQUARE,
+        height: 214,
         backgroundColor: theme.palette.background.default,
         borderColor: theme.palette.text.secondary,
         borderRadius: 14,
@@ -23,7 +25,7 @@ export const postCardStyle = makeStyles((theme) => ({
     },
     media: {
         width: '100%',
-        height: 140,
+        height: MEDIA_HEIGHT,
         objectFit: 'cover',
     },
     title: {

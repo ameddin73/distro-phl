@@ -25,7 +25,7 @@ function App({config}: { config: Object }) {
                 <ErrorBoundary FallbackComponent={ErrorMessage}>
                     <Router>
                         <TopBar/>
-                        <Suspense fallback={<Loading/>}>
+                        <Suspense fallback={<Loading marginTop='40%'/>}>
                             <ErrorBoundary FallbackComponent={ErrorMessage}>
                                 <SnackbarProvider>
                                     <Switch>
