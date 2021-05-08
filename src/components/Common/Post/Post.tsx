@@ -4,7 +4,7 @@ import {StorageImage, useUser} from "reactfire";
 import {COLLECTIONS, DEFAULT_IMAGE} from "util/config";
 import {makeStyles} from "@material-ui/core/styles";
 import {useParams} from "react-router-dom";
-import Loading from "../Loading";
+import Loading from "../Loading/Loading";
 import {Container, Grid, Typography} from "@material-ui/core";
 import {Converters, PostQuery} from "util/utils";
 import useFirestoreDocumentBuilder from "util/hooks/useFirestoreDocumentBuilder";

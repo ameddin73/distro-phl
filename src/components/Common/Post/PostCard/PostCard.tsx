@@ -4,7 +4,7 @@ import {postCardStyle} from "./styles";
 import {DEFAULT_IMAGE, PATHS} from "util/config";
 import {StorageImage} from "reactfire";
 import {ErrorBoundary} from "react-error-boundary";
-import Loading from "../../Loading";
+import Loading from "../../Loading/Loading";
 import RouterLink from "../../RouterLink";
 import {PostInterface} from "util/types";
 

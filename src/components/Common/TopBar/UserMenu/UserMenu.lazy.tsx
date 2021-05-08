@@ -1,5 +1,5 @@
 import React, {lazy, Suspense} from 'react';
-import Loading from "../../Loading";
+import Loading from "../../Loading/Loading";
 
 const LazyUserMenu = lazy(() => import('./UserMenu'));
 

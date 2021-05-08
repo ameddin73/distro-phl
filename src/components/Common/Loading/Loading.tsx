@@ -1,6 +1,6 @@
-import {CircularProgress} from "@material-ui/core";
 import React from "react";
 import {makeStyles} from "@material-ui/styles";
+import Animation from "./logo-load.svg";
 
 const useStyles = makeStyles({
     body: {
@@ -8,8 +8,11 @@ const useStyles = makeStyles({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    progress: {
-        marginTop: '25%'
+    animation: {
+        marginTop: '25%',
+        height: "inherit",
+        maxHeight: 48,
+        maxWidth: 48,
     }
 });
 
@@ -18,7 +21,7 @@ const Loading = () => {
 
     return (
         <div className={classes.body}>
-            <CircularProgress id="loading" className={classes.progress}/>
+            <object aria-label="loading animation" data={Animation} className={classes.animation}/>
         </div>
     )
 };
