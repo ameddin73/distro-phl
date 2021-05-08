@@ -29,13 +29,13 @@ it('should redirect to login when click offer unauthed', async () => {
 });
 
 it("should show logged in user's offer", async () => {
-    await signIn(UserMocks.userTwo);
+    await signIn(UserMocks.userThree);
     await waitFor(() => screen.getByText('Offer by'));
 });
 
 describe('delete offer', () => {
     beforeEach(async () => {
-        await signIn(UserMocks.userTwo);
+        await signIn(UserMocks.userThree);
         await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
         fireEvent.click(screen.getByLabelText('delete-button'));
     });

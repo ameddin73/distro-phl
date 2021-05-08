@@ -14,13 +14,8 @@ it('should mount', () => {
     customRender(<TopBar/>);
 });
 
-it('renders title', async () => {
-    customRender(<TopBar/>);
-    screen.getByText('Distro PHL');
-});
-
 it('navigates to home when title clicked', async () => {
     customRender(<TopBar/>);
-    fireEvent.click(screen.getByText('Distro PHL'));
+    fireEvent.click(screen.getByLabelText('logo'));
     expect(window.location.pathname).toBe(PATHS.public.base);
 });
