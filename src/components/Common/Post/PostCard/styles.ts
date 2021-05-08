@@ -12,7 +12,8 @@ export const postCardStyle = makeStyles((theme) => ({
         maxWidth: 440,
         minWidth: CARD_SQUARE,
         backgroundColor: theme.palette.background.default,
-        borderRadius: 16,
+        borderColor: theme.palette.text.secondary,
+        borderRadius: 14,
     },
     action: {
         display: 'flex',
