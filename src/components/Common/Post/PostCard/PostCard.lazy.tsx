@@ -1,5 +1,5 @@
 import React, {lazy, Suspense} from 'react';
-import Loading from "../../Loading";
+import Loading from "../../Loading/Loading";
 import {postCardStyle} from "./styles";
 import {Card, Grid} from "@material-ui/core";
 import {PostProps} from "./PostCard";

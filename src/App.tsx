@@ -10,7 +10,7 @@ import User from "./components/User/User";
 import {FirebaseAppProvider} from "reactfire";
 import {ErrorBoundary} from "react-error-boundary";
 import ErrorMessage from "./components/Common/ErrorMessage";
-import Loading from "./components/Common/Loading";
+import Loading from "./components/Common/Loading/Loading";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import SnackbarProvider from "./components/Common/SnackbarProvider/SnackbarProvider";
 import Post from "./components/Common/Post/Post";
