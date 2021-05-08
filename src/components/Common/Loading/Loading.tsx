@@ -21,7 +21,7 @@ const Loading = ({marginTop = '0%'}: { marginTop?: string }) => {
 
     return (
         <div className={classes.body}>
-            <object aria-label="loading animation" data={Animation} className={classes.animation}/>
+            <object id="loading" aria-label="loading animation" data={Animation} className={classes.animation}/>
         </div>
     )
 };

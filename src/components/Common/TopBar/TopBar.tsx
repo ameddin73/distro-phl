@@ -41,7 +41,7 @@ const TopBar = () => {
                 <Toolbar variant="dense">
                     <Container className={classes.title}>
                         <RouterLink to={PATHS.public.base}>
-                            <Button className={classes.logo}>
+                            <Button aria-label="logo" className={classes.logo}>
                                 <Logo className={classes.logo}/>
                             </Button>
                         </RouterLink>
