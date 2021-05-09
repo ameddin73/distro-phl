@@ -83,6 +83,7 @@ const NewPost = () => {
     const [storageRef, setStorageRef] = useState<firebase.storage.Reference>();
     const [uploadRef, setUploadRef] = useState<HTMLInputElement | null>(null);
 
+    let postRef: firebase.firestore.DocumentReference;
     const changeFile = (event: HTMLInputEvent) => {
         if (!event.target.files) return;
         const file = event.target.files[0];
@@ -90,8 +91,6 @@ const NewPost = () => {
         setImgFile(getFileWithUUID(file));
         setStorageRef(storage.ref().child(STORAGE.postImages + file.name));
     };
-
-    let postRef: firebase.firestore.DocumentReference;
     const cleanup = (err: Error) => {
         console.error(err);
         storageRef?.delete().then(() => console.warn('Image deleted successfully.'))
@@ -117,18 +116,18 @@ const NewPost = () => {
         }
 
         setLoading(true);
-        if (imgFile && storageRef) {
-            post.image = storageRef.fullPath;
-            try {
+        try {
+            if (imgFile && storageRef) {
                 await storageRef.put(imgFile);
-                postRef = await newPost(post as PostInterface);
-                setLoading(false);
-                history.push(PATHS.public.userPosts);
-            } catch (err) {
-                setLoading(false);
-                setError('Something went wrong uploading post.');
-                cleanup(err);
+                post.image = storageRef.fullPath;
             }
+            postRef = await newPost(post as PostInterface);
+            setLoading(false);
+            history.push(PATHS.public.userPosts);
+        } catch (err) {
+            setLoading(false);
+            setError('Something went wrong uploading post.');
+            cleanup(err);
         }
     }
 
