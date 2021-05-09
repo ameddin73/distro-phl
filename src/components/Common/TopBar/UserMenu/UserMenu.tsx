@@ -47,6 +47,7 @@ const UserMenu = () => {
         }>
             {user &&
             <Button className={classes.button}
+                    aria-label="menu"
                     aria-controls="menu"
                     aria-haspopup="true"
                     onClick={toggleDrawer(true)}
