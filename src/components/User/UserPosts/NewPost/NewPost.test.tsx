@@ -73,8 +73,8 @@ describe('validate form', () => {
         fireEvent.change(screen.getByLabelText('name'), {target: {value: PostMocks.defaultPost.name}});
         fireEvent.change(screen.getByLabelText('description'), {target: {value: PostMocks.defaultPost.description}});
         fireEvent.click(screen.getByText('Submit'));
-        await waitFor(() => expect(window.location.pathname).toBe(PATHS.public.userPosts), {timeout: 10000});
-    }, 10000);
+        await waitFor(() => expect(window.location.pathname).toBe(PATHS.public.userPosts));
+    });
 });
 
 describe('firebase functionality', () => {
