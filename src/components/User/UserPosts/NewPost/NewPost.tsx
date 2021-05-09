@@ -66,28 +66,28 @@ const NewPost = () => {
         const storage = useStorage();
 
         const [post, _setPost] = useState<Post>({active: true, description: '', name: '', hasExpiration: false, uid: user.uid, userName: user.displayName || 'Distro User'});
-        const [loading, setLoading] = useState(false);
 
-        function setPost<T extends keyof Post>(key: T, value: Post[T]) {
-            _setPost({
-                ...post,
-                [key]: value,
-            })
-        }
+    function setPost<T extends keyof Post>(key: T, value: Post[T]) {
+        _setPost({
+            ...post,
+            [key]: value,
+        })
+    }
 
-        const [newPost] = useFirestoreAdd(COLLECTIONS.posts, Converters.PostConverter);
+    const [newPost] = useFirestoreAdd(COLLECTIONS.posts, Converters.PostConverter);
 
-        const [error, setError] = useState<string | null>(null);
-        const [localImgUrl, setLocalImgUrl] = useState<string>();
-        const [imgFile, setImgFile] = useState<File>();
-        const [storageRef, setStorageRef] = useState<firebase.storage.Reference>();
-        const [uploadRef, setUploadRef] = useState<HTMLInputElement | null>(null);
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [localImgUrl, setLocalImgUrl] = useState<string>();
+    const [imgFile, setImgFile] = useState<File>();
+    const [storageRef, setStorageRef] = useState<firebase.storage.Reference>();
+    const [uploadRef, setUploadRef] = useState<HTMLInputElement | null>(null);
 
-        if (!user) return null;
+    if (!user) return null;
 
-        const changeFile = (event: HTMLInputEvent) => {
-            if (event.target.files) {
-                const file = event.target.files[0];
+    const changeFile = (event: HTMLInputEvent) => {
+        if (event.target.files) {
+            const file = event.target.files[0];
                 setLocalImgUrl(URL.createObjectURL(file));
                 setImgFile(getFileWithUUID(file));
                 setStorageRef(storage.ref().child(STORAGE.postImages + file.name));
@@ -118,13 +118,18 @@ const NewPost = () => {
         };
         const submit = async (event: SyntheticEvent) => {
             event.preventDefault();
-            setLoading(true);
             setError('');
 
-            if (!post.description || post.description === '') setError('Description cannot be empty.');
-            if (!post.name || post.name === '') setError('Post name cannot be empty.');
-            if (post.hasExpiration && !post.expires) setError('Expiration cannot be empty.');
-            if (error) return;
+            let newError = '';
+            if (!post.description || post.description === '') newError = 'Description cannot be empty.';
+            if (!post.name || post.name === '') newError = 'Post name cannot be empty.';
+            if (post.hasExpiration && !post.expires) newError = 'Expiration cannot be empty.';
+            if (newError !== '') {
+                setError(newError)
+                return;
+            }
+
+            setLoading(true);
 
             if (imgFile && storageRef) {
                 post.image = storageRef.fullPath;
