@@ -28,23 +28,25 @@ function App({config}: { config: Object }) {
                         <Suspense fallback={<Loading marginTop='40%'/>}>
                             <ErrorBoundary FallbackComponent={ErrorMessage}>
                                 <SnackbarProvider>
-                                    <Switch>
-                                        <Route path={PATHS.public.user}>
-                                            <User/>
-                                        </Route>
-                                        <Route path={PATHS.public.distro}>
-                                            <DistroHub/>
-                                        </Route>
-                                        <Route path={`${PATHS.public.posts}/:id`}>
-                                            <Post/>
-                                        </Route>
-                                        <Route path={PATHS.public.base}>
-                                            <DistroHub/>
-                                        </Route>
-                                        <Route>
-                                            <NotFound/>
-                                        </Route>
-                                    </Switch>
+                                    <div style={{marginTop: theme.spacing(6)}}>
+                                        <Switch>
+                                            <Route path={PATHS.public.user}>
+                                                <User/>
+                                            </Route>
+                                            <Route path={PATHS.public.distro}>
+                                                <DistroHub/>
+                                            </Route>
+                                            <Route path={`${PATHS.public.posts}/:id`}>
+                                                <Post/>
+                                            </Route>
+                                            <Route path={PATHS.public.base}>
+                                                <DistroHub/>
+                                            </Route>
+                                            <Route>
+                                                <NotFound/>
+                                            </Route>
+                                        </Switch>
+                                    </div>
                                 </SnackbarProvider>
                             </ErrorBoundary>
                         </Suspense>
