@@ -24,32 +24,25 @@ it('navigates to sign in when clicked if not signed in', async () => {
 
 describe('when user logged in', () => {
     beforeAll(async () => await signIn(UserMocks.defaultUser));
-
-    it('shows user name when signed in', async () => {
-        screen.getByText(UserMocks.defaultUser.name);
-    });
+    beforeEach(() => fireEvent.click(screen.getByLabelText('menu')));
 
     it('render drawer when clicked if signed in', async () => {
-        fireEvent.click(screen.getByText(UserMocks.defaultUser.name));
         screen.getByText('New Post');
         screen.getByText('My Posts');
         screen.getByText('Sign Out');
     });
 
     it('navigates to new post', async () => {
-        fireEvent.click(screen.getByText(UserMocks.defaultUser.name));
         fireEvent.click(screen.getByText('New Post'));
         expect(window.location.pathname).toBe(PATHS.public.newPost);
     });
 
     it('navigates to my posts', async () => {
-        fireEvent.click(screen.getByText(UserMocks.defaultUser.name));
         fireEvent.click(screen.getByText('My Posts'));
         expect(window.location.pathname).toBe(PATHS.public.userPosts);
     });
 
     it('signs out', async () => {
-        fireEvent.click(screen.getByText(UserMocks.defaultUser.name));
         fireEvent.click(screen.getByText('Sign Out'));
         await waitFor(() => expect(firebase.auth().currentUser).toBeFalsy());
     });
