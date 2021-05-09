@@ -1,8 +1,8 @@
 import React from "react";
 import {makeStyles} from "@material-ui/styles";
-import Animation from "./logo-load.svg";
+import Animation from "./load-animation.svg";
 
-const useStyles = (offset: string) => makeStyles({
+export const loadingStyles = (offset: string) => makeStyles({
     body: {
         display: 'flex',
         alignItems: 'center',
@@ -11,13 +11,12 @@ const useStyles = (offset: string) => makeStyles({
     animation: {
         marginTop: offset,
         height: "inherit",
-        maxHeight: 48,
-        maxWidth: 48,
+        maxHeight: 96,
     }
 });
 
 const Loading = ({marginTop = '0%'}: { marginTop?: string }) => {
-    const classes = useStyles(marginTop)();
+    const classes = loadingStyles(marginTop)();
 
     return (
         <div className={classes.body}>
