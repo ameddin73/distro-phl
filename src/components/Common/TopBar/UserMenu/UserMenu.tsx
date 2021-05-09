@@ -50,9 +50,7 @@ const UserMenu = () => {
                     aria-controls="menu"
                     aria-haspopup="true"
                     onClick={toggleDrawer(true)}
-                    endIcon={<MenuIcon/>}>
-                {user.displayName}
-            </Button>
+                    endIcon={<MenuIcon/>}/>
             }
             <SwipeableDrawer onClose={toggleDrawer(false)}
                              onOpen={toggleDrawer(true)}
