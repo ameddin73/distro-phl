@@ -61,9 +61,9 @@ const NewPost = () => {
     const loadingCLasses = loadingStyles("40%")();
     const postClasses = postCardStyle();
 
-    const {data: user} = useUser();
-    const history = useHistory();
-    const storage = useStorage();
+        const {data: user} = useUser();
+        const history = useHistory();
+        const storage = useStorage();
 
     const [post, _setPost] = useState<Post>(createEmptyPost(user));
 
