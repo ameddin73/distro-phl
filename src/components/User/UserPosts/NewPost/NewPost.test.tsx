@@ -105,6 +105,14 @@ describe('firebase functionality', () => {
         expect(post.data().expires.getFullYear()).toBe((new Date('2099-04-20')).getFullYear());
     });
 
+    it('does not create dupes on double click', async () => {
+        const testName = v4();
+        fireEvent.change(screen.getByLabelText('name'), {target: {value: testName}});
+        fireEvent.change(screen.getByLabelText('description'), {target: {value: PostMocks.defaultPost.description}});
+        fireEvent.click(screen.getByText('Submit'));
+        expect(screen.queryByText('Submit')).toBeNull();
+    });
+
     it('cleans up if image upload error', async () => {
         await setupFailure(new Promise(() => {
             throw new Error('mock error')
