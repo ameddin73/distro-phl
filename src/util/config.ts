@@ -36,9 +36,15 @@ export const PATHS = {
     },
 };
 
+export const DEFAULT_IMAGE = {
+    thumbnail: 'https://firebasestorage.googleapis.com/v0/b/distro-phl-2a16a.appspot.com/o/images%2Fapp%2Fdistro-phl_thumbnail.jpg?alt=media&token=9cc4f2f9-649a-4b58-8276-79bc923f0563',
+    small: 'https://firebasestorage.googleapis.com/v0/b/distro-phl-2a16a.appspot.com/o/images%2Fapp%2Fdistro-phl_480.jpg?alt=media&token=0cd580d7-969a-407a-9aee-eceb74ddc8d7',
+    medium: 'https://firebasestorage.googleapis.com/v0/b/distro-phl-2a16a.appspot.com/o/images%2Fapp%2Fdistro-phl_720.jpg?alt=media&token=76a65e57-6ffc-401d-8d75-ca587f6ec81b',
+    large: 'https://firebasestorage.googleapis.com/v0/b/distro-phl-2a16a.appspot.com/o/images%2Fapp%2Fdistro-phl_1200.jpg?alt=media&token=ad5f5ddc-be56-4646-b97c-1d16d4b2d2cd',
+}
+
 export const POST_NAME_LENGTH = 50;
 export const POST_DESCRIPTION_LENGTH = 250;
-export const DEFAULT_IMAGE = 'images/posts/a0.jpg'
 
 export const STORAGE = {
     postImages: 'images/posts/',

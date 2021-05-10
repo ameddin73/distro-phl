@@ -1,5 +1,5 @@
 import React, {lazy, Suspense} from 'react';
-import {MEDIA_HEIGHT, postCardStyle} from "./styles";
+import {CARD_MEDIA_HEIGHT, postCardStyle} from "./styles";
 import {Card, CardActionArea, Grid, Typography} from "@material-ui/core";
 import {PostProps} from "./PostCard";
 import {Skeleton} from "@material-ui/lab";
@@ -12,7 +12,7 @@ const SkeletonCard = () => {
     return (
         <CardActionArea className={classes.action} data-testid="card-action">
             <Grid item>
-                <Skeleton variant="rect" height={MEDIA_HEIGHT} width="10000%" animation="wave"/>
+                <Skeleton variant="rect" height={CARD_MEDIA_HEIGHT} width="10000%" animation="wave"/>
                 <div className={classes.title}>
                     <Typography variant="h6" noWrap>
                         <Skeleton width={200} animation="wave"/>

@@ -3,11 +3,10 @@ import {AppBar, Button, Container, Slide, Toolbar, useScrollTrigger} from "@mate
 import {makeStyles} from "@material-ui/core/styles";
 import UserMenu from "./UserMenu/UserMenu.lazy";
 import {PATHS} from "util/config";
-import {CustomTheme} from "util/theme";
 import RouterLink from "../RouterLink";
-import {ReactComponent as Logo} from "../../../logo.svg";
+import {ReactComponent as Logo} from "../../../assets/logo.svg";
 
-const useStyles = makeStyles((theme: CustomTheme) => ({
+const useStyles = makeStyles({
     root: {
         flexGrow: 1,
     },
@@ -19,7 +18,7 @@ const useStyles = makeStyles((theme: CustomTheme) => ({
         height: 48,
         padding: 0,
     }
-}));
+});
 
 // https://material-ui.com/components/app-bar/#hide-app-bar
 function HideOnScroll({children}: { children: React.ReactElement }) {
