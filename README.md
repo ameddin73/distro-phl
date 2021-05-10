@@ -43,7 +43,7 @@ in the test/firebase directory. After building the desired test data export wit 
 
 #### `firebase --project test-project emulators:start --only firestore`
 
-Debug a test with a breakpoint set after `setupFirestore(true,true)`
+After running populate.test.ts:
 
 #### `firebase --project test-project emulators:export src/test/firebase`
 
