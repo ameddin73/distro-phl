@@ -14,8 +14,9 @@ import DistroAction from "../../DistroHub/DistroAction/DistroAction";
 import {PostInterface} from "util/types";
 import theme from "util/theme";
 import NotFound from "../NotFound";
+import {ClassNameMap} from "@material-ui/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
     root: {
         flexGrow: 1,
     },
@@ -48,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: "auto",
         width: '100%',
     }
-}));
+});
 
 const PostDetails = ({id}: { id: string }) => {
     const classes = useStyles();
@@ -66,6 +67,9 @@ const PostDetails = ({id}: { id: string }) => {
         postAction = <DistroAction post={post}/>;
         offerTitle = '';
     }
+
+    const media = buildMedia(image, name, classes);
+
     return (
         <>
             <div className={classes.hero}>
@@ -75,11 +79,7 @@ const PostDetails = ({id}: { id: string }) => {
                         {name}
                     </Typography>
                 </Container>
-                <ErrorBoundary fallback={
-                    <StorageImage suspense={true} placeHolder={<Loading/>} storagePath={DEFAULT_IMAGE} className={classes.media} alt={image ? name : 'Default Image'}/>
-                }>
-                    <StorageImage suspense={true} placeHolder={<Loading/>} storagePath={image || DEFAULT_IMAGE} className={classes.media} alt={image ? name : 'Default Image'}/>
-                </ErrorBoundary>
+                {media}
             </div>
             <Container maxWidth="sm" className={classes.body}>
                 <Grid container
@@ -101,6 +101,14 @@ const PostDetails = ({id}: { id: string }) => {
         </>
     )
 };
+
+function buildMedia(image: string, name: string, classes: ClassNameMap) {
+    const fallbackMedia = <img alt="Default" className={classes.media} src={DEFAULT_IMAGE.small} srcSet={`${DEFAULT_IMAGE.small} 480w, ${DEFAULT_IMAGE.medium} 720w, ${DEFAULT_IMAGE.large} 1200w`}/>;
+    const media = image ?
+        <StorageImage suspense={true} placeHolder={<Loading/>} storagePath={image} className={classes.media} alt={name}/>
+        : fallbackMedia;
+    return <ErrorBoundary fallback={fallbackMedia}>{media}</ErrorBoundary>
+}
 
 const InfoItem = ({title, body, inline = false}: { title: string, body: string, inline?: boolean }) => (
     <Grid item style={inline ? {display: 'flex', alignItems: 'center'} : undefined}>

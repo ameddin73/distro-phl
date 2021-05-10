@@ -1,7 +1,7 @@
 import {makeStyles} from "@material-ui/core/styles";
 
 const CARD_SQUARE = 286;
-export const MEDIA_HEIGHT = 140;
+export const CARD_MEDIA_HEIGHT = 140;
 export const postCardStyle = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -25,7 +25,7 @@ export const postCardStyle = makeStyles((theme) => ({
     },
     media: {
         width: '100%',
-        height: MEDIA_HEIGHT,
+        height: CARD_MEDIA_HEIGHT,
         objectFit: 'cover',
     },
     title: {
