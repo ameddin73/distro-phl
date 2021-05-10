@@ -1,5 +1,4 @@
 import {UserMocks} from "./user.mock";
-import {DEFAULT_IMAGE} from "../../util/config";
 import {Post} from "util/types";
 
 export namespace PostMocks {
@@ -11,7 +10,7 @@ export namespace PostMocks {
         description: 'default_post_description',
         hasExpiration: true,
         expires: new Date('02 Jan 2070 00:00:00 GMT'),
-        image: DEFAULT_IMAGE.small,
+        image: 'images/posts/a0.jpg',
         uid: UserMocks.defaultUser.uid,
         userName: UserMocks.defaultUser.name,
     };
