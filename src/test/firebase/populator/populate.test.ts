@@ -16,5 +16,5 @@ it('populates firestore', async () => {
 
     const tertiaryPost: Mutable<Post> = _.clone(PostMocks.tertiaryPost);
     delete tertiaryPost.id;
-    firestoreAdmin.collection(COLLECTIONS.posts).doc(PostMocks.tertiaryPost.id).set(tertiaryPost);
+    firestoreAdmin.collection(COLLECTIONS.posts).doc(PostMocks.tertiaryPost.id || '').set(tertiaryPost);
 });

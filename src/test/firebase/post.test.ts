@@ -15,13 +15,14 @@ import _ from "lodash";
 import {UserMocks} from "../mocks/user.mock";
 import {PostMocks} from "../mocks/post.mock";
 import {Post, PostInterface} from "util/types";
+import {firestore} from "firebase-admin/lib/firestore";
 
 const PROJECT_ID = `${process.env.TEST_PROJECT}`;
 
-let firestore: firebase.firestore.Firestore;
+let firestoreInstance: firebase.firestore.Firestore;
 let firestoreAuth: firebase.firestore.Firestore;
 let firestoreAuth2: firebase.firestore.Firestore;
-let firestoreAdmin: firebase.firestore.Firestore;
+let firestoreAdmin: firestore.Firestore;
 
 const mockPost = PostMocks.defaultPost;
 const mockPost2 = PostMocks.secondaryPost;
@@ -42,7 +43,7 @@ afterAll(destroyFirebase);
 describe('testing framework', () => {
     beforeAll(async () => {
         const stores = await startFirestore();
-        firestore = stores.firestore;
+        firestoreInstance = stores.firestore;
         firestoreAdmin = stores.firestoreAdmin;
         await setupFirestore(true);
     })
@@ -57,6 +58,7 @@ describe('testing framework', () => {
             delete testPost.expires;
         }
 
+        // @ts-ignore
         const query = firestoreAdmin.collection(COLLECTIONS.posts).where('active', '==', true).withConverter(Converters.PostConverter);
         const {docs: posts} = await query.get();
         expect(posts.length).toBe(6);
@@ -307,16 +309,16 @@ describe('read post rules', () => {
     });
 
     it('tests reading a collection', async () => {
-        await assertFails(firestore.collection(COLLECTIONS.posts).get());
-        await assertSucceeds(firestore.collection(COLLECTIONS.posts).where('active', '==', true).where('hasExpiration', '==', false).get());
-        await assertSucceeds(firestore.collection(COLLECTIONS.posts).where('active', '==', true).where('hasExpiration', '==', true).where('expires', '>', firebase.firestore.Timestamp.now()).get());
+        await assertFails(firestoreInstance.collection(COLLECTIONS.posts).get());
+        await assertSucceeds(firestoreInstance.collection(COLLECTIONS.posts).where('active', '==', true).where('hasExpiration', '==', false).get());
+        await assertSucceeds(firestoreInstance.collection(COLLECTIONS.posts).where('active', '==', true).where('hasExpiration', '==', true).where('expires', '>', firebase.firestore.Timestamp.now()).get());
     });
 
     it('tests seeActive rule for active', async () => {
-        let query = firestore.collection(COLLECTIONS.posts).where('active', '==', true).where('hasExpiration', '==', false);
+        let query = firestoreInstance.collection(COLLECTIONS.posts).where('active', '==', true).where('hasExpiration', '==', false);
         await assertSucceeds(query.get());
 
-        query = firestore.collection(COLLECTIONS.posts).where('active', '==', false).where('hasExpiration', '==', false);
+        query = firestoreInstance.collection(COLLECTIONS.posts).where('active', '==', false).where('hasExpiration', '==', false);
         await assertFails(query.get());
     });
 
@@ -383,12 +385,12 @@ describe('delete post rules', () => {
 
 async function buildFirestore() {
     const stores = await startFirestore();
-    firestore = stores.firestore;
+    firestoreInstance = stores.firestore;
     firestoreAuth = stores.firestoreAuth;
     firestoreAuth2 = stores.firestoreAuth2;
     firestoreAdmin = stores.firestoreAdmin;
 
-    query = firestore.collection(COLLECTIONS.posts).doc(mockPost.id).withConverter(Converters.PostConverter);
+    query = firestoreInstance.collection(COLLECTIONS.posts).doc(mockPost.id).withConverter(Converters.PostConverter);
     queryAuthed = firestoreAuth.collection(COLLECTIONS.posts).doc(mockPost.id).withConverter(Converters.PostConverter);
     queryAuthed2 = firestoreAuth2.collection(COLLECTIONS.posts).doc(mockPost2.id).withConverter(Converters.PostConverter);
     updateQueryAuthed = firestoreAuth.collection(COLLECTIONS.posts).doc(mockPost.id);

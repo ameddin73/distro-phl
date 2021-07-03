@@ -10,6 +10,10 @@ jobs:
   test-firestore:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/cache@v2
+        with:
+          path: /home/runner/.cache/firebase/emulators
+          key: ${{ runner.os }}-emulators
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
@@ -27,6 +31,10 @@ jobs:
   test-react-app:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/cache@v2
+        with:
+          path: /home/runner/.cache/firebase/emulators
+          key: ${{ runner.os }}-emulators
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
