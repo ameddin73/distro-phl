@@ -2,7 +2,7 @@ import React from 'react';
 import {Button, Grid, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/styles";
 import {Link} from "react-router-dom";
-import {PATHS} from "../../util/config";
+import {PATHS} from "util/config";
 
 const useStyles = makeStyles({
     body: {

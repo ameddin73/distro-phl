@@ -12,17 +12,17 @@ const SkeletonCard = () => {
     return (
         <CardActionArea className={classes.action} data-testid="card-action">
             <Grid item>
-                <Skeleton variant="rect" height={CARD_MEDIA_HEIGHT} width="10000%" animation="wave"/>
+                <Skeleton id="loading" variant="rect" height={CARD_MEDIA_HEIGHT} width="10000%" animation="wave"/>
                 <div className={classes.title}>
                     <Typography variant="h6" noWrap>
-                        <Skeleton width={200} animation="wave"/>
+                        <Skeleton id="loading" width={200} animation="wave"/>
                     </Typography>
                 </div>
             </Grid>
             <Grid item className={classes.userInfo}>
                 <div className={classes.detailContainer}>
                     <Typography variant="subtitle2" className={classes.detail}>
-                        <Skeleton width={125} animation="wave"/>
+                        <Skeleton id="loading" width={125} animation="wave"/>
                     </Typography>
                 </div>
             </Grid>

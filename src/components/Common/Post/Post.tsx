@@ -1,6 +1,6 @@
 import React from 'react';
 import {ErrorBoundary} from "react-error-boundary";
-import {StorageImage, useUser} from "reactfire";
+import {StorageImage} from "reactfire";
 import {COLLECTIONS, DEFAULT_IMAGE} from "util/config";
 import {makeStyles} from "@material-ui/core/styles";
 import {useParams} from "react-router-dom";
@@ -9,8 +9,6 @@ import {Container, Grid, Typography} from "@material-ui/core";
 import {Converters, PostQuery} from "util/utils";
 import useFirestoreDocumentBuilder from "util/hooks/useFirestoreDocumentBuilder";
 import useFirestoreCollectionBuilder from "util/hooks/useFirestoreCollectionBuilder";
-import UserAction from "../../User/UserPosts/UserAction/UserAction";
-import DistroAction from "../../DistroHub/DistroAction/DistroAction";
 import {PostInterface} from "util/types";
 import theme from "util/theme";
 import NotFound from "../NotFound";
@@ -53,20 +51,9 @@ const useStyles = makeStyles({
 
 const PostDetails = ({id}: { id: string }) => {
     const classes = useStyles();
-    const {data: user} = useUser();
 
     const {data: post} = useFirestoreDocumentBuilder(COLLECTIONS.posts, id, Converters.PostConverter);
-    const {name, description, image, hasExpiration, expires, userName, uid} = post;
-
-    let postAction;
-    let offerTitle;
-    if (user && user.uid === uid) {
-        postAction = <UserAction post={post}/>;
-        offerTitle = 'Offers';
-    } else {
-        postAction = <DistroAction post={post}/>;
-        offerTitle = '';
-    }
+    const {name, description, image, hasExpiration, expires, userName} = post;
 
     const media = buildMedia(image, name, classes);
 
@@ -92,11 +79,7 @@ const PostDetails = ({id}: { id: string }) => {
                         <InfoItem inline title="Expires" body={'' + expires?.toLocaleDateString('en-US', {month: 'long', day: 'numeric'})}/>
                     )}
                     <InfoItem title="Description" body={description}/>
-                    <InfoItem title={offerTitle} body=""/>
                 </Grid>
-                <div className={classes.action}>
-                    {postAction}
-                </div>
             </Container>
         </>
     )

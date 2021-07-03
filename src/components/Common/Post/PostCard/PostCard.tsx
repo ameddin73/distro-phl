@@ -1,14 +1,11 @@
 import React, {Suspense} from 'react';
 import {CardActionArea, Grid, Typography} from "@material-ui/core";
 import {CARD_MEDIA_HEIGHT, postCardStyle} from "./styles";
-import {DEFAULT_IMAGE, PATHS} from "util/config";
-import {StorageImage} from "reactfire";
-import {ErrorBoundary} from "react-error-boundary";
-import Loading from "../../Loading/Loading";
+import {PATHS} from "util/config";
 import RouterLink from "../../RouterLink";
 import {PostInterface} from "util/types";
 import {Skeleton} from "@material-ui/lab";
-import {ClassNameMap} from "@material-ui/styles";
+import PostImage from "../PostImage/PostImage";
 
 export type PostProps = {
     post: PostInterface
@@ -20,13 +17,11 @@ const PostCard = ({post}: PostProps) => {
 
     const {name, id, image, userName} = post;
 
-    const media = buildMedia(image, name, classes);
-
     return (
         <CardActionArea component={RouterLink} to={`${PATHS.public.posts}/${id}`} className={classes.action} data-testid="card-action">
             <Grid item>
-                <Suspense fallback={<Skeleton variant="rect" height={CARD_MEDIA_HEIGHT} width="1000%" animation="wave"/>}>
-                    {media}
+                <Suspense fallback={<Skeleton id="loading" variant="rect" height={CARD_MEDIA_HEIGHT} width="1000%" animation="wave"/>}>
+                    <PostImage image={image} name={name}/>
                 </Suspense>
                 <div className={classes.title}>
                     <Typography variant="h6" noWrap>
@@ -47,14 +42,5 @@ const PostCard = ({post}: PostProps) => {
         </CardActionArea>
     );
 }
-
-function buildMedia(image: string, name: string, classes: ClassNameMap) {
-    const fallbackMedia = <img src={DEFAULT_IMAGE.thumbnail} alt="Default" className={classes.media}/>;
-    const media = image ?
-        <StorageImage suspense={true} placeHolder={<Loading/>} storagePath={image} className={classes.media} alt={name}/>
-        : fallbackMedia;
-    return <ErrorBoundary fallback={fallbackMedia}>{media}</ErrorBoundary>
-}
-
 
 export default PostCard;

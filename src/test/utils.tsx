@@ -11,43 +11,31 @@ import {UserMocks} from "./mocks/user.mock";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import "firebase/storage";
 
-const PROJECT_ID = `${process.env.TEST_PROJECT}`;
+const PROJECT_ID = `${process.env.DEMO_PROJECT}`;
 let firebaseApp: firebase.app.App;
 let firestore: firebase.firestore.Firestore;
+let storage: firebase.storage.Storage;
 let auth: firebase.auth.Auth;
 
-jest.setTimeout(10000);
-// Mock storage
-// @ts-ignore
-jest.mock('rxfire/storage', () => ({
-    ...jest.requireActual('rxfire/storage'),
-    getDownloadURL: () => {
-        const {Observable} = require('rxjs');
-        return new Observable((subscriber: any) => {
-            subscriber.next('public/logo192.png'); // TODO local default image
-        });
-    }
-}));
-
 export function setupFirebase() {
-    firebaseApp = firebase.initializeApp({apiKey: FIREBASE_CONFIG.apiKey, projectId: PROJECT_ID, storageBucket: 'fake-bucket'});
+    firebaseApp = firebase.initializeApp({apiKey: FIREBASE_CONFIG.apiKey, projectId: PROJECT_ID, storageBucket: `default-bucket`});
+
     firestore = firebaseApp.firestore();
+    storage = firebaseApp.storage();
     auth = firebaseApp.auth();
+
     firestore.useEmulator('localhost', 8080);
+    storage.useEmulator('localhost', 9199)
     auth.useEmulator('http://localhost:9099');
 }
 
-export async function resetFirebase(signOut?: boolean) {
-    // await firestore.terminate();
-    // firestore = firebaseApp.firestore();
-    // firestore.useEmulator('localhost', 8080);
-
-    if (signOut) await auth.signOut();
+export async function resetFirebase(doSignOut?: boolean) {
+    if (doSignOut) await auth.signOut();
 }
 
 export async function teardownFirebase() {
-    await new Promise(r => setTimeout(r, 5000)) // TODO this hack solves a socket issue i'm not smart enough to fix
     await firestore.terminate();
     await auth.signOut();
     await firebaseApp.delete();

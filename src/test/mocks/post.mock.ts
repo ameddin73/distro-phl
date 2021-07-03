@@ -31,6 +31,7 @@ export namespace PostMocks {
         created: new Date('01 Jan 1970 00:00:00 GMT'),
         description: 'tertiary_post_description',
         hasExpiration: false,
+        image: 'images/posts/a1.jpg',
         uid: UserMocks.userThree.uid,
         userName: UserMocks.userThree.name,
     };
