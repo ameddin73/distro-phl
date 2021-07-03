@@ -23,7 +23,7 @@
     "react-google-button": "^0.7.2",
     "react-promise-suspense": "^0.3.3",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3",
+    "react-scripts": "^4.0.3",
     "reactfire": "^3.0.0-rc.0",
     "util": "file:src/util",
     "uuid": "^8.3.2",

@@ -52,6 +52,7 @@ describe('testing framework', () => {
     afterAll(teardownFirestore);
 
     it('tests populates offers', async () => {
+        // @ts-ignore
         const query = firestoreAdmin.collection(COLLECTIONS.posts).doc(PostMocks.defaultPost.id).collection(COLLECTIONS.offers).withConverter(Converters.OfferConverter);
         const {docs: offers} = await query.get();
         expect(offers.length).toBe(2);
