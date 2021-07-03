@@ -19,6 +19,10 @@ jobs:
         with:
           node-version: '14'
       - run: npm install -g firebase-tools && npm ci
+      - run: |
+          firebase setup:emulators:firestore
+          firebase setup:emulators:storage
+          firebase setup:emulators:auth
       - run: npm run test-firestore
         env:
           REACT_APP_FIREBASE_API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY_DEV }}

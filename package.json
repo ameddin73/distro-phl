@@ -36,7 +36,7 @@
     "eject": "react-scripts eject",
     "deploy": "npm run build && firebase deploy",
     "test-firestore": "firebase --project demo-project emulators:exec --only firestore 'npm test -- --testMatch=**/firebase/*.test.ts --forceExit --watchAll=false --runInBand'",
-    "test-react-app": "firebase --project demo-project emulators:exec --only firestore,auth --import src/test/firebase 'npm test -- --testPathIgnorePatterns=/firebase/ --forceExit --watchAll=false'",
+    "test-react-app": "firebase --project demo-project emulators:exec --only firestore,auth,storage --import src/test/firebase 'npm test -- --testPathIgnorePatterns=/firebase/ --forceExit --watchAll=false'",
     "firebase": "firebase --project test-project emulators:start --only firestore,auth,storage --import src/test/firebase"
   },
   "eslintConfig": {
