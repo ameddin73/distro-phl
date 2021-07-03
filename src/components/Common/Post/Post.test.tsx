@@ -3,11 +3,10 @@
  */
 import React from 'react';
 import {screen, waitFor} from "@testing-library/react";
-import {customRender, HistoryWrapper, resetFirebase, setupFirebase, signIn, teardownFirebase} from "test/utils";
+import {customRender, HistoryWrapper, resetFirebase, setupFirebase, teardownFirebase} from "test/utils";
 import {PostMocks} from "test/mocks/post.mock";
 import {PATHS} from "util/config";
 import {Route} from "react-router-dom";
-import {UserMocks} from "test/mocks/user.mock";
 import {PostInterface} from "util/types";
 import Post from "./Post";
 
@@ -34,17 +33,6 @@ describe('post exists', () => {
         screen.getByText(mockDefaultPost.name);
         screen.getByText(mockDefaultPost.description);
         screen.getByText(mockDefaultPost.userName);
-    });
-
-    it('renders user action properly', async () => {
-        await signIn(UserMocks.defaultUser);
-        await waitFor(() => screen.getByText('Delete Post'));
-    });
-
-    it('renders distro action properly', async () => {
-        await waitFor(() => screen.getByText(/Respond/));
-        await signIn(UserMocks.userTwo);
-        await waitFor(() => screen.getByText(/Respond/));
     });
 });
 

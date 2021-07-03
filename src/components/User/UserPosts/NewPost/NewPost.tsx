@@ -10,7 +10,7 @@ import DateFnsUtils from "@date-io/date-fns";
 import theme from "util/theme";
 import firebase from "firebase/app";
 import 'firebase/storage';
-import {Converters, getFileWithUUID} from "util/utils";
+import {Converters, getCompressedImages} from "util/utils";
 import {useStorage, useUser} from "reactfire";
 import {useHistory} from "react-router-dom";
 import useFirestoreAdd from "util/hooks/useFirestoreAdd";
@@ -58,46 +58,46 @@ interface HTMLInputEvent extends SyntheticEvent {
 
 const NewPost = () => {
     const classes = useStyles();
-    const loadingCLasses = loadingStyles("40%")();
+    const loadingClasses = loadingStyles("40%")();
     const postClasses = postCardStyle();
 
-        const {data: user} = useUser();
-        const history = useHistory();
-        const storage = useStorage();
+    const {data: user} = useUser();
+    const history = useHistory();
+    const storage = useStorage();
+    const [newPost] = useFirestoreAdd(COLLECTIONS.posts, Converters.PostConverter);
+
+    let postRef: firebase.firestore.DocumentReference;
 
     const [post, _setPost] = useState<Post>(createEmptyPost(user));
+    const setPost = postSetter(post, _setPost);
 
-    function setPost<T extends keyof Post>(key: T, value: Post[T]) {
-        _setPost({
-            ...post,
-            [key]: value,
-        })
-    }
-
-    const [newPost] = useFirestoreAdd(COLLECTIONS.posts, Converters.PostConverter);
+    const [localImgUrl, setLocalImgUrl] = useState<string>();
+    const [imgFiles, setImgFiles] = useState<File[]>();
+    const [storageRef, _setStorageRef] = useState<firebase.storage.Reference[]>();
+    const setStorageRef = storageRefSetter(_setStorageRef, storage);
 
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const [localImgUrl, setLocalImgUrl] = useState<string>();
-    const [imgFile, setImgFile] = useState<File>();
-    const [storageRef, setStorageRef] = useState<firebase.storage.Reference>();
-    const [uploadRef, setUploadRef] = useState<HTMLInputElement | null>(null);
 
-    let postRef: firebase.firestore.DocumentReference;
     const changeFile = (event: HTMLInputEvent) => {
         if (!event.target.files) return;
-        const file = event.target.files[0];
-        setLocalImgUrl(URL.createObjectURL(file));
-        setImgFile(getFileWithUUID(file));
-        setStorageRef(storage.ref().child(STORAGE.postImages + file.name));
+        getCompressedImages(event.target.files[0]).then(files => {
+            setLocalImgUrl(URL.createObjectURL(files[0]));
+            setImgFiles(files);
+            setStorageRef(files);
+        }).catch(err => {
+            console.error(err);
+            setError('Something went wrong attaching image.');
+        });
     };
     const cleanup = (err: Error) => {
         console.error(err);
-        storageRef?.delete().then(() => console.warn('Image deleted successfully.'))
+        storageRef?.map(ref => ref?.delete()
+            .then(() => console.warn('Image deleted successfully.'))
             .catch((e) => {
                 console.error(e);
-                console.error('Delete failed for: ' + storageRef.fullPath + '. File may be orphaned.');
-            });
+                console.error('Delete failed for: ' + ref.fullPath + '. File may be orphaned.');
+            }));
         postRef?.delete().then(result => {
             console.warn(result);
         }).catch((e) => {
@@ -117,9 +117,11 @@ const NewPost = () => {
 
         setLoading(true);
         try {
-            if (imgFile && storageRef) {
-                await storageRef.put(imgFile);
-                post.image = storageRef.fullPath;
+            if (imgFiles && storageRef) {
+                await Promise.all(storageRef.map((ref, index) => {
+                    return ref.put(imgFiles[index], {cacheControl: 'public,max-age=31536000'});
+                }));
+                post.image = storageRef[0].fullPath;
             }
             postRef = await newPost(post as PostInterface);
             setLoading(false);
@@ -147,11 +149,12 @@ const NewPost = () => {
             </IconButton>
         </Grid>
 
+    const [uploadRef, setUploadRef] = useState<HTMLInputElement | null>(null);
     return (
         <>
             {loading ?
-                <div className={loadingCLasses.body}>
-                    <object id="loading" aria-label="loading animation" data={Animation} className={loadingCLasses.animation}/>
+                <div className={loadingClasses.body}>
+                    <object id="loading" aria-label="loading animation" data={Animation} className={loadingClasses.animation}/>
                 </div> : <>
                     <Container maxWidth="sm" className={classes.container}>
                         <form onSubmit={submit}>
@@ -245,6 +248,24 @@ const NewPost = () => {
         </>
     )
 };
+
+function postSetter(post: Post, _setPost: (newPost: Post) => void) {
+    return function setPost<T extends keyof Post>(key: T, value: Post[T]) {
+        _setPost({
+            ...post,
+            [key]: value,
+        });
+    }
+}
+
+function storageRefSetter(_setStorageRef: (newStorageRef: firebase.storage.Reference[]) => void, storage: firebase.storage.Storage) {
+    return (files: File[]) => {
+        _setStorageRef([
+            storage.ref().child(STORAGE.postImages + files[0].name),
+            storage.ref().child(STORAGE.postImages + files[1].name),
+        ]);
+    }
+}
 
 function createEmptyPost(user: firebase.User) {
     return {active: true, description: '', name: '', hasExpiration: false, uid: user.uid, userName: user.displayName || 'Distro User'}

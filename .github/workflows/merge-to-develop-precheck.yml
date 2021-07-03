@@ -23,7 +23,7 @@ jobs:
           REACT_APP_FIREBASE_STORAGE_BUCKET: distro-phl-2a16a.appspot.com
           REACT_APP_FIREBASE_MESSAGING_SENDER_ID: 663261428018
           REACT_APP_FIREBASE_APP_ID: 1:663261428018:web:832445e410cb63da62ff2b
-          TEST_PROJECT: test-project
+          DEMO_PROJECT: demo-project
   test-react-app:
     runs-on: ubuntu-latest
     steps:
@@ -40,7 +40,7 @@ jobs:
           REACT_APP_FIREBASE_STORAGE_BUCKET: distro-phl-2a16a.appspot.com
           REACT_APP_FIREBASE_MESSAGING_SENDER_ID: 663261428018
           REACT_APP_FIREBASE_APP_ID: 1:663261428018:web:832445e410cb63da62ff2b
-          TEST_PROJECT: test-project
+          DEMO_PROJECT: demo-project
   build:
     runs-on: ubuntu-latest
     steps:

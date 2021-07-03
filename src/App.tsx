@@ -25,7 +25,7 @@ function App({config}: { config: Object }) {
                 <ErrorBoundary FallbackComponent={ErrorMessage}>
                     <Router>
                         <TopBar/>
-                        <Suspense fallback={<Loading marginTop='40%'/>}>
+                        <Suspense fallback={<Loading marginTop='40vh'/>}>
                             <ErrorBoundary FallbackComponent={ErrorMessage}>
                                 <SnackbarProvider>
                                     <div style={{marginTop: theme.spacing(6)}}>

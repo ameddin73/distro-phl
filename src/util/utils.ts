@@ -2,17 +2,31 @@ import {FirestoreQueryOrderBy, FirestoreQueryWhere, Offer, OfferInterface, Post,
 import {v4} from "uuid";
 import firebase from "firebase/app";
 import "firebase/firestore";
-
-export function getFileWithUUID(file: File): File {
-    Object.defineProperty(file, 'name', {
-        writable: true,
-        value: file.name.replace(/^[^.]*/, v4()),
-    });
-    return file;
-}
+import Compress from "compress.js";
 
 export function getFormattedDate(date: Date): string {
     return date.toLocaleDateString('en-US', {month: 'long', day: 'numeric'});
+}
+
+export async function getCompressedImages(file: File): Promise<File[]> {
+    const compress = new Compress();
+
+    const [image] = await compress.compress([file], {
+        size: 1, // Size in mb
+        maxWidth: 1200,
+        maxHeight: 1200,
+    });
+    const [thumbnail] = await compress.compress([file], {
+        size: 0.1,
+        maxWidth: 440,
+    });
+    const imageBlob = Compress.convertBase64ToFile(image.data, image.ext);
+    const thumbnailBlob = Compress.convertBase64ToFile(thumbnail.data, thumbnail.ext);
+
+    const fileName = v4();
+    return [new File([imageBlob], `${fileName}.${image.ext.split('/').pop()}`, {type: image.ext}),
+        new File([thumbnailBlob], `${fileName}.thumbnail.${image.ext.split('/').pop()}`, {type: image.ext}),
+    ];
 }
 
 export namespace PostQuery {

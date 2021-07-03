@@ -9,7 +9,7 @@
       "photoUrl": "",
       "passwordHash": "fakeHash:salt=fakeSaltRLfwKUrS6hc6hpjj7nfq:password=secondary password",
       "salt": "fakeSaltRLfwKUrS6hc6hpjj7nfq",
-      "passwordUpdatedAt": 1619029811118,
+      "passwordUpdatedAt": 1624933827415,
       "providerUserInfo": [
         {
           "providerId": "password",
@@ -20,10 +20,11 @@
           "photoUrl": ""
         }
       ],
-      "validSince": "1619029811",
+      "validSince": "1624933827",
       "email": "secondary@gmail.com",
       "emailVerified": false,
-      "disabled": false
+      "disabled": false,
+      "lastRefreshAt": "2021-06-29T02:36:07.720Z"
     },
     {
       "localId": "pYTea318sLYzFG5eDuiB32UTkN3Z",
@@ -33,7 +34,7 @@
       "photoUrl": "",
       "passwordHash": "fakeHash:salt=fakeSaltelrARsW0PUYU1IGsiE8q:password=tertiary password",
       "salt": "fakeSaltelrARsW0PUYU1IGsiE8q",
-      "passwordUpdatedAt": 1619029811119,
+      "passwordUpdatedAt": 1624933827415,
       "providerUserInfo": [
         {
           "providerId": "password",
@@ -44,10 +45,11 @@
           "photoUrl": ""
         }
       ],
-      "validSince": "1619029811",
+      "validSince": "1624933827",
       "email": "tertiary@gmail.com",
       "emailVerified": false,
-      "disabled": false
+      "disabled": false,
+      "lastRefreshAt": "2021-06-29T02:36:05.169Z"
     },
     {
       "localId": "tcPsT2sKhQibainWKHWuaFWPXfCU",
@@ -57,7 +59,7 @@
       "photoUrl": "",
       "passwordHash": "fakeHash:salt=fakeSalt5E1WjKsRXwIa9ET1tm7U:password=quaternary password",
       "salt": "fakeSalt5E1WjKsRXwIa9ET1tm7U",
-      "passwordUpdatedAt": 1619029811119,
+      "passwordUpdatedAt": 1624933827415,
       "providerUserInfo": [
         {
           "providerId": "password",
@@ -68,10 +70,11 @@
           "photoUrl": ""
         }
       ],
-      "validSince": "1619029811",
+      "validSince": "1624933827",
       "email": "quaternary@gmail.com",
       "emailVerified": false,
-      "disabled": false
+      "disabled": false,
+      "lastRefreshAt": "2021-06-29T02:36:04.273Z"
     },
     {
       "localId": "yIEcR6DWPlKQ57X8l1xgdxKTiOjn",
@@ -81,7 +84,7 @@
       "photoUrl": "",
       "passwordHash": "fakeHash:salt=fakeSaltAIA48oL4OJSsurI3xqka:password=primary password",
       "salt": "fakeSaltAIA48oL4OJSsurI3xqka",
-      "passwordUpdatedAt": 1619029811119,
+      "passwordUpdatedAt": 1624933827415,
       "providerUserInfo": [
         {
           "providerId": "password",
@@ -92,10 +95,11 @@
           "photoUrl": ""
         }
       ],
-      "validSince": "1619029811",
+      "validSince": "1624933827",
       "email": "primary@gmail.com",
       "emailVerified": false,
-      "disabled": false
+      "disabled": false,
+      "lastRefreshAt": "2021-06-29T02:36:34.986Z"
     }
   ]
 }

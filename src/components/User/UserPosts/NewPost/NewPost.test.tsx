@@ -6,11 +6,32 @@ import {fireEvent, screen, waitFor} from "@testing-library/react";
 import {PostMocks} from "test/mocks/post.mock";
 import {COLLECTIONS, PATHS, STORAGE} from "util/config";
 import {v4} from "uuid";
-import {Converters} from "util/utils";
 import firebase from "firebase/app";
 import {customRender, getFirebase, resetFirebase, setupFirebase, signIn, teardownFirebase} from "test/utils";
 import NewPost from './NewPost';
+import {Converters} from "util/utils";
 
+jest.mock('util/utils', () => {
+    jest.unmock('util/utils');
+    return {
+        __esModule: true,
+        ...jest.requireActual('util/utils'),
+        getCompressedImages: () => {
+            class MockFile {
+                name: string;
+
+                constructor(parts: (string | Blob | ArrayBuffer | ArrayBufferView)[], filename: string) {
+                    this.name = filename;
+                }
+            }
+
+            return Promise.resolve([
+                new MockFile([], 'filename.jpeg'),
+                new MockFile([], 'thumbnail.filename.jpeg'),
+            ]);
+        },
+    }
+});
 // @ts-ignore
 global.File = class MockFile {
     name: string;
@@ -46,10 +67,10 @@ describe('validate form', () => {
         screen.getByText('Submit');
     });
 
-    it('attaches image', () => {
+    it('attaches image', async () => {
         fireEvent.click(screen.getByLabelText('upload-image'));
         fireEvent.change(screen.getByTestId('image-input'), {target: {files: [new File(['parts'], 'filename.jpeg')]}})
-        expect((screen.getByLabelText('uploaded-image') as HTMLImageElement)).toHaveStyle('background-image: url(filename.jpeg)');
+        await waitFor(() => expect((screen.getByLabelText('uploaded-image') as HTMLImageElement)).toHaveStyle('background-image: url(filename.jpeg)'));
     });
 
     it('requires name', () => {
@@ -83,18 +104,21 @@ describe('firebase functionality', () => {
     });
 
     it('creates new post with image', async () => {
+        const putSpy = jest.fn().mockReturnValue(Promise.resolve());
         // @ts-ignore
         getFirebase().storage().ref = () => ({
             child: (path: string) => getFirebase().storage().ref(path),
             // @ts-ignore
-            put: () => Promise.resolve(),
+            put: putSpy,
             fullPath: `${STORAGE.postImages}filename.jpg`,
         });
         fireEvent.click(screen.getByLabelText('upload-image'));
         fireEvent.change(screen.getByTestId('image-input'), {target: {files: [new File(['parts'], 'filename.jpeg')]}})
+        await waitFor(() => expect((screen.getByLabelText('uploaded-image') as HTMLImageElement)).toHaveStyle('background-image: url(filename.jpeg)'));
         const post = await createPost();
         // @ts-ignore
         expect(post.data().image).toBeTruthy();
+        await waitFor(() => expect(putSpy).toBeCalledTimes(2));
     });
 
     it('creates new post with expiration', async () => {
@@ -114,9 +138,12 @@ describe('firebase functionality', () => {
     });
 
     it('cleans up if image upload error', async () => {
-        await setupFailure(new Promise(() => {
+        const promise = new Promise(() => {
             throw new Error('mock error')
-        }), STORAGE.postImages + v4() + '.jpg');
+        });
+        // https://stackoverflow.com/a/59062117/3434441
+        promise.catch(() => null);
+        await setupFailure(promise, STORAGE.postImages + v4() + '.jpg');
     });
 
     it('cleans up if add post error', async () => {
@@ -138,7 +165,7 @@ async function createPost(succeed: boolean = true) {
     }
 }
 
-async function setupFailure(putPromise: Promise<void>, path: string) {
+async function setupFailure(putPromise: Promise<unknown>, path: string) {
     const deleteSpy = jest.fn().mockReturnValue(new Promise(() => {
     }));
     getFirebase().storage().ref = () => ({
@@ -152,6 +179,7 @@ async function setupFailure(putPromise: Promise<void>, path: string) {
     fireEvent.click(screen.getByLabelText('upload-image'));
     fireEvent.change(screen.getByTestId('image-input'), {target: {files: [new File(['parts'], 'filename.jpeg')]}})
 
+    await waitFor(() => expect((screen.getByLabelText('uploaded-image') as HTMLImageElement)).toHaveStyle('background-image: url(filename.jpeg)'));
     const testName = await createPost(false);
     await waitFor(() => expect(deleteSpy).toBeCalled());
 
