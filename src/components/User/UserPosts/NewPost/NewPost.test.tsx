@@ -119,6 +119,7 @@ describe('firebase functionality', () => {
         // @ts-ignore
         expect(post.data().image).toBeTruthy();
         await waitFor(() => expect(putSpy).toBeCalledTimes(2));
+        await waitFor(() => expect(putSpy).toBeCalledWith(expect.anything(), {cacheControl: 'public,max-age=31536000'}));
     });
 
     it('creates new post with expiration', async () => {
