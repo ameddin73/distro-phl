@@ -72,7 +72,7 @@
     "jest-environment-jsdom": "^26.6.2",
     "lodash": "^4.17.21",
     "mockdate": "^3.0.5",
-    "rxjs": "^6.6.7",
+    "rxjs": "^7.1.0",
     "test": "file:src/test",
     "typescript": "^4.2.4"
   }
