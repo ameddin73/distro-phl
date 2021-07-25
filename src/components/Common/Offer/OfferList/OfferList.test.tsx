@@ -4,7 +4,7 @@
 import React from 'react';
 import {customRender, getFirebase, setupFirebase, signIn, teardownFirebase} from "test/utils";
 import {screen, waitFor} from "@testing-library/react";
-import {PostInterface} from "util/types";
+import {PostInterface} from "util/types.distro";
 import {UserMocks} from "test/mocks/user.mock";
 import OfferList from "./OfferList";
 import {PostMocks} from "test/mocks/post.mock";

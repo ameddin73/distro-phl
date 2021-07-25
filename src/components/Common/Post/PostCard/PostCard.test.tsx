@@ -7,7 +7,7 @@ import {customRender, resetFirebase, setupFirebase, teardownFirebase} from "test
 import {PostMocks} from "test/mocks/post.mock";
 import PostCard from "./PostCard";
 import {PATHS} from "util/config";
-import {PostInterface} from "util/types";
+import {PostInterface} from "util/types.distro";
 
 const mockDefaultPost = PostMocks.defaultPost as PostInterface;
 

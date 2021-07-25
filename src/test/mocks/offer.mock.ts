@@ -1,4 +1,4 @@
-import {Offer} from "util/types";
+import {Offer} from "util/types.distro";
 import {PostMocks} from "./post.mock";
 import {UserMocks} from "./user.mock";
 

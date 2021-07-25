@@ -1,5 +1,5 @@
 import {UserMocks} from "./user.mock";
-import {Post} from "util/types";
+import {Post} from "util/types.distro";
 
 export namespace PostMocks {
     export const defaultPost: Required<Post> = {

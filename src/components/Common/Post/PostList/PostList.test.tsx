@@ -6,7 +6,7 @@ import {customRender, rendersNothingHere, resetFirebase, setupFirebase, teardown
 import {screen, waitFor} from "@testing-library/react";
 import {COLLECTIONS} from "util/config";
 import {PostQuery} from "util/utils";
-import {FirestoreQueryWhere, PostInterface} from "util/types";
+import {FirestoreQueryWhere, PostInterface} from "util/types.distro";
 import {UserMocks} from "test/mocks/user.mock";
 import PostList from "./PostList";
 

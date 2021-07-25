@@ -3,7 +3,7 @@ import {apps, clearFirestoreData, initializeAdminApp, initializeTestApp} from "@
 import {UserMocks} from "../mocks/user.mock";
 import {COLLECTIONS} from "util/config";
 import {PostMocks} from "../mocks/post.mock";
-import {Offer, Post} from "util/types";
+import {Offer, Post} from "util/types.distro";
 import _ from "lodash";
 import {Mutable} from "../types";
 import {OfferMocks} from "../mocks/offer.mock";

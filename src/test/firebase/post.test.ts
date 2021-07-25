@@ -14,7 +14,7 @@ import {assertFails, assertSucceeds, initializeTestApp} from "@firebase/rules-un
 import _ from "lodash";
 import {UserMocks} from "../mocks/user.mock";
 import {PostMocks} from "../mocks/post.mock";
-import {Post, PostInterface} from "util/types";
+import {Post, PostInterface} from "util/types.distro";
 import {firestore} from "firebase-admin/lib/firestore";
 
 const PROJECT_ID = `${process.env.TEST_PROJECT}`;
