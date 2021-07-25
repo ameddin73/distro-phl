@@ -15,10 +15,15 @@ jobs:
           path: /home/runner/.cache/firebase/emulators
           key: ${{ runner.os }}-emulators
       - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-
       - uses: actions/setup-node@v2
         with:
           node-version: '16'
-      - run: npm install -g firebase-tools && npm ci
+      - run: npm install -g firebase-tools && npm ci --ignore-scripts
       - run: npm run test-firestore
         env:
           REACT_APP_FIREBASE_API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY_DEV }}
@@ -35,11 +40,16 @@ jobs:
         with:
           path: /home/runner/.cache/firebase/emulators
           key: ${{ runner.os }}-emulators
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: '16'
-      - run: npm install -g firebase-tools && npm ci
+      - run: npm install -g firebase-tools && npm ci --ignore-scripts
       - run: npm run test-react-app
         env:
           REACT_APP_FIREBASE_API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY_DEV }}
@@ -53,7 +63,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: npm ci && npm run build
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - run: npm ci --ignore-scripts && npm run build
         env:
           REACT_APP_FIREBASE_API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY_DEV }}
           REACT_APP_FIREBASE_AUTH_DOMAIN: distro-phl-2a16a.firebaseapp.com
