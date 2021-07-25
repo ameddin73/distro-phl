@@ -2,8 +2,8 @@
  * @jest-environment test/jest-env
  */
 import React from 'react';
-import {screen, waitFor} from "@testing-library/react";
-import {customRender, resetFirebase, setupFirebase, teardownFirebase} from "test/utils";
+import {screen} from "@testing-library/react";
+import {resetFirebase, setupFirebase, teardownFirebase, waitForSuspendedRender} from "test/utils";
 import {PostMocks} from "test/mocks/post.mock";
 import {PostInterface} from "util/types.distro";
 import PostImage from "./PostImage";
@@ -33,6 +33,5 @@ it('should render default image on fallback', async () => {
 });
 
 async function load(post: PostInterface) {
-    customRender(<PostImage name={post.name} image={post.image}/>);
-    await waitFor(() => expect(document.querySelector('#loading')).toBeNull(), {timeout: 60000})
+    await waitForSuspendedRender(<PostImage name={post.name} image={post.image}/>);
 }

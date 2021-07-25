@@ -3,8 +3,7 @@ import {ThemeProvider} from "@material-ui/styles";
 import {FirebaseAppProvider} from "reactfire";
 import {FIREBASE_CONFIG} from "util/config";
 import theme from "util/theme";
-import {render, RenderOptions, screen} from "@testing-library/react";
-import Loading from "../components/Common/Loading/Loading";
+import {render, RenderOptions, screen, waitFor} from "@testing-library/react";
 import {BrowserRouter as Router, useHistory} from "react-router-dom";
 import {UserMocks} from "./mocks/user.mock";
 import firebase from "firebase/app";
@@ -46,6 +45,13 @@ export function getFirebase() {
 
 export const customRender = (ui: React.ReactElement, options?: RenderOptions) => render(ui, {wrapper: Providers, ...options});
 
+export const waitForSuspendedRender = async (ui: React.ReactElement, options?: RenderOptions) => {
+    customRender(ui, options);
+    await waitFor(() =>
+        // @ts-ignore
+        expect(document.querySelector(`#${ui.type.name}`)).toBeNull());
+}
+
 export function signIn(user: UserMocks.UserType = UserMocks.defaultUser) {
     return auth.signInWithEmailAndPassword(user.email, user.password);
 }
@@ -62,11 +68,11 @@ export const rendersNothingHere = () => {
 const Providers = ({children}: PropsWithChildren<any>) => (
     <ThemeProvider theme={theme}>
         <FirebaseAppProvider firebaseApp={firebaseApp} suspense>
-                <Router>
-                    <Suspense fallback={<Loading/>}>
-                        {children}
-                    </Suspense>
-                </Router>
+            <Router>
+                <Suspense fallback={<div id={children.type.name}/>}>
+                    {children}
+                </Suspense>
+            </Router>
         </FirebaseAppProvider>
     </ThemeProvider>
 );
