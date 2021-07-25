@@ -1,0 +1,19 @@
+{
+  "name": "images/app/distro-phl_720.jpg",
+  "bucket": "default-bucket",
+  "contentType": "image/jpeg",
+  "metageneration": 1,
+  "generation": 1624933970501,
+  "storageClass": "STANDARD",
+  "etag": "someETag",
+  "contentDisposition": "inline",
+  "contentEncoding": "identity",
+  "downloadTokens": [
+    "6374ca56-4403-4c69-b663-5e2e2b1270df"
+  ],
+  "timeCreated": "2021-06-29T02:32:50.500Z",
+  "updated": "2021-06-29T02:32:50.500Z",
+  "size": 631,
+  "md5Hash": "1o52PIJdwOOIkprhs3XOGA==",
+  "crc32c": "4132599177"
+}

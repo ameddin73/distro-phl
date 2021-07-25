@@ -1,0 +1,19 @@
+{
+  "name": "images/posts/a0.thumbnail.jpg",
+  "bucket": "default-bucket",
+  "contentType": "image/jpeg",
+  "metageneration": 1,
+  "generation": 1624934093324,
+  "storageClass": "STANDARD",
+  "etag": "someETag",
+  "contentDisposition": "inline",
+  "contentEncoding": "identity",
+  "downloadTokens": [
+    "8b996a85-3e77-4530-9449-3097b0409db5"
+  ],
+  "timeCreated": "2021-06-29T02:34:53.323Z",
+  "updated": "2021-06-29T02:34:53.323Z",
+  "size": 631,
+  "md5Hash": "1o52PIJdwOOIkprhs3XOGA==",
+  "crc32c": "4132599177"
+}
