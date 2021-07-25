@@ -12,7 +12,6 @@ import {ErrorBoundary} from "react-error-boundary";
 import ErrorMessage from "./components/Common/ErrorMessage";
 import Loading from "./components/Common/Loading/Loading";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
-import SnackbarProvider from "./components/Common/SnackbarProvider/SnackbarProvider";
 import Post from "./components/Common/Post/Post";
 import NotFound from "./components/Common/NotFound";
 import firebase from "firebase/app";
@@ -29,7 +28,6 @@ const PreloadApp = () => {
                     <TopBar/>
                     <Suspense fallback={<Loading marginTop='40vh'/>}>
                         <ErrorBoundary FallbackComponent={ErrorMessage}>
-                            <SnackbarProvider>
                                 <div style={{marginTop: theme.spacing(6)}}>
                                     <Switch>
                                         <Route path={PATHS.public.user}>
@@ -49,7 +47,6 @@ const PreloadApp = () => {
                                         </Route>
                                     </Switch>
                                 </div>
-                            </SnackbarProvider>
                         </ErrorBoundary>
                     </Suspense>
                 </Router>

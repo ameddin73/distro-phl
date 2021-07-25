@@ -26,8 +26,8 @@ jest.mock('util/utils', () => {
             }
 
             return Promise.resolve([
-                new MockFile([], 'filename.jpeg'),
-                new MockFile([], 'thumbnail.filename.jpeg'),
+                new MockFile([], 'a0.jpeg'),
+                new MockFile([], 'thumbnail.a0.jpeg'),
             ]);
         },
     }
@@ -69,8 +69,8 @@ describe('validate form', () => {
 
     it('attaches image', async () => {
         fireEvent.click(screen.getByLabelText('upload-image'));
-        fireEvent.change(screen.getByTestId('image-input'), {target: {files: [new File(['parts'], 'filename.jpeg')]}})
-        await waitFor(() => expect((screen.getByLabelText('uploaded-image') as HTMLImageElement)).toHaveStyle('background-image: url(filename.jpeg)'));
+        fireEvent.change(screen.getByTestId('image-input'), {target: {files: [new File(['parts'], 'a0.jpeg')]}})
+        await waitFor(() => expect((screen.getByLabelText('uploaded-image') as HTMLImageElement)).toHaveStyle('background-image: url(a0.jpeg)'));
     });
 
     it('requires name', () => {
@@ -110,11 +110,11 @@ describe('firebase functionality', () => {
             child: (path: string) => getFirebase().storage().ref(path),
             // @ts-ignore
             put: putSpy,
-            fullPath: `${STORAGE.postImages}filename.jpg`,
+            fullPath: `${STORAGE.postImages}a0.jpg`,
         });
         fireEvent.click(screen.getByLabelText('upload-image'));
-        fireEvent.change(screen.getByTestId('image-input'), {target: {files: [new File(['parts'], 'filename.jpeg')]}})
-        await waitFor(() => expect((screen.getByLabelText('uploaded-image') as HTMLImageElement)).toHaveStyle('background-image: url(filename.jpeg)'));
+        fireEvent.change(screen.getByTestId('image-input'), {target: {files: [new File(['parts'], 'a0.jpeg')]}})
+        await waitFor(() => expect((screen.getByLabelText('uploaded-image') as HTMLImageElement)).toHaveStyle('background-image: url(a0.jpeg)'));
         const post = await createPost();
         // @ts-ignore
         expect(post.data().image).toBeTruthy();
@@ -178,9 +178,9 @@ async function setupFailure(putPromise: Promise<unknown>, path: string) {
     });
 
     fireEvent.click(screen.getByLabelText('upload-image'));
-    fireEvent.change(screen.getByTestId('image-input'), {target: {files: [new File(['parts'], 'filename.jpeg')]}})
+    fireEvent.change(screen.getByTestId('image-input'), {target: {files: [new File(['parts'], 'a0.jpeg')]}})
 
-    await waitFor(() => expect((screen.getByLabelText('uploaded-image') as HTMLImageElement)).toHaveStyle('background-image: url(filename.jpeg)'));
+    await waitFor(() => expect((screen.getByLabelText('uploaded-image') as HTMLImageElement)).toHaveStyle('background-image: url(a0.jpeg)'));
     const testName = await createPost(false);
     await waitFor(() => expect(deleteSpy).toBeCalled());
 

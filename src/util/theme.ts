@@ -1,4 +1,4 @@
-import {createMuiTheme, Theme} from '@material-ui/core/styles'
+import {createTheme, Theme} from '@material-ui/core/styles'
 import {amber, blueGrey, red} from "@material-ui/core/colors";
 import '../App.css';
 
@@ -11,7 +11,7 @@ export interface CustomTheme extends Theme {
 }
 
 function createMyTheme(): CustomTheme {
-    const baseTheme = createMuiTheme({
+    const baseTheme = createTheme({
         palette: {
             type: "dark",
             primary: {
