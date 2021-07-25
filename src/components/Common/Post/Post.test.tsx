@@ -23,7 +23,7 @@ it('renders 404 if item not found', async () => {
 describe('post exists', () => {
     beforeEach(async () => {
         await load(`${PATHS.public.posts}/preset-post-0`);
-    }, 60000);
+    }, 30000);
     afterAll(teardownFirebase);
 
     it('should mount', async () => {
@@ -38,5 +38,5 @@ describe('post exists', () => {
 
 async function load(path: string) {
     customRender(<HistoryWrapper component={<Route path={`${PATHS.public.posts}/:id`}><Post/></Route>} path={path}/>);
-    await waitFor(() => expect(document.querySelector('#loading')).toBeNull(), {timeout: 60000});
+    await waitFor(() => expect(document.querySelector('#loading')).toBeNull(), {timeout: 30000});
 }

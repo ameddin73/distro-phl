@@ -71,7 +71,7 @@ const PostDetails = ({id}: { id: string }) => {
             <Container maxWidth="sm" className={classes.body}>
                 <Grid container
                       direction="column"
-                      justify="flex-start"
+                      justifyContent="flex-start"
                       spacing={2}
                       alignItems="flex-start">
                     <InfoItem title="Posted by" body={userName} inline/>

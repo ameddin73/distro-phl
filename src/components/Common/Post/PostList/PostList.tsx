@@ -57,7 +57,7 @@ const PostList = (props: PostListProps) => {
         <Container className={classes.container} maxWidth="md">
             <Grid container
                   alignItems="center"
-                  justify="space-evenly"
+                  justifyContent="space-evenly"
                   spacing={2}
                   className={classes.container}>
                 <PList {...props}/>
