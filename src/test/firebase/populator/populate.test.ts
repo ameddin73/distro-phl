@@ -5,7 +5,7 @@ import {initFirebase, setupFirestore, startFirestore, teardownFirestore} from ".
 import {COLLECTIONS} from "util/config";
 import {PostMocks} from "../../mocks/post.mock";
 import {Mutable} from "../../types";
-import {Post} from "util/types";
+import {Post} from "util/types.distro";
 import _ from "lodash";
 
 it('populates firestore', async () => {

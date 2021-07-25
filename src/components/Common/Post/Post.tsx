@@ -9,7 +9,7 @@ import {Container, Grid, Typography} from "@material-ui/core";
 import {Converters, PostQuery} from "util/utils";
 import useFirestoreDocumentBuilder from "util/hooks/useFirestoreDocumentBuilder";
 import useFirestoreCollectionBuilder from "util/hooks/useFirestoreCollectionBuilder";
-import {PostInterface} from "util/types";
+import {PostInterface} from "util/types.distro";
 import theme from "util/theme";
 import NotFound from "../NotFound";
 import {ClassNameMap} from "@material-ui/styles";

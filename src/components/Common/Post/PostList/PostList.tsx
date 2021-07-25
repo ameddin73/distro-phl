@@ -2,7 +2,7 @@ import React from 'react';
 import {Container, Grid} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import NothingHere from "../../NothingHere/NothingHere";
-import {FirestoreQuery, PostInterface} from "util/types";
+import {FirestoreQuery, PostInterface} from "util/types.distro";
 import {Converters} from "util/utils";
 import useFirestoreCollectionBuilder from "util/hooks/useFirestoreCollectionBuilder";
 import PostCard from '../PostCard/PostCard.lazy';

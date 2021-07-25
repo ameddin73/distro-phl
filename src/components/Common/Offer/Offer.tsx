@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {OfferInterface} from "util/types";
+import {OfferInterface} from "util/types.distro";
 import {makeStyles} from "@material-ui/core/styles";
 import {CardContent, Collapse, Grid, Typography} from "@material-ui/core";
 import {postCardStyle} from "../Post/PostCard/styles";

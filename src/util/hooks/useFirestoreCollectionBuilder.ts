@@ -1,4 +1,4 @@
-import {FirestoreQuery, FirestoreQueryOrderBy, FirestoreQueryWhere} from "../types";
+import {FirestoreQuery, FirestoreQueryOrderBy, FirestoreQueryWhere} from "../types.distro";
 import firebase from "firebase/app";
 import {useFirestore, useFirestoreCollectionData} from "reactfire";
 

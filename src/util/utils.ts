@@ -1,4 +1,4 @@
-import {FirestoreQueryOrderBy, FirestoreQueryWhere, Offer, OfferInterface, Post, PostInterface} from "./types";
+import {FirestoreQueryOrderBy, FirestoreQueryWhere, Offer, OfferInterface, Post, PostInterface} from "./types.distro";
 import {v4} from "uuid";
 import firebase from "firebase/app";
 import "firebase/firestore";
@@ -11,18 +11,26 @@ export function getFormattedDate(date: Date): string {
 export async function getCompressedImages(file: File): Promise<File[]> {
     const compress = new Compress();
 
-    const [image] = await compress.compress([file], {
+    // Compress images
+    const imagePromise = compress.compress([file], {
         size: 1, // Size in mb
         maxWidth: 1200,
         maxHeight: 1200,
     });
-    const [thumbnail] = await compress.compress([file], {
+    const thumbnailPromise = compress.compress([file], {
         size: 0.1,
         maxWidth: 440,
     });
+
+    // Resolve promises
+    const [image] = await imagePromise;
+    const [thumbnail] = await thumbnailPromise;
+
+    // Convert to files
     const imageBlob = Compress.convertBase64ToFile(image.data, image.ext);
     const thumbnailBlob = Compress.convertBase64ToFile(thumbnail.data, thumbnail.ext);
 
+    // Rename and return files
     const fileName = v4();
     return [new File([imageBlob], `${fileName}.${image.ext.split('/').pop()}`, {type: image.ext}),
         new File([thumbnailBlob], `${fileName}.thumbnail.${image.ext.split('/').pop()}`, {type: image.ext}),

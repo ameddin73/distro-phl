@@ -1,6 +1,6 @@
 import React from 'react';
 import {COLLECTIONS} from "util/config";
-import {FirestoreQuery, PostInterface} from "util/types";
+import {FirestoreQuery, PostInterface} from "util/types.distro";
 import {AuthCheck, useUser} from "reactfire";
 import ErrorMessage from "../Common/ErrorMessage";
 import {ErrorBoundary} from "react-error-boundary";

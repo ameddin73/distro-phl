@@ -1,7 +1,7 @@
 import React, {lazy, Suspense} from 'react';
 import {Card, Grid} from "@material-ui/core";
 import {offerStyles} from "./Offer";
-import {OfferInterface} from "util/types";
+import {OfferInterface} from "util/types.distro";
 import Loading from "../Loading/Loading";
 
 const LazyOffer = lazy(() => import('./Offer'));

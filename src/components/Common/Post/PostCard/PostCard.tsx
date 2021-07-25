@@ -3,7 +3,7 @@ import {CardActionArea, Grid, Typography} from "@material-ui/core";
 import {CARD_MEDIA_HEIGHT, postCardStyle} from "./styles";
 import {PATHS} from "util/config";
 import RouterLink from "../../RouterLink";
-import {PostInterface} from "util/types";
+import {PostInterface} from "util/types.distro";
 import {Skeleton} from "@material-ui/lab";
 import PostImage from "../PostImage/PostImage";
 

@@ -6,7 +6,7 @@ import {screen} from "@testing-library/react";
 import {customRender, setupFirebase, teardownFirebase} from "test/utils";
 import Offer from "./Offer";
 import {OfferMocks} from "test/mocks/offer.mock";
-import {OfferInterface} from "util/types";
+import {OfferInterface} from "util/types.distro";
 
 let mockDefaultOffer: OfferInterface;
 

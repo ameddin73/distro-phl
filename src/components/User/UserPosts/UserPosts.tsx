@@ -1,7 +1,7 @@
 import React from 'react';
 import PostList from "../../Common/Post/PostList/PostList";
 import {COLLECTIONS} from "util/config";
-import {FirestoreQuery, FirestoreQueryWhere} from "util/types";
+import {FirestoreQuery, FirestoreQueryWhere} from "util/types.distro";
 import {useUser} from "reactfire";
 import {PostQuery} from "util/utils";
 

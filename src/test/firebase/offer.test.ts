@@ -12,7 +12,7 @@ import {OfferMocks} from "../mocks/offer.mock";
 import {Converters} from "util/utils";
 import {Mutable} from "../types";
 import _ from "lodash";
-import {Offer, Post} from "util/types";
+import {Offer, Post} from "util/types.distro";
 import {assertFails, assertSucceeds} from "@firebase/rules-unit-testing";
 import {UserMocks} from "../mocks/user.mock";
 import {firestore} from "firebase-admin/lib/firestore";

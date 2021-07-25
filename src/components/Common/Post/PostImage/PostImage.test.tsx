@@ -5,7 +5,7 @@ import React from 'react';
 import {screen, waitFor} from "@testing-library/react";
 import {customRender, resetFirebase, setupFirebase, teardownFirebase} from "test/utils";
 import {PostMocks} from "test/mocks/post.mock";
-import {PostInterface} from "util/types";
+import {PostInterface} from "util/types.distro";
 import PostImage from "./PostImage";
 
 const mockDefaultPost = PostMocks.defaultPost as PostInterface;

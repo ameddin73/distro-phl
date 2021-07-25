@@ -3,7 +3,7 @@ import firebase from "firebase/app";
 import {Container, Grid, Typography} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import {useFirestoreCollectionData} from "reactfire";
-import {OfferInterface} from "util/types";
+import {OfferInterface} from "util/types.distro";
 import Offer from "../Offer.lazy";
 
 const useStyles = makeStyles((theme) => ({
