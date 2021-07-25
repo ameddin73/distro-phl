@@ -10,11 +10,11 @@ jobs:
   test-firestore:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - uses: actions/cache@v2
         with:
           path: /home/runner/.cache/firebase/emulators
           key: ${{ runner.os }}-emulators
-      - uses: actions/checkout@v2
       - uses: actions/cache@v2
         with:
           path: ~/.npm
@@ -36,6 +36,7 @@ jobs:
   test-react-app:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - uses: actions/cache@v2
         with:
           path: /home/runner/.cache/firebase/emulators
@@ -45,7 +46,6 @@ jobs:
           path: ~/.npm
           key: npm-${{ hashFiles('package-lock.json') }}
           restore-keys: npm-
-      - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: '16'
