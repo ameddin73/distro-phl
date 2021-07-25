@@ -28,25 +28,25 @@ const PreloadApp = () => {
                     <TopBar/>
                     <Suspense fallback={<Loading marginTop='40vh'/>}>
                         <ErrorBoundary FallbackComponent={ErrorMessage}>
-                                <div style={{marginTop: theme.spacing(6)}}>
-                                    <Switch>
-                                        <Route path={PATHS.public.user}>
-                                            <User/>
-                                        </Route>
-                                        <Route path={PATHS.public.distro}>
-                                            <DistroHub/>
-                                        </Route>
-                                        <Route path={`${PATHS.public.posts}/:id`}>
-                                            <Post/>
-                                        </Route>
-                                        <Route path={PATHS.public.base}>
-                                            <DistroHub/>
-                                        </Route>
-                                        <Route>
-                                            <NotFound/>
-                                        </Route>
-                                    </Switch>
-                                </div>
+                            <div style={{marginTop: theme.spacing(6)}}>
+                                <Switch>
+                                    <Route path={PATHS.public.user}>
+                                        <User/>
+                                    </Route>
+                                    <Route path={PATHS.public.distro}>
+                                        <DistroHub/>
+                                    </Route>
+                                    <Route path={`${PATHS.public.posts}/:id`}>
+                                        <Post/>
+                                    </Route>
+                                    <Route path={PATHS.public.base}>
+                                        <DistroHub/>
+                                    </Route>
+                                    <Route>
+                                        <NotFound/>
+                                    </Route>
+                                </Switch>
+                            </div>
                         </ErrorBoundary>
                     </Suspense>
                 </Router>
@@ -68,12 +68,7 @@ Preload reactfire components to prevent unexpected suspense
  */
 function preloadSDKs(firebaseApp: firebase.app.App) {
     return Promise.all([
-        preloadFirestore({
-            firebaseApp,
-            setup(firestore) {
-                return firestore().enablePersistence();
-            }
-        }),
+        preloadFirestore({firebaseApp}),
         preloadStorage({
             firebaseApp,
             setup(storage) {

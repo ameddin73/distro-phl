@@ -10,8 +10,8 @@ import {UserMocks} from "../../test/mocks/user.mock";
 beforeAll(setupFirebase);
 beforeEach(async () => {
     customRender(<DistroHub/>)
-    await waitFor(() => expect(document.querySelector('#loading')).toBeNull(), {timeout: 60000})
-}, 60000);
+    await waitFor(() => expect(document.querySelector('#loading')).toBeNull(), {timeout: 30000})
+}, 30000);
 afterEach(async () => await resetFirebase());
 afterAll(teardownFirebase);
 
