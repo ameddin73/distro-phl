@@ -4,7 +4,6 @@ import {FirebaseAppProvider} from "reactfire";
 import {FIREBASE_CONFIG} from "util/config";
 import theme from "util/theme";
 import {render, RenderOptions, screen} from "@testing-library/react";
-import SnackbarProvider from "../components/Common/SnackbarProvider/SnackbarProvider";
 import Loading from "../components/Common/Loading/Loading";
 import {BrowserRouter as Router, useHistory} from "react-router-dom";
 import {UserMocks} from "./mocks/user.mock";
@@ -63,13 +62,11 @@ export const rendersNothingHere = () => {
 const Providers = ({children}: PropsWithChildren<any>) => (
     <ThemeProvider theme={theme}>
         <FirebaseAppProvider firebaseApp={firebaseApp} suspense>
-            <SnackbarProvider>
                 <Router>
                     <Suspense fallback={<Loading/>}>
                         {children}
                     </Suspense>
                 </Router>
-            </SnackbarProvider>
         </FirebaseAppProvider>
     </ThemeProvider>
 );
