@@ -1,0 +1,19 @@
+{
+  "name": "images/app/distro-phl_1200.jpg",
+  "bucket": "default-bucket",
+  "contentType": "image/jpeg",
+  "metageneration": 1,
+  "generation": 1624933912963,
+  "storageClass": "STANDARD",
+  "etag": "someETag",
+  "contentDisposition": "inline",
+  "contentEncoding": "identity",
+  "downloadTokens": [
+    "9cd6ceb1-85e1-4a9d-a30d-ffe0d8b9081f"
+  ],
+  "timeCreated": "2021-06-29T02:31:52.962Z",
+  "updated": "2021-06-29T02:31:52.963Z",
+  "size": 631,
+  "md5Hash": "1o52PIJdwOOIkprhs3XOGA==",
+  "crc32c": "4132599177"
+}

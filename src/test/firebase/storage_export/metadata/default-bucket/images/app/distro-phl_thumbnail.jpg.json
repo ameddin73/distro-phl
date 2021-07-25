@@ -1,0 +1,19 @@
+{
+  "name": "images/app/distro-phl_thumbnail.jpg",
+  "bucket": "default-bucket",
+  "contentType": "image/jpeg",
+  "metageneration": 1,
+  "generation": 1624933987045,
+  "storageClass": "STANDARD",
+  "etag": "someETag",
+  "contentDisposition": "inline",
+  "contentEncoding": "identity",
+  "downloadTokens": [
+    "cb797073-1d1a-4a04-beea-96d5ec98e230"
+  ],
+  "timeCreated": "2021-06-29T02:33:07.044Z",
+  "updated": "2021-06-29T02:33:07.044Z",
+  "size": 631,
+  "md5Hash": "1o52PIJdwOOIkprhs3XOGA==",
+  "crc32c": "4132599177"
+}

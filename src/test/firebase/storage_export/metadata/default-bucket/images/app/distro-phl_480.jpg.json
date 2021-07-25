@@ -1,0 +1,19 @@
+{
+  "name": "images/app/distro-phl_480.jpg",
+  "bucket": "default-bucket",
+  "contentType": "image/jpeg",
+  "metageneration": 1,
+  "generation": 1624933953573,
+  "storageClass": "STANDARD",
+  "etag": "someETag",
+  "contentDisposition": "inline",
+  "contentEncoding": "identity",
+  "downloadTokens": [
+    "7c373d78-9c10-4299-b8fc-876d6362472b"
+  ],
+  "timeCreated": "2021-06-29T02:32:33.572Z",
+  "updated": "2021-06-29T02:32:33.572Z",
+  "size": 631,
+  "md5Hash": "1o52PIJdwOOIkprhs3XOGA==",
+  "crc32c": "4132599177"
+}
