@@ -2,8 +2,8 @@
  * @jest-environment test/jest-env
  */
 import React from 'react';
-import {screen, waitFor} from "@testing-library/react";
-import {customRender, HistoryWrapper, resetFirebase, setupFirebase, teardownFirebase} from "test/utils";
+import {screen} from "@testing-library/react";
+import {HistoryWrapper, resetFirebase, setupFirebase, teardownFirebase, waitForSuspendedRender} from "test/utils";
 import {PostMocks} from "test/mocks/post.mock";
 import {PATHS} from "util/config";
 import {Route} from "react-router-dom";
@@ -37,6 +37,6 @@ describe('post exists', () => {
 });
 
 async function load(path: string) {
-    customRender(<HistoryWrapper component={<Route path={`${PATHS.public.posts}/:id`}><Post/></Route>} path={path}/>);
-    await waitFor(() => expect(document.querySelector('#loading')).toBeNull(), {timeout: 30000});
+    await waitForSuspendedRender(
+        <HistoryWrapper component={<Route path={`${PATHS.public.posts}/:id`}><Post/></Route>} path={path}/>);
 }

@@ -7,7 +7,7 @@ import {PostMocks} from "test/mocks/post.mock";
 import {COLLECTIONS, PATHS, STORAGE} from "util/config";
 import {v4} from "uuid";
 import firebase from "firebase/app";
-import {customRender, getFirebase, resetFirebase, setupFirebase, signIn, teardownFirebase} from "test/utils";
+import {getFirebase, resetFirebase, setupFirebase, signIn, teardownFirebase, waitForSuspendedRender} from "test/utils";
 import NewPost from './NewPost';
 import {Converters} from "util/utils";
 
@@ -51,8 +51,7 @@ beforeAll(async () => {
 });
 beforeEach(async () => {
     postRef = getFirebase().firestore().collection(COLLECTIONS.posts).where('active', '==', true).withConverter(Converters.PostConverter);
-    customRender(<NewPost/>);
-    await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
+    await waitForSuspendedRender(<NewPost/>);
 });
 afterEach(async () => resetFirebase());
 afterAll(teardownFirebase);

@@ -2,20 +2,17 @@
  * @jest-environment test/jest-env
  */
 import React from 'react';
-import {customRender, resetFirebase, setupFirebase, signIn, teardownFirebase} from "test/utils";
-import {screen, waitFor} from "@testing-library/react";
+import {resetFirebase, setupFirebase, signIn, teardownFirebase, waitForSuspendedRender} from "test/utils";
+import {screen} from "@testing-library/react";
 import DistroHub from "./DistroHub";
-import {UserMocks} from "../../test/mocks/user.mock";
+import {UserMocks} from "test/mocks/user.mock";
 
 beforeAll(setupFirebase);
-beforeEach(async () => {
-    customRender(<DistroHub/>)
-    await waitFor(() => expect(document.querySelector('#loading')).toBeNull(), {timeout: 30000})
-}, 30000);
+beforeEach(async () => waitForSuspendedRender(<DistroHub/>));
 afterEach(async () => await resetFirebase());
 afterAll(teardownFirebase);
 
-it('should mount', async () => {
+it('should mount', () => {
 });
 
 it('renders all posts', async () => {

@@ -2,8 +2,8 @@
  * @jest-environment test/jest-env
  */
 import React from 'react';
-import {fireEvent, screen, waitFor} from "@testing-library/react";
-import {customRender, resetFirebase, setupFirebase, teardownFirebase} from "test/utils";
+import {fireEvent, screen} from "@testing-library/react";
+import {resetFirebase, setupFirebase, teardownFirebase, waitForSuspendedRender} from "test/utils";
 import {PostMocks} from "test/mocks/post.mock";
 import PostCard from "./PostCard";
 import {PATHS} from "util/config";
@@ -18,7 +18,8 @@ beforeEach(async () => {
 afterEach(async () => await resetFirebase());
 afterAll(teardownFirebase);
 
-it('should mount', async () => {
+it('should mount', () => {
+    expect(true).toBeTruthy();
 });
 
 it('renders post details properly', () => {
@@ -32,6 +33,5 @@ it('navigates to post', () => {
 });
 
 async function load(post: PostInterface = mockDefaultPost) {
-    customRender(<PostCard post={post}/>);
-    await waitFor(() => expect(document.querySelector('#loading')).toBeNull(), {timeout: 60000})
+    await waitForSuspendedRender(<PostCard post={post}/>);
 }

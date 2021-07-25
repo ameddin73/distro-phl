@@ -1,16 +1,13 @@
 import React from 'react';
 import UserMenu from './UserMenu';
-import {customRender, setupFirebase, signIn, teardownFirebase} from "test/utils";
+import {setupFirebase, signIn, teardownFirebase, waitForSuspendedRender} from "test/utils";
 import {fireEvent, screen, waitFor} from "@testing-library/react";
 import {UserMocks} from "../../../../test/mocks/user.mock";
 import {PATHS} from "util/config";
 import firebase from "firebase/app";
 
 beforeAll(setupFirebase);
-beforeEach(async () => {
-    customRender(<UserMenu/>);
-    await waitFor(() => expect(document.querySelector('#loading')).toBeNull())
-});
+beforeEach(async () => waitForSuspendedRender(<UserMenu/>));
 afterAll(teardownFirebase);
 
 it('should mount', async () => {
