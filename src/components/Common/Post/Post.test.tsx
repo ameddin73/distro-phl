@@ -23,7 +23,7 @@ it('renders 404 if item not found', async () => {
 describe('post exists', () => {
     beforeEach(async () => {
         await load(`${PATHS.public.posts}/preset-post-0`);
-    }, 30000);
+    });
     afterAll(teardownFirebase);
 
     it('should mount', async () => {
@@ -36,7 +36,13 @@ describe('post exists', () => {
     });
 });
 
+/*
+This is a complicated take on the waitForSuspendedRender pattern which waits for Post
+to end suspense then wraps it in additional components needed to enrich its hooks
+ */
 async function load(path: string) {
-    await waitForSuspendedRender(
-        <HistoryWrapper component={<Route path={`${PATHS.public.posts}/:id`}><Post/></Route>} path={path}/>);
+    return waitForSuspendedRender(<HistoryWrapper component={
+        <Route path={`${PATHS.public.posts}/:id`}>
+            <Post/>
+        </Route>} path={path}/>);
 }

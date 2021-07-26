@@ -45,11 +45,16 @@ export function getFirebase() {
 
 export const customRender = (ui: React.ReactElement, options?: RenderOptions) => render(ui, {wrapper: Providers, ...options});
 
+/*
+This function renders with our customRender (which attached providers) and waits for the
+suspense wrapper with id named after the top child is gone. That gets attached
+in Providers below.
+ */
 export const waitForSuspendedRender = async (ui: React.ReactElement, options?: RenderOptions) => {
     customRender(ui, options);
     await waitFor(() =>
         // @ts-ignore
-        expect(document.querySelector(`#${ui.type.name}`)).toBeNull());
+        expect(document.querySelector(`#${ui.type.name}`)).toBeNull(), {timeout: 5000});
 }
 
 export function signIn(user: UserMocks.UserType = UserMocks.defaultUser) {
@@ -80,5 +85,5 @@ const Providers = ({children}: PropsWithChildren<any>) => (
 export const HistoryWrapper = ({component, path, referrer}: { component: JSX.Element, path: string, referrer?: string }) => {
     const history = useHistory();
     history.replace(path, {referrer: referrer});
-    return (component);
+    return component;
 }

@@ -27,14 +27,14 @@ it('should mount', async () => {
 
 it('renders all posts', async () => {
     await renderPostList(<PostList {...props}/>);
-    const posts = screen.getAllByText('Posted by');
+    const posts = await waitFor(() => screen.getAllByText('Posted by'));
     expect(posts.length).toBeGreaterThanOrEqual(3);
 });
 
 it('filters posts', async () => {
     const filter = ((post: PostInterface) => post.uid === UserMocks.userThree.uid);
     await renderPostList(<PostList {...props} filter={filter}/>);
-    const posts = screen.getAllByText('Posted by');
+    const posts = await waitFor(() => screen.getAllByText('Posted by'));
     expect(posts.length).toBe(1);
 });
 
