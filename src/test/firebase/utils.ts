@@ -28,10 +28,10 @@ export function startFirestore() {
     const firestoreAuth = initTestApp(UserMocks.defaultUser);
     const firestoreAuth2 = initTestApp(UserMocks.userTwo);
     const firestoreAuth3 = initTestApp(UserMocks.userThree);
-    const firestorePhone = initTestApp(UserMocks.userPhone);
+    const firestoreNameless = initTestApp(UserMocks.userNameless);
     const firestoreAdmin = initializeAdminApp({projectId: PROJECT_ID}).firestore();
 
-    return {firestore: firestoreInstance, firestoreAuth, firestoreAuth2, firestoreAuth3, firestorePhone, firestoreAdmin};
+    return {firestore: firestoreInstance, firestoreAuth, firestoreAuth2, firestoreAuth3, firestoreNameless, firestoreAdmin};
 }
 
 export async function setupFirestore(postMock: boolean, offerMock?: boolean) {

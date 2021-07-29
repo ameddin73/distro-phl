@@ -22,7 +22,7 @@ const PROJECT_ID = `${process.env.TEST_PROJECT}`;
 let firestoreInstance: firebase.firestore.Firestore;
 let firestoreAuth: firebase.firestore.Firestore;
 let firestoreAuth2: firebase.firestore.Firestore;
-let firestoreAuthPhone: firebase.firestore.Firestore;
+let firestoreAuthNameless: firebase.firestore.Firestore;
 let firestoreAdmin: firestore.Firestore;
 
 const mockPost = PostMocks.defaultPost;
@@ -371,13 +371,13 @@ async function buildFirestore() {
     firestoreInstance = stores.firestore;
     firestoreAuth = stores.firestoreAuth;
     firestoreAuth2 = stores.firestoreAuth2;
-    firestoreAuthPhone = stores.firestorePhone;
+    firestoreAuthNameless = stores.firestoreNameless;
     firestoreAdmin = stores.firestoreAdmin;
 
     query = firestoreInstance.collection(COLLECTIONS.posts).doc(mockPost.id).withConverter(Converters.PostConverter);
     queryAuthed = firestoreAuth.collection(COLLECTIONS.posts).doc(mockPost.id).withConverter(Converters.PostConverter);
     queryAuthed2 = firestoreAuth2.collection(COLLECTIONS.posts).doc(mockPost2.id).withConverter(Converters.PostConverter);
-    queryAuthedNameless = firestoreAuthPhone.collection(COLLECTIONS.posts).doc(mockPostNameless.id).withConverter(Converters.PostConverter);
+    queryAuthedNameless = firestoreAuthNameless.collection(COLLECTIONS.posts).doc(mockPostNameless.id).withConverter(Converters.PostConverter);
     updateQueryAuthed = firestoreAuth.collection(COLLECTIONS.posts).doc(mockPost.id);
 
     await setupFirestore(false);
