@@ -27,10 +27,10 @@ const NewPost = () => {
     const storage = useStorage();
     const [savePost] = useFirestoreAdd(COLLECTIONS.posts, Converters.PostConverter);
 
-    let postRef: firebase.firestore.DocumentReference;
-
     const [post, _setPost] = useState<Post>(createEmptyPost(user));
     const setPost = postSetter(post, _setPost);
+
+    let postRef: firebase.firestore.DocumentReference;
 
     const [localImgUrl, setLocalImgUrl] = useState<string>();
     const [imgFiles, setImgFiles] = useState<File[]>();
@@ -42,8 +42,6 @@ const NewPost = () => {
     const [loading, setLoading] = useState(false);
 
     const [uploadRef, setUploadRef] = useState<HTMLInputElement | null>(null);
-
-    console.dir(user);
 
     /*
     Update file objects for storage and html URL when new image uploaded
@@ -129,6 +127,7 @@ const NewPost = () => {
         localImgUrl
     });
 
+    if (!user) return null;
     return (
         <>
             {loading ?
@@ -300,8 +299,8 @@ function createEmptyPost(user: firebase.User) {
         description: '',
         name: '',
         hasExpiration: false,
-        uid: user.uid,
-        userName: user.displayName || 'Distro User'
+        uid: user?.uid,
+        userName: user?.displayName || 'Distro User'
     }
 }
 
