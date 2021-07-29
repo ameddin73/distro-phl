@@ -30,10 +30,10 @@ const UserMenu = () => {
     const [open, setOpen] = useState(false);
     const {data: user} = useUser();
 
-    const toggleDrawer = (open: boolean) => () => (setOpen(open));
-    const closeAndAction = (action: () => Promise<void>) => {
+    const toggleDrawer = (openDrawer: boolean) => () => (setOpen(openDrawer));
+    const closeAndAction = async (action: () => Promise<void>) => {
         toggleDrawer(false);
-        action();
+        await action();
     }
 
     return (

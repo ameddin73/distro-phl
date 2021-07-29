@@ -1,5 +1,5 @@
 import React from "react";
-import {useUser} from "reactfire";
+import {useSigninCheck} from "reactfire";
 import {Redirect, Route, RouteProps} from "react-router-dom";
 import {PATHS} from "util/config";
 
@@ -8,13 +8,14 @@ interface PrivateRouteProps extends RouteProps {
 }
 
 const PrivateRoute = ({children, path, ...rest}: PrivateRouteProps) => {
-    const {data: user} = useUser();
+    const {data: signInCheckResult} = useSigninCheck();
 
     return (
         <Route
             {...rest}
+            path={path}
             render={() =>
-                user ? (
+                signInCheckResult.signedIn ? (
                     children
                 ) : (
                     <Redirect
