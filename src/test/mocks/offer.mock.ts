@@ -9,7 +9,7 @@ export namespace OfferMocks {
         // @ts-ignore
         postId: PostMocks.defaultPost.id,
         posterId: PostMocks.defaultPost.uid,
-        userName: UserMocks.userTwo.name,
+        userName: UserMocks.userTwo.name || '',
         message: 'default_offer_message',
     }
     export const secondaryOffer: Offer = {
@@ -18,7 +18,7 @@ export namespace OfferMocks {
         // @ts-ignore
         postId: PostMocks.defaultPost.id,
         posterId: PostMocks.defaultPost.uid,
-        userName: UserMocks.userThree.name,
+        userName: UserMocks.userThree.name || '',
         message: 'secondary_offer_message',
     }
 }
