@@ -43,6 +43,8 @@ const NewPost = () => {
 
     const [uploadRef, setUploadRef] = useState<HTMLInputElement | null>(null);
 
+    console.dir(user);
+
     /*
     Update file objects for storage and html URL when new image uploaded
      */

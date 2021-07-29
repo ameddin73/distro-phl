@@ -1,9 +1,10 @@
 export namespace UserMocks {
     export type UserType = {
         uid: string,
-        name: string,
-        email: string,
-        password: string,
+        name?: string,
+        email?: string,
+        phone_number?: string,
+        password?: string,
     }
     export const defaultUser: UserType = {
         uid: 'yIEcR6DWPlKQ57X8l1xgdxKTiOjn',
@@ -23,10 +24,9 @@ export namespace UserMocks {
         email: 'tertiary@gmail.com',
         password: 'tertiary password',
     }
-    export const userFour: UserType = {
+    export const userNameless: UserType = {
         uid: 'tcPsT2sKhQibainWKHWuaFWPXfCU',
-        name: 'quaternary user',
-        email: 'quaternary@gmail.com',
-        password: 'quaternary password',
+        email: 'nameless@gmail.com',
+        password: 'nameless password',
     }
 }

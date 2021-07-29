@@ -58,6 +58,7 @@ export const waitForSuspendedRender = async (ui: React.ReactElement, options?: R
 }
 
 export function signIn(user: UserMocks.UserType = UserMocks.defaultUser) {
+    //@ts-ignore
     return auth.signInWithEmailAndPassword(user.email, user.password);
 }
 

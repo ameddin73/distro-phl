@@ -41,9 +41,9 @@ This will start the app and connect to the firebase dev project. Run firestore &
 Changes to firestore data must be constructed programmatically using `populate.test.ts`
 in the test/firebase directory. After building the desired test data export wit the following command and commit both to git.
 
-#### `firebase --project demo-project emulators:start --only firestore`
+#### `firebase --project demo-project emulators:start --only firestore,auth,storage --import src/test/firebase`
 
-After running populate.test.ts:
+This starts the emulator with the current data. To make changes to firebase, do so programmatically by updating `populate.test.ts`. For the other emulators, do so manually. When finished, export with:
 
 #### `firebase --project demo-project emulators:export src/test/firebase`
 

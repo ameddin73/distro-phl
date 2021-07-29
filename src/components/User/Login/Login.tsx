@@ -22,7 +22,6 @@ const Login = () => {
         signInSuccessUrl: referrer,
         signInOptions: [
             firebase.auth.EmailAuthProvider.PROVIDER_ID,
-            firebase.auth.PhoneAuthProvider.PROVIDER_ID,
             firebase.auth.GoogleAuthProvider.PROVIDER_ID,
         ]
     }

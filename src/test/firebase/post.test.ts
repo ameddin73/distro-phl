@@ -22,20 +22,20 @@ const PROJECT_ID = `${process.env.TEST_PROJECT}`;
 let firestoreInstance: firebase.firestore.Firestore;
 let firestoreAuth: firebase.firestore.Firestore;
 let firestoreAuth2: firebase.firestore.Firestore;
+let firestoreAuthPhone: firebase.firestore.Firestore;
 let firestoreAdmin: firestore.Firestore;
 
 const mockPost = PostMocks.defaultPost;
 const mockPost2 = PostMocks.secondaryPost;
-const mocDoc: Mutable<Post> = _.clone(mockPost);
-delete mocDoc.id;
-delete mocDoc.created;
-const mocDoc2: Mutable<Post> = _.clone(mockPost2);
-delete mocDoc2.id;
-delete mocDoc2.created;
+const mockPostNameless = PostMocks.namelessPost;
+const mocDoc = pruneDoc(mockPost);
+const mocDoc2 = pruneDoc(mockPost2);
+const mocDocNameless = pruneDoc(mockPostNameless);
 
 let query: firebase.firestore.DocumentReference<firebase.firestore.DocumentData>;
 let queryAuthed: firebase.firestore.DocumentReference<firebase.firestore.DocumentData>;
 let queryAuthed2: firebase.firestore.DocumentReference<firebase.firestore.DocumentData>;
+let queryAuthedNameless: firebase.firestore.DocumentReference<firebase.firestore.DocumentData>;
 let updateQueryAuthed: firebase.firestore.DocumentReference<firebase.firestore.DocumentData>;
 
 beforeAll(initFirebase);
@@ -85,6 +85,10 @@ describe('create post rules', () => {
 
     it('tests creating secondary post', async () => {
         await assertSucceeds(queryAuthed2.set(mocDoc2));
+    });
+
+    it('tests creating nameless post', async () => {
+        await assertFails(queryAuthedNameless.set(mocDocNameless));
     });
 
     it('tests types are valid', async () => {
@@ -329,27 +333,6 @@ describe('read post rules', () => {
         expect(collection.docs.length).toBe(6);
     })
 
-    // Removed expiration rules because I couldn't figure out the queries
-    // but may add back in
-    /*
-        it('tests seeUnexpired rule for expired', async () => {
-            let query = firestore.collection(COLLECTIONS.posts).where('active', '==', true).where('hasExpiration', '==', false);
-            await assertSucceeds(query.get());
-
-            query = firestore.collection(COLLECTIONS.posts).where('active', '==', true).where('hasExpiration', '==', true).where('expires', '>', firebase.firestore.Timestamp.now());
-            await assertSucceeds(query.get());
-
-            query = firestore.collection(COLLECTIONS.posts).where('active', '==', true).where('hasExpiration', '==', true);
-            await assertFails(query.get());
-
-            query = firestore.collection(COLLECTIONS.posts).where('active', '==', true).where('hasExpiration', '==', false);
-            await assertSucceeds(query.get());
-
-            query = firestore.collection(COLLECTIONS.posts).where('active', '==', true).where('hasExpiration', '==', true).where('expires', '<', firebase.firestore.Timestamp.now());
-            await assertFails(query.get());
-        });
-    */
-
     it('tests seeUnexpired rule for authed', async () => {
         await firestoreAdmin.collection(COLLECTIONS.posts).doc(mockPost.id).update({expires: testFirestore.Timestamp.fromDate(new Date('26 Mar 2001 00:00:00 GMT'))});
         const query = firestoreAuth.collection(COLLECTIONS.posts).where('uid', '==', UserMocks.defaultUser.uid);
@@ -388,12 +371,21 @@ async function buildFirestore() {
     firestoreInstance = stores.firestore;
     firestoreAuth = stores.firestoreAuth;
     firestoreAuth2 = stores.firestoreAuth2;
+    firestoreAuthPhone = stores.firestorePhone;
     firestoreAdmin = stores.firestoreAdmin;
 
     query = firestoreInstance.collection(COLLECTIONS.posts).doc(mockPost.id).withConverter(Converters.PostConverter);
     queryAuthed = firestoreAuth.collection(COLLECTIONS.posts).doc(mockPost.id).withConverter(Converters.PostConverter);
     queryAuthed2 = firestoreAuth2.collection(COLLECTIONS.posts).doc(mockPost2.id).withConverter(Converters.PostConverter);
+    queryAuthedNameless = firestoreAuthPhone.collection(COLLECTIONS.posts).doc(mockPostNameless.id).withConverter(Converters.PostConverter);
     updateQueryAuthed = firestoreAuth.collection(COLLECTIONS.posts).doc(mockPost.id);
 
     await setupFirestore(false);
+}
+
+function pruneDoc(post: Post) {
+    const tmpDoc: Mutable<Post> = _.clone(post);
+    delete tmpDoc.id;
+    delete tmpDoc.created;
+    return tmpDoc;
 }
