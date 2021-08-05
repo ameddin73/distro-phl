@@ -9,15 +9,16 @@ export const FIREBASE_CONFIG = {
 
 export const COLLECTIONS = {
     posts: '/posts/',
-    offers: '/offers/',
-    confirmations: '/confirmations',
+    chats: '/chats/',
+    messages: '/messages/',
 }
 
 const userPaths = {
     base: '/user',
     login: '/signIn',
     posts: '/posts',
-    new: '/add',
+    newPost: '/new-post',
+    chats: '/chats',
 }
 export const PATHS = {
     public: {
@@ -27,12 +28,14 @@ export const PATHS = {
         posts: '/posts',
         login: `${userPaths.base}${userPaths.login}`,
         userPosts: `${userPaths.base}${userPaths.posts}`,
-        newPost: `${userPaths.base}${userPaths.new}`,
+        newPost: `${userPaths.base}${userPaths.newPost}`,
+        chats: `${userPaths.base}${userPaths.chats}`,
     },
     user: {
         login: `${userPaths.login}`,
         posts: `${userPaths.posts}`,
-        new: `${userPaths.new}`,
+        newPost: `${userPaths.newPost}`,
+        chats: `${userPaths.chats}`,
     },
 };
 

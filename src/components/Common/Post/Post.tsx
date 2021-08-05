@@ -1,17 +1,12 @@
 import React from 'react';
 import {ErrorBoundary} from "react-error-boundary";
 import {StorageImage} from "reactfire";
-import {COLLECTIONS, DEFAULT_IMAGE} from "util/config";
+import {DEFAULT_IMAGE} from "util/config";
 import {makeStyles} from "@material-ui/core/styles";
-import {useParams} from "react-router-dom";
 import Loading from "../Loading/Loading";
 import {Container, Grid, Typography} from "@material-ui/core";
-import {Converters, PostQuery} from "util/utils";
-import useFirestoreDocumentBuilder from "util/hooks/useFirestoreDocumentBuilder";
-import useFirestoreCollectionBuilder from "util/hooks/useFirestoreCollectionBuilder";
-import {PostInterface} from "util/types.distro";
+import {Post as PostClass} from "util/types.distro";
 import theme from "util/theme";
-import NotFound from "../NotFound";
 import {ClassNameMap} from "@material-ui/styles";
 
 const useStyles = makeStyles({
@@ -49,10 +44,9 @@ const useStyles = makeStyles({
     }
 });
 
-const PostDetails = ({id}: { id: string }) => {
+const Post = ({post}: { post: PostClass }) => {
     const classes = useStyles();
 
-    const {data: post} = useFirestoreDocumentBuilder(COLLECTIONS.posts, id, Converters.PostConverter);
     const {name, description, image, hasExpiration, expires, userName} = post;
 
     const media = buildMedia(image, name, classes);
@@ -103,14 +97,5 @@ const InfoItem = ({title, body, inline = false}: { title: string, body: string, 
         </Typography>
     </Grid>
 );
-
-const Post = () => {
-    const {id} = useParams<{ id: string | undefined }>();
-    const {data: posts} = useFirestoreCollectionBuilder<PostInterface>(COLLECTIONS.posts, {where: [PostQuery.where.active]});
-
-    if (!id || !posts.some(doc => doc.id === id)) return (<NotFound/>);
-
-    return <PostDetails id={id}/>;
-}
 
 export default Post;

@@ -11,9 +11,9 @@ import {Converters, getCompressedImages} from "util/utils";
 import {useStorage, useUser} from "reactfire";
 import {useHistory} from "react-router-dom";
 import useFirestoreAdd from "util/hooks/useFirestoreAdd";
-import {postCardStyle} from "../../../Common/Post/PostCard/styles";
+import {postCardStyle} from "common/Post/PostCard/styles";
 import {Post, PostInterface} from "util/types.distro";
-import Loading, {loadingStyles} from "../../../Common/Loading/Loading";
+import Loading, {loadingStyles} from "common/Loading/Loading";
 import Animation from "./post-animation.svg";
 import {ClassNameMap} from "@material-ui/styles";
 import {useStyles} from "./styles";
@@ -27,7 +27,7 @@ const NewPost = () => {
     const storage = useStorage();
     const [savePost] = useFirestoreAdd(COLLECTIONS.posts, Converters.PostConverter);
 
-    const [post, _setPost] = useState<Post>(createEmptyPost(user));
+    const [post, _setPost] = useState<PostInterface>(createEmptyPost(user));
     const setPost = postSetter(post, _setPost);
 
     let postRef: firebase.firestore.DocumentReference;
@@ -105,7 +105,7 @@ const NewPost = () => {
                 post.image = storageRef[0].fullPath;
             }
             // Store Post in Firestore
-            postRef = await savePost(post as PostInterface);
+            postRef = await savePost(post as Post);
 
             // Navigate to user posts
             setLoading(false);
@@ -273,8 +273,8 @@ function buildImage({classes, imageProcessing, uploadRef, localImgUrl}: ImageCom
 }
 
 // Convenience method for updating the form-defined Post state by key
-function postSetter(post: Post, _setPost: (newPost: Post) => void) {
-    return function setPost<T extends keyof Post>(key: T, value: Post[T]) {
+function postSetter(post: PostInterface, _setPost: (newPost: PostInterface) => void) {
+    return function setPost<T extends keyof PostInterface>(key: T, value: PostInterface[T]) {
         _setPost({
             ...post,
             [key]: value,
@@ -305,7 +305,7 @@ function createEmptyPost(user: firebase.User) {
 }
 
 // Dynamically generate appropriate error when submit is used on incomplete post
-function getError(post: Post) {
+function getError(post: PostInterface) {
     if (!post.description || post.description === '') return 'Description cannot be empty.';
     if (!post.name || post.name === '') return 'Post name cannot be empty.';
     if (post.hasExpiration && !post.expires) return 'Expiration cannot be empty.';

@@ -3,8 +3,8 @@ import {CssBaseline, ThemeProvider} from '@material-ui/core';
 import 'firebase/auth';
 import 'firebase/firestore';
 import theme from "util/theme";
-import TopBar from "./components/Common/TopBar/TopBar";
-import DistroHub from "./components/DistroHub/DistroHub";
+import TopBar from "./components/Navigation/TopBar/TopBar";
+import DistroHub from "./components/Post/DistroHub/DistroHub";
 import {PATHS} from "util/config";
 import User from "./components/User/User";
 import {FirebaseAppProvider, preloadAuth, preloadFirestore, preloadStorage, preloadUser, useFirebaseApp} from "reactfire";
@@ -12,9 +12,9 @@ import {ErrorBoundary} from "react-error-boundary";
 import ErrorMessage from "./components/Common/ErrorMessage";
 import Loading from "./components/Common/Loading/Loading";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
-import Post from "./components/Common/Post/Post";
 import NotFound from "./components/Common/NotFound";
 import firebase from "firebase/app";
+import PostContainer from "./components/Post/PostContainer";
 
 const PreloadApp = () => {
     const firebaseApp = useFirebaseApp();
@@ -37,7 +37,9 @@ const PreloadApp = () => {
                                         <DistroHub/>
                                     </Route>
                                     <Route path={`${PATHS.public.posts}/:id`}>
-                                        <Post/>
+                                        <ErrorBoundary FallbackComponent={NotFound}>
+                                            <PostContainer/>
+                                        </ErrorBoundary>
                                     </Route>
                                     <Route path={PATHS.public.base}>
                                         <DistroHub/>

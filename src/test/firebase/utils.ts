@@ -3,10 +3,7 @@ import {apps, clearFirestoreData, initializeAdminApp, initializeTestApp} from "@
 import {UserMocks} from "../mocks/user.mock";
 import {COLLECTIONS} from "util/config";
 import {PostMocks} from "../mocks/post.mock";
-import {Offer, Post} from "util/types.distro";
-import _ from "lodash";
-import {Mutable} from "../types";
-import {OfferMocks} from "../mocks/offer.mock";
+import {PostInterface} from "util/types.distro";
 import {firestore} from "firebase-admin/lib/firestore";
 
 const PROJECT_ID = `${process.env.TEST_PROJECT}`;
@@ -34,10 +31,9 @@ export function startFirestore() {
     return {firestore: firestoreInstance, firestoreAuth, firestoreAuth2, firestoreAuth3, firestoreNameless, firestoreAdmin};
 }
 
-export async function setupFirestore(postMock: boolean, offerMock?: boolean) {
+export async function setupFirestore(postMock: boolean) {
     const firestoreAdmin: firestore.Firestore = initializeAdminApp({projectId: PROJECT_ID}).firestore();
     if (postMock) await setPosts(firestoreAdmin, PostMocks.defaultPost, PostMocks.secondaryPost);
-    if (offerMock) await setOffers(firestoreAdmin);
 }
 
 export function teardownFirestore() {
@@ -50,23 +46,9 @@ export async function teardownFirebase() {
     }
 }
 
-async function setPosts(firestoreAdmin: firestore.Firestore, mock: Post, mock2: Post) {
+async function setPosts(firestoreAdmin: firestore.Firestore, mock: PostInterface, mock2: PostInterface) {
     for (let i: number = 0; i < 5; i++) { // @ts-ignore
         await firestoreAdmin.collection(COLLECTIONS.posts).doc('preset-post-' + i).set(mock);
     }
     await firestoreAdmin.collection(COLLECTIONS.posts).doc(mock2.id || '').set(mock2);
-}
-
-async function setOffers(firestoreAdmin: firestore.Firestore) {
-    const post: Mutable<Post> = _.clone(PostMocks.defaultPost);
-    delete post.id;
-    const postRef = firestoreAdmin.collection(COLLECTIONS.posts).doc(PostMocks.defaultPost.id);
-    await postRef.set(post);
-
-    const offers: Mutable<Offer>[] = [_.clone(OfferMocks.defaultOffer), _.clone(OfferMocks.secondaryOffer)]
-    for (const offer of offers) {
-        const id = offer.id;
-        delete offer.id;
-        await postRef.collection(COLLECTIONS.offers).doc(id || '').set(offer);
-    }
 }

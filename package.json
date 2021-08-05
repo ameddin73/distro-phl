@@ -12,6 +12,7 @@
     "@types/node": "^16.4.2",
     "@types/react": "^17.0.15",
     "@types/react-dom": "^17.0.9",
+    "common": "file:src/components/Common",
     "compress.js": "^1.1.2",
     "date-fns": "^2.23.0",
     "firebase": "^8.8.0",

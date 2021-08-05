@@ -1,4 +1,4 @@
-import {FirestoreQueryOrderBy, FirestoreQueryWhere, Offer, OfferInterface, Post, PostInterface} from "./types.distro";
+import {Chat, ChatInterface, FirestoreQueryOrderBy, FirestoreQueryWhere, Message, MessageInterface, Post, PostInterface} from "./types.distro";
 import {v4} from "uuid";
 import firebase from "firebase/app";
 import "firebase/firestore";
@@ -37,7 +37,7 @@ export async function getCompressedImages(file: File): Promise<File[]> {
     ];
 }
 
-export namespace PostQuery {
+export namespace Query {
     export namespace where {
         export const active: FirestoreQueryWhere = {
             fieldPath: 'active',
@@ -56,7 +56,7 @@ export namespace PostQuery {
         };
     }
 
-    export namespace orderBy {
+    export namespace orderByAsc {
         export const created: FirestoreQueryOrderBy = {
             fieldPath: 'created',
             directionStr: 'asc',
@@ -64,6 +64,17 @@ export namespace PostQuery {
         export const expires: FirestoreQueryOrderBy = {
             fieldPath: 'expires',
             directionStr: 'asc',
+        };
+    }
+
+    export namespace orderByDesc {
+        export const created: FirestoreQueryOrderBy = {
+            fieldPath: 'created',
+            directionStr: 'desc',
+        };
+        export const expires: FirestoreQueryOrderBy = {
+            fieldPath: 'expires',
+            directionStr: 'desc',
         };
     }
 
@@ -82,52 +93,59 @@ export namespace PostQuery {
     }
 }
 
-export namespace OfferQuery {
-    export namespace where {
-        export const userOffer = (value: string) => ({
-            fieldPath: 'offerId',
-            opStr: '==',
-            value: value,
-        } as FirestoreQueryWhere);
-    }
-}
-
 export namespace Filters {
-    export function unexpired(post: PostInterface) {
+    export function unexpired(post: Post) {
         return !post.hasExpiration || (post.expires !== undefined && post.expires > new Date());
     }
 }
 
 export namespace Converters {
-    export const PostConverter: firebase.firestore.FirestoreDataConverter<PostInterface> = {
-        toFirestore(post: Post): firebase.firestore.DocumentData {
+    export const PostConverter: firebase.firestore.FirestoreDataConverter<Post> = {
+        toFirestore(post: PostInterface): firebase.firestore.DocumentData {
             return {
                 ...post,
                 ...(post.hasExpiration && post.expires && {expires: firebase.firestore.Timestamp.fromDate(post.expires)}),
                 created: firebase.firestore.FieldValue.serverTimestamp(),
             };
         },
-        fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): PostInterface {
+        fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): Post {
             const data = snapshot.data(options);
             data.id = snapshot.id;
             data.created = data.created ? (data.created as firebase.firestore.Timestamp).toDate() : undefined;
             data.expires = data.expires ? (data.expires as firebase.firestore.Timestamp).toDate() : undefined;
-            return new PostInterface(data as Required<Post>);
+            return new Post(data as Required<PostInterface>);
         },
     };
 
-    export const OfferConverter: firebase.firestore.FirestoreDataConverter<OfferInterface> = {
-        toFirestore(offer: Offer): firebase.firestore.DocumentData {
+    export const ChatConverter: firebase.firestore.FirestoreDataConverter<Chat> = {
+        toFirestore(chat: ChatInterface): firebase.firestore.DocumentData {
             return {
-                ...offer,
+                ...chat,
+                individual: (chat.members.length <= 2),
                 created: firebase.firestore.FieldValue.serverTimestamp(),
+                updated: firebase.firestore.FieldValue.serverTimestamp(),
             };
         },
-        fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): OfferInterface {
+        fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): Chat {
             const data = snapshot.data(options);
             data.id = snapshot.id;
             data.created = data.created ? (data.created as firebase.firestore.Timestamp).toDate() : undefined;
-            return new OfferInterface(data as Required<Offer>);
+            return new Chat(data as Required<ChatInterface>);
+        },
+    };
+
+    export const MessageConverter: firebase.firestore.FirestoreDataConverter<Message> = {
+        toFirestore(message: MessageInterface): firebase.firestore.DocumentData {
+            return {
+                ...message,
+                created: firebase.firestore.FieldValue.serverTimestamp(),
+            };
+        },
+        fromFirestore(snapshot: firebase.firestore.QueryDocumentSnapshot, options: firebase.firestore.SnapshotOptions): Message {
+            const data = snapshot.data(options);
+            data.id = snapshot.id;
+            data.created = data.created ? (data.created as firebase.firestore.Timestamp).toDate() : undefined;
+            return new Message(data as Required<MessageInterface>);
         },
     };
 }

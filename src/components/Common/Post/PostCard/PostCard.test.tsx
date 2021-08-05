@@ -7,9 +7,9 @@ import {resetFirebase, setupFirebase, teardownFirebase, waitForSuspendedRender} 
 import {PostMocks} from "test/mocks/post.mock";
 import PostCard from "./PostCard";
 import {PATHS} from "util/config";
-import {PostInterface} from "util/types.distro";
+import {Post} from "util/types.distro";
 
-const mockDefaultPost = PostMocks.defaultPost as PostInterface;
+const mockDefaultPost = PostMocks.defaultPost as Post;
 
 beforeAll(setupFirebase);
 beforeEach(async () => {
@@ -32,6 +32,6 @@ it('navigates to post', () => {
     expect(window.location.pathname).toBe(`${PATHS.public.posts}/${mockDefaultPost.id}`);
 });
 
-async function load(post: PostInterface = mockDefaultPost) {
+async function load(post: Post = mockDefaultPost) {
     await waitForSuspendedRender(<PostCard post={post}/>);
 }

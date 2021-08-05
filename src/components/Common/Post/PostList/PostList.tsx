@@ -2,7 +2,7 @@ import React from 'react';
 import {Container, Grid} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core/styles";
 import NothingHere from "../../NothingHere/NothingHere";
-import {FirestoreQuery, PostInterface} from "util/types.distro";
+import {FirestoreQuery, Post} from "util/types.distro";
 import {Converters} from "util/utils";
 import useFirestoreCollectionBuilder from "util/hooks/useFirestoreCollectionBuilder";
 import PostCard from '../PostCard/PostCard.lazy';
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 export type PostListProps = {
     path: string,
     query?: FirestoreQuery,
-    filter?: (post: PostInterface) => boolean,
+    filter?: (post: Post) => boolean,
     postAction?: (post: PostProps) => JSX.Element,
 }
 
@@ -46,7 +46,7 @@ const PList = ({path, query, filter, postAction}: PostListProps) => {
     if (postList.length === 0)
         return (<NothingHere/>);
     return (<>
-        {postList.map((post: PostInterface) => (<PostCard key={post.id} post={post} postAction={postAction}/>))}
+        {postList.map((post: Post) => (<PostCard key={post.id} post={post} postAction={postAction}/>))}
     </>)
 }
 

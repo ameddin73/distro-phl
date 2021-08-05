@@ -5,7 +5,7 @@ import React from 'react';
 import {fireEvent, screen} from "@testing-library/react";
 import {customRender, setupFirebase, teardownFirebase} from "test/utils";
 import TopBar from "./TopBar";
-import {PATHS} from "../../../util/config";
+import {PATHS} from "util/config";
 
 beforeAll(setupFirebase);
 afterAll(teardownFirebase);
