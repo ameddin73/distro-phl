@@ -4,10 +4,10 @@ import {Add, Close, ExitToApp, List as ListIcon, Menu as MenuIcon} from "@materi
 import {PATHS} from "util/config";
 import {AuthCheck, useAuth, useUser} from "reactfire";
 import {useLocation} from 'react-router-dom';
-import RouterLink from "../../RouterLink";
+import RouterLink from "common/RouterLink";
 import {makeStyles} from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     button: {
         whiteSpace: "nowrap",
         color: "black",

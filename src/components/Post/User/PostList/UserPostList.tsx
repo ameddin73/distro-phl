@@ -1,11 +1,11 @@
 import React from 'react';
-import PostList from "../../Common/Post/PostList/PostList";
+import PostList from "common/Post/PostList/PostList";
 import {COLLECTIONS} from "util/config";
 import {FirestoreQuery, FirestoreQueryWhere} from "util/types.distro";
 import {useUser} from "reactfire";
-import {PostQuery} from "util/utils";
+import {Query} from "util/utils";
 
-const UserPosts = () => {
+const UserPostList = () => {
     const {data: user} = useUser();
     if (!user) return null;
 
@@ -16,8 +16,8 @@ const UserPosts = () => {
         value: user.uid,
     };
     const query: FirestoreQuery = {
-        where: [PostQuery.where.active, where],
-        orderBy: [PostQuery.orderBy.created],
+        where: [Query.where.active, where],
+        orderBy: [Query.orderByAsc.created],
     };
 
     return (
@@ -25,4 +25,4 @@ const UserPosts = () => {
     )
 };
 
-export default UserPosts;
+export default UserPostList;

@@ -2,7 +2,7 @@ import React from 'react';
 import UserMenu from './UserMenu';
 import {setupFirebase, signIn, teardownFirebase, waitForSuspendedRender} from "test/utils";
 import {fireEvent, screen, waitFor} from "@testing-library/react";
-import {UserMocks} from "../../../../test/mocks/user.mock";
+import {UserMocks} from "test/mocks/user.mock";
 import {PATHS} from "util/config";
 import firebase from "firebase/app";
 

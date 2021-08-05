@@ -5,12 +5,12 @@ import React from 'react';
 import {screen} from "@testing-library/react";
 import {resetFirebase, setupFirebase, teardownFirebase, waitForSuspendedRender} from "test/utils";
 import {PostMocks} from "test/mocks/post.mock";
-import {PostInterface} from "util/types.distro";
+import {Post} from "util/types.distro";
 import PostImage from "./PostImage";
 
-const mockDefaultPost = PostMocks.defaultPost as PostInterface;
-const mockSecondaryPost = PostMocks.secondaryPost as PostInterface;
-const mockTertiaryPost = PostMocks.tertiaryPost as PostInterface;
+const mockDefaultPost = PostMocks.defaultPost as Post;
+const mockSecondaryPost = PostMocks.secondaryPost as Post;
+const mockTertiaryPost = PostMocks.tertiaryPost as Post;
 
 beforeAll(setupFirebase);
 afterEach(async () => await resetFirebase());
@@ -32,6 +32,6 @@ it('should render default image on fallback', async () => {
     screen.getByAltText('Default thumbnail');
 });
 
-async function load(post: PostInterface) {
+async function load(post: Post) {
     await waitForSuspendedRender(<PostImage name={post.name} image={post.image}/>);
 }

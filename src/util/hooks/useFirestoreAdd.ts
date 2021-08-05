@@ -6,10 +6,11 @@ function useFirestoreAdd<T>(
     path: string,
     converter: firebase.firestore.FirestoreDataConverter<T>) {
     const firestore = useFirestore();
-    let collectionRef = firestore.collection(path);
+    let collectionRef = firestore.collection(path)
+        .withConverter(converter);
 
     return [
-        (data: T) => collectionRef.withConverter(converter).add(data)
+        (data: T) => collectionRef.add(data)
     ];
 }
 

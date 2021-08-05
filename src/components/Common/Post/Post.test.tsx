@@ -7,10 +7,10 @@ import {HistoryWrapper, resetFirebase, setupFirebase, teardownFirebase, waitForS
 import {PostMocks} from "test/mocks/post.mock";
 import {PATHS} from "util/config";
 import {Route} from "react-router-dom";
-import {PostInterface} from "util/types.distro";
+import {Post} from "util/types.distro";
 import Post from "./Post";
 
-const mockDefaultPost = PostMocks.defaultPost as PostInterface;
+const mockDefaultPost = PostMocks.defaultPost as Post;
 
 beforeAll(setupFirebase);
 afterEach(async () => await resetFirebase(true));

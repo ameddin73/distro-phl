@@ -5,13 +5,13 @@ import React from 'react';
 import {setupFirebase, signIn, teardownFirebase, waitForSuspendedRender} from "test/utils";
 import {screen} from "@testing-library/react";
 import {UserMocks} from "test/mocks/user.mock";
-import UserPosts from './UserPosts';
+import UserPostList from './UserPostList';
 
 beforeAll(async () => {
     await setupFirebase()
     await signIn(UserMocks.userTwo);
 });
-beforeEach(async () => waitForSuspendedRender(<UserPosts/>)); // This is slow because the emulator has to create a new index
+beforeEach(async () => waitForSuspendedRender(<UserPostList/>)); // This is slow because the emulator has to create a new index
 afterAll(teardownFirebase);
 
 it('should mount', () => {

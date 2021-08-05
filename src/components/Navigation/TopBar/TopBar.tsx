@@ -3,7 +3,7 @@ import {AppBar, Button, Container, Slide, Toolbar, useScrollTrigger} from "@mate
 import {makeStyles} from "@material-ui/core/styles";
 import UserMenu from "./UserMenu/UserMenu.lazy";
 import {PATHS} from "util/config";
-import RouterLink from "../RouterLink";
+import RouterLink from "common/RouterLink";
 import {ReactComponent as Logo} from "../../../assets/logo.svg";
 
 const useStyles = makeStyles({

@@ -1,8 +1,8 @@
 import {UserMocks} from "./user.mock";
-import {Post} from "util/types.distro";
+import {PostInterface} from "util/types.distro";
 
 export namespace PostMocks {
-    export const defaultPost: Required<Post> = {
+    export const defaultPost: Required<PostInterface> = {
         id: 'default_post_id',
         name: 'default_post_displayName',
         active: true,
@@ -14,7 +14,7 @@ export namespace PostMocks {
         uid: UserMocks.defaultUser.uid,
         userName: UserMocks.defaultUser.name || '',
     };
-    export const secondaryPost: Post = {
+    export const secondaryPost: PostInterface = {
         id: 'secondary_post_id',
         name: 'secondary_post_displayName',
         active: true,
@@ -24,7 +24,7 @@ export namespace PostMocks {
         uid: UserMocks.userTwo.uid,
         userName: UserMocks.userTwo.name || '',
     };
-    export const tertiaryPost: Post = {
+    export const tertiaryPost: PostInterface = {
         id: 'tertiary_post_id',
         name: 'tertiary_post_displayName',
         active: true,
@@ -35,7 +35,7 @@ export namespace PostMocks {
         uid: UserMocks.userThree.uid,
         userName: UserMocks.userThree.name || '',
     };
-    export const namelessPost: Post = {
+    export const namelessPost: PostInterface = {
         id: 'phone_post_id',
         active: true,
         created: new Date('01 Jan 1970 00:00:00 GMT'),

@@ -5,15 +5,15 @@ import React, {PropsWithChildren} from 'react';
 import {customRender, rendersNothingHere, resetFirebase, setupFirebase, teardownFirebase} from "test/utils";
 import {screen, waitFor} from "@testing-library/react";
 import {COLLECTIONS} from "util/config";
-import {PostQuery} from "util/utils";
-import {FirestoreQueryWhere, PostInterface} from "util/types.distro";
+import {Query} from "util/utils";
+import {FirestoreQueryWhere, Post} from "util/types.distro";
 import {UserMocks} from "test/mocks/user.mock";
 import PostList from "./PostList";
 
 const path = COLLECTIONS.posts;
 const query = {
-    where: [PostQuery.where.active],
-    orderBy: [PostQuery.orderBy.created],
+    where: [Query.where.active],
+    orderBy: [Query.orderByAsc.created],
 }
 const props = {path, query};
 
@@ -32,7 +32,7 @@ it('renders all posts', async () => {
 });
 
 it('filters posts', async () => {
-    const filter = ((post: PostInterface) => post.uid === UserMocks.userThree.uid);
+    const filter = ((post: Post) => post.uid === UserMocks.userThree.uid);
     await renderPostList(<PostList {...props} filter={filter}/>);
     const posts = await waitFor(() => screen.getAllByText('Posted by'));
     expect(posts.length).toBe(1);
@@ -45,7 +45,7 @@ it('renders NothingHere if query returns empty list', async () => {
         value: 'fake-name',
     }
     const newQuery = {
-        where: [PostQuery.where.active, newWhere],
+        where: [Query.where.active, newWhere],
     };
     await renderPostList(<PostList path={path} query={newQuery}/>);
     screen.getByText('Oops, theres nothing here.');

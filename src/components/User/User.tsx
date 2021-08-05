@@ -1,10 +1,11 @@
 import React from 'react';
 import {PATHS} from "util/config";
 import Login from "./Login/Login";
-import UserPosts from "./UserPosts/UserPosts";
+import UserPostList from "../Post/User/PostList/UserPostList";
 import {Route, useRouteMatch} from "react-router-dom";
-import PrivateRoute from "../Common/PrivateRoute";
-import NewPost from "./UserPosts/NewPost/NewPost";
+import PrivateRoute from "common/PrivateRoute";
+import NewPost from "../Post/User/NewPost/NewPost";
+import Chats from "./Chats/Chats";
 
 const User = () => {
     const match = useRouteMatch();
@@ -14,10 +15,16 @@ const User = () => {
             <Route path={`${match.path}${PATHS.user.login}`}>
                 <Login/>
             </Route>
+            <Route exact path={`${match.path}${PATHS.user.chats}`}>
+                <Chats/>
+            </Route>
+            <Route exact path={`${match.path}${PATHS.user.chats}/:id`}>
+                <Chats/>
+            </Route>
             <PrivateRoute path={`${match.path}${PATHS.user.posts}`}>
-                <UserPosts/>
+                <UserPostList/>
             </PrivateRoute>
-            <PrivateRoute path={`${match.path}${PATHS.user.new}`}>
+            <PrivateRoute path={`${match.path}${PATHS.user.newPost}`}>
                 <NewPost/>
             </PrivateRoute>
         </>

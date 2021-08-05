@@ -17,7 +17,7 @@ export type FirestoreQuery = {
     limit?: number,
 };
 
-export interface Post {
+export interface PostInterface {
     readonly active: boolean;
     created?: Date;
     description?: string;
@@ -30,7 +30,7 @@ export interface Post {
     readonly userName: string;
 }
 
-export class PostInterface implements Post {
+export class Post implements PostInterface {
     readonly active: boolean;
     readonly created: Date;
     readonly description: string;
@@ -42,9 +42,8 @@ export class PostInterface implements Post {
     readonly uid: string;
     readonly userName: string;
     readonly documentRef;
-    readonly offersRef: firebase.firestore.CollectionReference;
 
-    constructor(post: Required<Post>) {
+    constructor(post: Required<PostInterface>) {
         this.active = post.active;
         this.created = post.created;
         this.description = post.description;
@@ -60,8 +59,6 @@ export class PostInterface implements Post {
 
         this.documentRef = firebase.app().firestore()
             .collection(COLLECTIONS.posts).withConverter(Converters.PostConverter).doc(post.id);
-        this.offersRef = this.documentRef.collection(COLLECTIONS.offers)
-            .withConverter(Converters.OfferConverter);
         this.uid = post.uid;
         this.userName = post.userName;
     }
@@ -81,38 +78,87 @@ export class PostInterface implements Post {
     }
 }
 
-export interface Offer {
-    id?: string,
-    created?: Date,
-    postId: string,
-    posterId: string,
-    userName: string,
-    message: string,
+export interface ChatInterface {
+    readonly id?: string,
+    readonly created?: Date,
+    readonly updated?: Date,
+    individual: boolean,
+    members: string[],
+    name?: string,
 }
 
-export class OfferInterface implements Offer {
+export class Chat implements ChatInterface {
     readonly id: string;
     readonly created: Date;
-    readonly postId: string;
-    readonly posterId: string;
-    readonly userName: string;
-    readonly message: string;
+    readonly updated: Date;
+    readonly individual: boolean;
+    readonly members: string[];
+    readonly name?: string;
     readonly documentRef;
+    readonly messages: firebase.firestore.CollectionReference;
 
-    constructor({id, created, postId, posterId, userName, message}: Required<Offer>) {
+    constructor({id, created, updated, individual, members, name}: Required<ChatInterface>) {
         this.id = id;
         this.created = created;
-        this.postId = postId;
-        this.posterId = posterId;
-        this.userName = userName;
-        this.message = message;
+        this.updated = updated;
+        this.individual = individual;
+        this.members = members;
+        this.name = name;
 
-        this.documentRef = firebase.app().firestore().collection(COLLECTIONS.posts)
-            .doc(postId).collection(COLLECTIONS.offers)
-            .withConverter(Converters.OfferConverter).doc(id);
+        this.documentRef = firebase.app().firestore().collection(COLLECTIONS.chats)
+            .withConverter(Converters.ChatConverter).doc(id);
+
+        this.messages = this.documentRef.collection(COLLECTIONS.messages)
+            .withConverter(Converters.MessageConverter);
     }
 
-    getCreatedAsString = (): string => {
-        return getFormattedDate(this.created || new Date());
+    // Create a message in this chat's collection
+    sendMessage = async (message: Message) => {
+        // Audience must be same as members
+        if (message.audience !== this.members)
+            throw new Error('Mismatched audience for new message.')
+
+        await Promise.all([
+            // Add message
+            this.documentRef.collection(COLLECTIONS.messages).withConverter(Converters.MessageConverter)
+                .add(message),
+            // Update updated time
+            this.documentRef.update({updated: firebase.firestore.FieldValue.serverTimestamp()})
+        ])
+    }
+}
+
+export interface MessageInterface {
+    readonly id?: string,
+    readonly created?: Date,
+    author: string,
+    audience: string[],
+    text: string,
+    postId?: string,
+}
+
+export class Message implements MessageInterface {
+    readonly id: string;
+    readonly created: Date;
+    readonly author: string;
+    readonly audience: string[];
+    readonly text: string;
+    readonly postId?: string;
+    readonly documentRef;
+
+    constructor({id, created, author, audience, text, postId}: Required<MessageInterface>) {
+        this.id = id;
+        this.created = created;
+        this.author = author;
+        this.postId = postId;
+        this.audience = audience;
+        this.text = text;
+
+        this.documentRef = firebase.app().firestore().collection(COLLECTIONS.messages)
+            .withConverter(Converters.MessageConverter).doc(id);
+    }
+
+    delete = () => {
+        return this.documentRef.delete();
     }
 }

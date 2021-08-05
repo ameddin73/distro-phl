@@ -1,6 +1,20 @@
 {
   "indexes": [
     {
+      "collectionGroup": "chats",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "members",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "updated",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "posts",
       "queryScope": "COLLECTION",
       "fields": [
@@ -66,11 +80,6 @@
     }
   ],
   "fieldOverrides": [
-    {
-      "collectionGroup": "offers",
-      "fieldPath": "message",
-      "indexes": []
-    },
     {
       "collectionGroup": "posts",
       "fieldPath": "description",

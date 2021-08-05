@@ -50,8 +50,8 @@ describe('testing framework', () => {
     afterAll(teardownFirestore);
 
     it('tests populates posts', async () => {
-        const testPost: Mutable<PostInterface> = _.clone(PostMocks.defaultPost);
-        const testPost2: Mutable<PostInterface> = _.clone(PostMocks.secondaryPost);
+        const testPost: Mutable<Post> = _.clone(PostMocks.defaultPost);
+        const testPost2: Mutable<Post> = _.clone(PostMocks.secondaryPost);
         delete testPost.created;
         delete testPost2.created;
         if (testPost.hasExpiration) {
@@ -92,7 +92,7 @@ describe('create post rules', () => {
     });
 
     it('tests types are valid', async () => {
-        let testDoc: Mutable<PostInterface> = _.clone(mocDoc);
+        let testDoc: Mutable<Post> = _.clone(mocDoc);
         // @ts-ignore
         testDoc.active = 'string';
         await assertFails(queryAuthed.set(testDoc));
@@ -139,21 +139,21 @@ describe('create post rules', () => {
     });
 
     it('tests hasAll rule', async () => {
-        const testDoc: Mutable<PostInterface> = _.clone(mocDoc);
+        const testDoc: Mutable<Post> = _.clone(mocDoc);
         delete testDoc.description;
         const testQuery = firestoreAuth.collection(COLLECTIONS.posts).doc(mockPost.id);
         await assertFails(testQuery.set(testDoc));
     });
 
     it('tests hasOnly rule', async () => {
-        const testDoc: Mutable<PostInterface & { test: string }> = _.clone(mocDoc);
+        const testDoc: Mutable<Post & { test: string }> = _.clone(mocDoc);
         testDoc.test = 'test';
         const testQueryFail = firestoreAuth.collection(COLLECTIONS.posts).doc(mockPost.id);
         await assertFails(testQueryFail.set(testDoc));
     });
 
     it('tests uidEqual rule', async () => {
-        const testDoc: Mutable<PostInterface> = _.clone(mocDoc);
+        const testDoc: Mutable<Post> = _.clone(mocDoc);
         testDoc.uid = 'test uid';
         await assertFails(query.set(testDoc));
         await assertFails(queryAuthed.set(testDoc));
@@ -162,14 +162,14 @@ describe('create post rules', () => {
     });
 
     it('tests nameEqual rule', async () => {
-        const testDoc: Mutable<PostInterface> = _.clone(mocDoc);
+        const testDoc: Mutable<Post> = _.clone(mocDoc);
         testDoc.userName = 'test name';
 
         await assertFails(queryAuthed.set(testDoc));
     });
 
     it('tests activeTrue rule', async () => {
-        const testDoc: Mutable<PostInterface> = _.clone(mocDoc);
+        const testDoc: Mutable<Post> = _.clone(mocDoc);
         testDoc.active = false;
 
         const testQuery = firestoreAuth.collection(COLLECTIONS.posts).doc(mockPost.id);
@@ -178,7 +178,7 @@ describe('create post rules', () => {
     });
 
     it('tests createdNow rule', async () => {
-        const testDoc: Mutable<PostInterface> = _.clone(mocDoc);
+        const testDoc: Mutable<Post> = _.clone(mocDoc);
         testDoc.created = new Date('26 Mar 2021 00:00:00 GMT')
 
         const testQuery = firestoreAuth.collection(COLLECTIONS.posts).doc(mockPost.id);
@@ -191,7 +191,7 @@ describe('create post rules', () => {
     });
 
     it('tests hasExpiration true rule', async () => {
-        const testDoc: Mutable<PostInterface> = _.clone(mocDoc);
+        const testDoc: Mutable<Post> = _.clone(mocDoc);
         await assertSucceeds(queryAuthed.set(testDoc));
         // @ts-ignore
         delete testDoc.expires;
@@ -199,14 +199,14 @@ describe('create post rules', () => {
     });
 
     it('tests hasExpiration false rule', async () => {
-        const testDoc: Mutable<PostInterface> = _.clone(mocDoc2);
+        const testDoc: Mutable<Post> = _.clone(mocDoc2);
         await assertSucceeds(queryAuthed2.set(testDoc));
         testDoc.hasExpiration = true;
         await assertFails(firestoreAuth2.collection(COLLECTIONS.posts).doc(mockPost2.id).set(testDoc));
     });
 
     it('tests expiresLater rule', async () => {
-        const testDoc: Mutable<PostInterface> = _.clone(mocDoc);
+        const testDoc: Mutable<Post> = _.clone(mocDoc);
         if (testDoc.hasExpiration) {
             testDoc.expires = new Date('26 Mar 2001 00:00:00 GMT')
         }
@@ -215,7 +215,7 @@ describe('create post rules', () => {
     });
 
     it('tests typeExists rule', async () => {
-        const testDoc: Mutable<PostInterface> = _.clone(mocDoc);
+        const testDoc: Mutable<Post> = _.clone(mocDoc);
 
         await assertFails(query.set(testDoc));
     });
@@ -383,8 +383,8 @@ async function buildFirestore() {
     await setupFirestore(false);
 }
 
-function pruneDoc(post: Post) {
-    const tmpDoc: Mutable<Post> = _.clone(post);
+function pruneDoc(post: PostInterface) {
+    const tmpDoc: Mutable<PostInterface> = _.clone(post);
     delete tmpDoc.id;
     delete tmpDoc.created;
     return tmpDoc;

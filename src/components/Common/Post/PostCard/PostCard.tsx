@@ -3,12 +3,12 @@ import {CardActionArea, Grid, Typography} from "@material-ui/core";
 import {CARD_MEDIA_HEIGHT, postCardStyle} from "./styles";
 import {PATHS} from "util/config";
 import RouterLink from "../../RouterLink";
-import {PostInterface} from "util/types.distro";
+import {Post} from "util/types.distro";
 import {Skeleton} from "@material-ui/lab";
 import PostImage from "../PostImage/PostImage";
 
 export type PostProps = {
-    post: PostInterface
+    post: Post
     postAction?: (post: PostProps) => JSX.Element,
 }
 

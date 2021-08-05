@@ -47,39 +47,6 @@ service cloud.firestore {
                 let seeActive = resource.data.active == true || request.auth.uid == resource.data.uid;
                 return seeActive;
             }
-
-            match /offers/{offerId} {
-                allow create: if createOfferRules();
-                allow update: if false;
-                allow read: if accessOfferRules();
-                allow delete: if accessOfferRules();
-
-                function accessOfferRules() {
-                    return request.auth.uid == resource.data.posterId || request.auth.uid == offerId;
-                }
-
-                function validateOfferFields() {
-                    let fields = ["created" , "postId", "posterId", "userName", "message"];
-                    let hasAll = request.resource.data.keys() .hasAll(fields);
-                    let hasOnly = request.resource.data.keys() .hasOnly(fields);
-                    let types = request.resource.data.created is timestamp //
-                                && request.resource.data.message is string //
-                                && request.resource.data.userName is string //
-                                && request.resource.data.postId is string //
-                                && request.resource.data.posterId is string //
-                                && request.auth.token.name == request.resource.data.userName;
-                    return hasOnly && types && hasAll && hasOnly;
-                }
-
-                function createOfferRules() {
-                    let uidEqual = request.auth.uid == offerId;
-                    let postIdEqual = request.resource.data.postId == postId;
-                    let notPosterId = offerId != get(/databases/$(database)/documents/posts/$(postId)) .data.uid;
-                    let posterIdEqual = request.resource.data.posterId == get(/databases/$(database)/documents/posts/$(postId)) .data.uid;
-                    let createdNow = request.resource.data.created == request.time;
-                    return validateOfferFields() && uidEqual && postIdEqual && notPosterId && posterIdEqual && createdNow;
-                }
-            }
         }
     }
 }
