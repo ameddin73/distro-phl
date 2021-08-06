@@ -18,10 +18,10 @@ const ChatList = () => {
     const where: FirestoreQueryWhere = {
         fieldPath: 'members',
         opStr: 'array-contains',
-        value: user?.uid
+        value: user?.uid || ''
     }
     const query: FirestoreQuery = {
-        // where: [where],
+        where: [where],
         orderBy: [{
             fieldPath: 'updated',
             directionStr: 'desc',
