@@ -85,6 +85,7 @@ export interface ChatInterface {
     individual: boolean,
     members: string[],
     name?: string,
+    recentMessage?: string,
 }
 
 export class Chat implements ChatInterface {
@@ -94,16 +95,18 @@ export class Chat implements ChatInterface {
     readonly individual: boolean;
     readonly members: string[];
     readonly name?: string;
+    readonly recentMessage?: string;
     readonly documentRef;
     readonly messages: firebase.firestore.CollectionReference;
 
-    constructor({id, created, updated, individual, members, name}: Required<ChatInterface>) {
+    constructor({id, created, updated, individual, members, name, recentMessage}: Required<ChatInterface>) {
         this.id = id;
         this.created = created;
         this.updated = updated;
         this.individual = individual;
         this.members = members;
         this.name = name;
+        this.recentMessage = recentMessage;
 
         this.documentRef = firebase.app().firestore().collection(COLLECTIONS.chats)
             .withConverter(Converters.ChatConverter).doc(id);

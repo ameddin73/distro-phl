@@ -17,7 +17,7 @@ import {PostMocks} from "../mocks/post.mock";
 import {Post, PostInterface} from "util/types.distro";
 import {firestore} from "firebase-admin/lib/firestore";
 
-const PROJECT_ID = `${process.env.TEST_PROJECT}`;
+const PROJECT_ID = `${process.env.DEMO_PROJECT}`;
 
 let firestoreInstance: firebase.firestore.Firestore;
 let firestoreAuth: firebase.firestore.Firestore;
@@ -42,7 +42,7 @@ beforeAll(initFirebase);
 afterAll(destroyFirebase);
 describe('testing framework', () => {
     beforeAll(async () => {
-        const stores = await startFirestore();
+        const stores = startFirestore();
         firestoreInstance = stores.firestore;
         firestoreAdmin = stores.firestoreAdmin;
         await setupFirestore(true);
@@ -71,10 +71,7 @@ describe('testing framework', () => {
 });
 
 describe('create post rules', () => {
-    beforeAll(async () => {
-        await buildFirestore();
-    });
-    beforeEach(async () => await setupFirestore(false));
+    beforeAll(buildFirestore);
     afterEach(async () => {
         await teardownFirestore();
     });
@@ -367,7 +364,7 @@ describe('delete post rules', () => {
 });
 
 async function buildFirestore() {
-    const stores = await startFirestore();
+    const stores = startFirestore();
     firestoreInstance = stores.firestore;
     firestoreAuth = stores.firestoreAuth;
     firestoreAuth2 = stores.firestoreAuth2;
@@ -379,8 +376,6 @@ async function buildFirestore() {
     queryAuthed2 = firestoreAuth2.collection(COLLECTIONS.posts).doc(mockPost2.id).withConverter(Converters.PostConverter);
     queryAuthedNameless = firestoreAuthNameless.collection(COLLECTIONS.posts).doc(mockPostNameless.id).withConverter(Converters.PostConverter);
     updateQueryAuthed = firestoreAuth.collection(COLLECTIONS.posts).doc(mockPost.id);
-
-    await setupFirestore(false);
 }
 
 function pruneDoc(post: PostInterface) {

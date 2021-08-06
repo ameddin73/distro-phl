@@ -15,12 +15,12 @@ const User = () => {
             <Route path={`${match.path}${PATHS.user.login}`}>
                 <Login/>
             </Route>
-            <Route exact path={`${match.path}${PATHS.user.chats}`}>
+            <PrivateRoute exact path={`${match.path}${PATHS.user.chats}`}>
                 <Chats/>
-            </Route>
-            <Route exact path={`${match.path}${PATHS.user.chats}/:id`}>
+            </PrivateRoute>
+            <PrivateRoute exact path={`${match.path}${PATHS.user.chats}/:id`}>
                 <Chats/>
-            </Route>
+            </PrivateRoute>
             <PrivateRoute path={`${match.path}${PATHS.user.posts}`}>
                 <UserPostList/>
             </PrivateRoute>
