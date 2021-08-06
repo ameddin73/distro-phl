@@ -90,6 +90,11 @@ describe('create post rules', () => {
 
     it('tests types are valid', async () => {
         let testDoc: Mutable<Post> = _.clone(mocDoc);
+
+        // Validate that it works
+        await assertSucceeds(queryAuthed.set(testDoc));
+        await teardownFirestore();
+
         // @ts-ignore
         testDoc.active = 'string';
         await assertFails(queryAuthed.set(testDoc));

@@ -24,8 +24,8 @@ let firestoreAdmin: firestore.Firestore;
 
 const mockIndividualChat = ChatMocks.individualChat;
 const mockGroupChat = ChatMocks.groupChat;
-const mocIndividualDoc = pruneDoc(mockIndividualChat)
-const mocGroupDoc = pruneDoc(mockGroupChat)
+const prunedIndividualChat = pruneDoc(mockIndividualChat)
+const prunedGroupChat = pruneDoc(mockGroupChat)
 
 beforeAll(initFirebase);
 afterAll(destroyFirebase);
@@ -43,42 +43,116 @@ describe('testing framework', () => {
         const query = firestoreAdmin.collection(COLLECTIONS.chats).withConverter(Converters.ChatConverter);
         const {docs: chats} = await query.get();
         // @ts-ignore
-        expect(chats.find(chat => chat.data().id === mockIndividualChat.id).data()).toMatchObject(mocIndividualDoc);
+        expect(chats.find(chat => chat.data().id === mockIndividualChat.id).data()).toMatchObject(prunedIndividualChat);
         // @ts-ignore
-        expect(chats.find(chat => chat.data().id === mockGroupChat.id).data()).toMatchObject(mocGroupDoc);
+        expect(chats.find(chat => chat.data().id === mockGroupChat.id).data()).toMatchObject(prunedGroupChat);
     })
 });
 
 describe('create chat rules', () => {
-    beforeAll(buildFirestore);
+    let query: firebase.firestore.DocumentReference;
+    let testIndividualChat: Mutable<Chat>;
+
+    beforeEach(async () => {
+        testIndividualChat = await createAndValidateChat(
+            prunedIndividualChat, query);
+    });
+    beforeAll(async () => {
+        await buildFirestore();
+        query = await getQuery(firestoreAuth, mockIndividualChat.id);
+    });
 
     it('tests creating individual chat', async () => {
         await assertSucceeds(getQuery(firestoreAuth, mockIndividualChat.id)
-            .set(mocIndividualDoc as Chat));
+            .set(prunedIndividualChat as Chat));
     });
 
     it('tests creating individual chat, second user', async () => {
         await assertSucceeds(getQuery(firestoreAuth2, mockIndividualChat.id)
-            .set(mocIndividualDoc as Chat));
+            .set(prunedIndividualChat as Chat));
     });
 
     it('tests creating group chat', async () => {
         await assertSucceeds(getQuery(firestoreAuth, mockGroupChat.id)
-            .set(mocGroupDoc as Chat));
+            .set(prunedGroupChat as Chat));
+        await destroyFirebase();
         await assertSucceeds(getQuery(firestoreAuth2, mockGroupChat.id)
-            .set(mocGroupDoc as Chat));
+            .set(prunedGroupChat as Chat));
+        await destroyFirebase();
         await assertSucceeds(getQuery(firestoreAuth3, mockGroupChat.id)
-            .set(mocGroupDoc as Chat));
+            .set(prunedGroupChat as Chat));
     });
 
-    it("tests creating individual chat you're not in", async () => {
+    it("tests creating chat you're not in", async () => {
         await assertFails(getQuery(firestoreAuth3, mockIndividualChat.id)
-            .set(mocIndividualDoc as Chat))
+            .set(prunedIndividualChat as Chat))
+        await assertFails(getQuery(firestoreAuth4, mockGroupChat.id)
+            .set(prunedGroupChat as Chat))
     });
 
-    it("tests creating group chat you're not in", async () => {
-        await assertFails(getQuery(firestoreAuth4, mockGroupChat.id)
-            .set(mocGroupDoc as Chat))
+    it('tests types are valid', async () => {
+        // @ts-ignore
+        testIndividualChat.created = 'string';
+        await assertFails(query.set(testIndividualChat as Chat));
+        testIndividualChat = _.clone(prunedIndividualChat);
+        // @ts-ignore
+        testIndividualChat.updated = 'string';
+        await assertFails(query.set(testIndividualChat as Chat));
+        testIndividualChat = _.clone(prunedIndividualChat);
+        // @ts-ignore
+        testIndividualChat.individual = 'string';
+        await assertFails(query.set(testIndividualChat as Chat));
+        testIndividualChat = _.clone(prunedIndividualChat);
+        // @ts-ignore
+        testIndividualChat.members = 'string';
+        await assertFails(query.set(testIndividualChat as Chat));
+        testIndividualChat = _.clone(prunedIndividualChat);
+        // @ts-ignore
+        testIndividualChat.members = ['a', 'b'];
+        await assertFails(query.set(testIndividualChat as Chat));
+        testIndividualChat = _.clone(prunedIndividualChat);
+        // @ts-ignore
+        testIndividualChat.members = [{
+            // @ts-ignore
+            uid: false,
+            // @ts-ignore
+            name: false,
+        }, {
+            // @ts-ignore
+            uid: false,
+            // @ts-ignore
+            name: false,
+        }];
+        await assertFails(query.set(testIndividualChat as Chat));
+        testIndividualChat = _.clone(prunedIndividualChat);
+        // @ts-ignore
+        testIndividualChat.name = false;
+        await assertFails(query.set(testIndividualChat as Chat));
+        testIndividualChat = _.clone(prunedIndividualChat);
+        // @ts-ignore
+        testIndividualChat.recentMessage = false;
+        await assertFails(query.set(testIndividualChat as Chat));
+    });
+
+    it('tests hasAll rule', async () => {
+        delete testIndividualChat.individual;
+        await assertFails(query.set(testIndividualChat as Chat));
+    });
+
+    it('tests hasOnly rule', async () => {
+        // @ts-ignore
+        testIndividualChat.test = 'test';
+        await assertFails(query.set(testIndividualChat as Chat));
+    });
+
+    it('tests createdNow rule', async () => {
+        testIndividualChat.created = new Date('06 Aug 2021 00:00:00 GMT')
+        await assertFails(query.set(testIndividualChat as Chat));
+    });
+
+    it('tests updatedNow rule', async () => {
+        testIndividualChat.updated = new Date('06 Aug 2021 00:00:00 GMT')
+        await assertFails(query.set(testIndividualChat as Chat));
     });
 });
 
@@ -102,4 +176,14 @@ function pruneDoc(post: ChatInterface) {
     delete tmpDoc.created;
     delete tmpDoc.updated;
     return tmpDoc;
+}
+
+async function createAndValidateChat(chat: Partial<Chat>, query: firebase.firestore.DocumentReference) {
+    let testChat: Mutable<Chat> = _.clone(chat);
+
+    // Validate it works
+    await assertSucceeds(query.set(testChat as Chat));
+    await teardownFirestore();
+
+    return testChat as Chat;
 }

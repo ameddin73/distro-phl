@@ -83,7 +83,10 @@ export interface ChatInterface {
     readonly created?: Date,
     readonly updated?: Date,
     individual: boolean,
-    members: string[],
+    members: {
+        uid: string,
+        name: string,
+    }[],
     name?: string,
     recentMessage?: string,
 }
@@ -93,7 +96,10 @@ export class Chat implements ChatInterface {
     readonly created: Date;
     readonly updated: Date;
     readonly individual: boolean;
-    readonly members: string[];
+    readonly members: {
+        uid: string,
+        name: string,
+    }[];
     readonly name?: string;
     readonly recentMessage?: string;
     readonly documentRef;
@@ -118,7 +124,7 @@ export class Chat implements ChatInterface {
     // Create a message in this chat's collection
     sendMessage = async (message: Message) => {
         // Audience must be same as members
-        if (message.audience !== this.members)
+        if (message.members !== this.members)
             throw new Error('Mismatched audience for new message.')
 
         await Promise.all([
@@ -135,7 +141,10 @@ export interface MessageInterface {
     readonly id?: string,
     readonly created?: Date,
     author: string,
-    audience: string[],
+    members: {
+        uid: string,
+        name: string,
+    }[],
     text: string,
     postId?: string,
 }
@@ -144,17 +153,20 @@ export class Message implements MessageInterface {
     readonly id: string;
     readonly created: Date;
     readonly author: string;
-    readonly audience: string[];
+    readonly members: {
+        uid: string,
+        name: string,
+    }[];
     readonly text: string;
     readonly postId?: string;
     readonly documentRef;
 
-    constructor({id, created, author, audience, text, postId}: Required<MessageInterface>) {
+    constructor({id, created, author, members, text, postId}: Required<MessageInterface>) {
         this.id = id;
         this.created = created;
         this.author = author;
         this.postId = postId;
-        this.audience = audience;
+        this.members = members;
         this.text = text;
 
         this.documentRef = firebase.app().firestore().collection(COLLECTIONS.messages)
