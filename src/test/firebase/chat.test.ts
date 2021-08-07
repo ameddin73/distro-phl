@@ -275,7 +275,34 @@ describe('update chat rules', () => {
         }));
     });
 
-});
+})
+
+describe('read chat rules', () => {
+    beforeAll(async () => {
+        firestore = startFirestore();
+        await setupFirestore(false, true);
+    });
+    afterAll(teardownFirestore);
+
+    it('tests successfully reading individual chat', async () => {
+        await assertSucceeds(buildQuery(firestore.firestoreAuth, mocks.individual.id).get())
+        await assertSucceeds(buildQuery(firestore.firestoreAuth2, mocks.individual.id).get())
+    });
+
+    it("tests reading individual chat you're not in", async () => {
+        await assertFails(buildQuery(firestore.firestoreAuth3, mocks.individual.id).get())
+    });
+
+    it('tests successfully reading group chat', async () => {
+        await assertSucceeds(buildQuery(firestore.firestoreAuth, mocks.group.id).get())
+        await assertSucceeds(buildQuery(firestore.firestoreAuth2, mocks.group.id).get())
+        await assertSucceeds(buildQuery(firestore.firestoreAuth3, mocks.group.id).get())
+    });
+
+    it("tests reading group chat you're not in", async () => {
+        await assertFails(buildQuery(firestore.firestoreAuth4, mocks.individual.id).get())
+    });
+})
 
 function buildQuery(firestore: firebase.firestore.Firestore, id?: string) {
     return firestore.collection(COLLECTIONS.chats).doc(id).withConverter(Converters.ChatConverter);
