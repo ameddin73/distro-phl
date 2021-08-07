@@ -224,17 +224,12 @@ describe('create post rules', () => {
 });
 
 describe('update post rules', () => {
-    beforeAll(async () => {
-        await buildFirestore();
-    });
+    beforeAll(buildFirestore);
     beforeEach(async () => {
-        await setupFirestore(false);
         await queryAuthed.set(mocDoc);
         await queryAuthed2.set(mocDoc2);
     });
-    afterEach(async () => {
-        await teardownFirestore();
-    });
+    afterEach(teardownFirestore);
 
     it('tests a valid update', async () => {
         await assertSucceeds(updateQueryAuthed.update({active: false}));

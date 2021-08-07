@@ -16,7 +16,9 @@ export namespace ChatMocks {
                 uid: UserMocks.userTwo.uid,
                 name: UserMocks.userTwo.name || '',
             },
-        ]
+        ],
+        name: 'individual_chat_name',
+        recentMessage: 'individual_chat_message',
     };
     export const groupChat: ChatInterface = {
         id: 'group_chat_id',
