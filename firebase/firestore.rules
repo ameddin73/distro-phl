@@ -46,7 +46,7 @@ service cloud.firestore {
 
         match /chats/{chatId} {
             allow create: if createChatRules();
-            allow update: if false; //updateChatRules();
+            allow update: if updateChatRules();
             allow read: if isMember(resource.data.uids);
             allow delete: if request.auth.uid == resource.data.uid;
 
@@ -54,18 +54,25 @@ service cloud.firestore {
                 let hasAll = request.resource.data.keys().hasAll(["individual" , "created" , "updated" , "uids" , "members" ]);
                 let individualRule = (request.resource.data.individual && request.resource.data.uids.size() == 2)
                                      || (!request.resource.data.individual && request.resource.data.uids.size() > 2);
-                let createdNow = debug(request.resource.data.created == request.time);
+                let createdNow = request.resource.data.created == request.time;
                 return validateChatFields() && isMember(request.resource.data.uids) && updatedNow()
                        && hasAll && individualRule && createdNow;
             }
 
             function updateChatRules() {
-                let uidEqual = request.auth.uid == resource.data.uid;
-                let hasOnly = request.resource.data.diff(resource.data) .affectedKeys() .hasOnly(["active" , "description" , "name" , "expires" , "image" , "userName"]);
-                let activeOnly = !request.resource.data.diff(resource.data) .affectedKeys() .hasAny(["active"]) || request.resource.data.diff(resource.data) .affectedKeys() .hasOnly(["active"]);
-                let updateInactive = !request.resource.data.active || !request.resource.data.diff(resource.data) .affectedKeys() .hasAny(["description" , "name" , "expires" , "image" , "userName"]);
-                let hasExpirationOrNoExpires = resource.data.hasExpiration || !request.resource.data.diff(resource.data) .affectedKeys() .hasAny(["expires"]);
-                return validateChatFields() && uidEqual && hasOnly && activeOnly && updateInactive && hasExpirationOrNoExpires;
+                let hasOnly = diffHasOnly(["uids" , "members" , "name" , "recentMessage"]);
+                let singleField = diffHasOnly(["name"])
+                                  || diffHasOnly(["recentMessage"])
+                                  || diffHasOnly(["uids", "members"]);
+                let individualRule = !resource.data.individual || !diffHasAny(["uids", "members"]);
+                let membersMatchIds = !diffHasAny(["uids", "members"])
+                                      || request.resource.data.uids.size() == request.resource.data.members.size();
+                let removeSelf = !diffHasAny(["uids", "members"])
+                                 || request.resource.data.uids.size() > resource.data.uids.size()
+                                 || (resource.data.uids.size() - request.resource.data.uids.size() == 1
+                                     && !isMember(request.resource.data.uids));
+                return validateChatFields() && isMember(resource.data.uids)  && updatedNow()
+                       && hasOnly && singleField && individualRule && membersMatchIds && removeSelf;
             }
 
             function updatedNow() {
@@ -73,6 +80,15 @@ service cloud.firestore {
             }
             function isMember(uids) {
                 return uids.hasAll([request.auth.uid]);
+            }
+            function diffHasOnly(fields) {
+                return request.resource.data.diff(resource.data) .affectedKeys() .hasOnly(fields.concat(["updated"]));
+            }
+            function diffHasAny(fields) {
+                return request.resource.data.diff(resource.data) .affectedKeys() .hasAny(fields);
+            }
+            function diffHasAll(fields) {
+                return request.resource.data.diff(resource.data) .affectedKeys() .hasAll(fields.concat(["updated"]));
             }
 
             function validateChatFields() {

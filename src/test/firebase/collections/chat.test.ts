@@ -18,7 +18,11 @@ import {UserMocks} from "../../mocks/user.mock";
 // Firestore instances
 let firestore: any = {noConverter: {}};
 // Built queries
-let queries: any = {noConverter: {}};
+let queries: any = {
+    noConverter: {},
+    individual: {},
+    group: {}
+};
 // Mock ChatInterfaces
 const mocks = {
     individual: ChatMocks.individualChat,
@@ -38,8 +42,7 @@ describe('testing framework', () => {
 
     it('tests populates chats', async () => {
         // @ts-ignore
-        const query = firestore.firestoreAdmin.collection(COLLECTIONS.chats)
-            .withConverter(Converters.ChatConverter);
+        const query = buildQuery(firestore.firestoreAdmin);
         const {docs: chats} = await query.get();
         // @ts-ignore
         expect(chats.find(chat => chat.data().id === mocks.individual.id).data())
@@ -55,8 +58,8 @@ describe('create chat rules', () => {
         firestore = startFirestore();
         queries.individual = await buildQuery(firestore.firestoreAuth, mocks.individual.id);
         queries.group = await buildQuery(firestore.firestoreAuth, mocks.group.id);
-        queries.noConverter.individual = firestore.firestoreAuth.collection(COLLECTIONS.chats).doc(mocks.individual.id);
-        queries.noConverter.group = firestore.firestoreAuth.collection(COLLECTIONS.chats).doc(mocks.group.id);
+        queries.noConverter.individual = buildQuery(firestore.firestoreAuth, mocks.individual.id, false);
+        queries.noConverter.group = buildQuery(firestore.firestoreAuth, mocks.group.id, false);
         await setupFirestore(false, false);
 
         // Create and validate objects for creating
@@ -174,29 +177,30 @@ describe('create chat rules', () => {
             mocks.group, queries.group);
         validatedChats.noConverter = {};
         validatedChats.noConverter.individual = await createAndValidateNoConverterChat(
-            mocks.individual,
-            firestore.firestoreAuth.collection(COLLECTIONS.chats).doc(mocks.individual.id));
+            mocks.individual, queries.noConverter.individual);
         validatedChats.noConverter.group = await createAndValidateNoConverterChat(
-            mocks.group,
-            firestore.firestoreAuth.collection(COLLECTIONS.chats).doc(mocks.group.id));
+            mocks.group, queries.noConverter.group);
     }
 });
 
 describe('update chat rules', () => {
     beforeAll(async () => {
         firestore = startFirestore();
-        queries.individual.auth = await buildQuery(firestore.firestoreAuth, mocks.individual.id);
-        queries.individual.auth2 = await buildQuery(firestore.firestoreAuth2, mocks.individual.id);
-        queries.group.auth3 = await buildQuery(firestore.firestoreAuth3, mocks.group.id);
+        queries.individual.auth = await buildQuery(firestore.firestoreAuth, mocks.individual.id, false);
+        queries.individual.auth2 = await buildQuery(firestore.firestoreAuth2, mocks.individual.id, false);
+        queries.group.auth3 = await buildQuery(firestore.firestoreAuth3, mocks.group.id, false);
     });
     beforeEach(async () => {
-        await queries.individual.auth.set(createChat(mocks.individual));
-        await queries.group.auth3.set(createChat(mocks.group));
+        await queries.individual.auth.withConverter(Converters.ChatConverter).set(createChat(mocks.individual));
+        await queries.group.auth3.withConverter(Converters.ChatConverter).set(createChat(mocks.group));
     });
     afterEach(teardownFirestore);
 
     it('tests un-authed update chat', async () => {
-        await assertSucceeds(queries.individual.auth.update({recentMessage: 'test'}));
+        await assertSucceeds(queries.individual.auth.update({
+            recentMessage: 'test',
+            updated: firebase.firestore.FieldValue.serverTimestamp(),
+        }));
         await assertFails(buildQuery(firestore.firestore, mocks.individual.id)
             .update({
                 recentMessage: 'test',
@@ -205,8 +209,11 @@ describe('update chat rules', () => {
     });
 
     it("tests updating a chat you're not in", async () => {
-        await assertSucceeds(queries.individual.auth.update({recentMessage: 'test'}));
-        await assertFails(buildQuery(firestore.firestore.firestoreAuth3, mocks.individual.id)
+        await assertSucceeds(queries.individual.auth.update({
+            recentMessage: 'test',
+            updated: firebase.firestore.FieldValue.serverTimestamp(),
+        }));
+        await assertFails(buildQuery(firestore.firestoreAuth3, mocks.individual.id)
             .update({
                 recentMessage: 'test',
                 updated: firebase.firestore.FieldValue.serverTimestamp(),
@@ -219,19 +226,19 @@ describe('update chat rules', () => {
             updated: firebase.firestore.FieldValue.serverTimestamp(),
         }));
         await assertSucceeds(queries.individual.auth.update({
-            recentMessages: 'test',
+            recentMessage: 'test',
             updated: firebase.firestore.FieldValue.serverTimestamp(),
         }));
         // Add user to group
         await assertSucceeds(queries.group.auth3.update({
-            uids: [UserMocks.userFour.uid].push(...mocks.group.uids),
+            uids: [UserMocks.userFour.uid].concat(mocks.group.uids),
             members: [{
                 uid: UserMocks.userFour.uid,
                 name: UserMocks.userFour.name,
-                // @ts-ignore
-            }].push(...mocks.group.members),
+            }].concat(mocks.group.members),
             updated: firebase.firestore.FieldValue.serverTimestamp(),
         }));
+        await resetFirestore();
         // Leave group
         await assertSucceeds(queries.group.auth3.update({
             uids: mocks.group.uids?.filter(uid =>
@@ -244,8 +251,8 @@ describe('update chat rules', () => {
 
     it('tests adding user to individual chat', async () => {
         await assertFails(queries.individual.auth.update({
-            uids: mocks.individual.uids.push(UserMocks.userThree.uid),
-            members: mocks.individual.members.push({
+            uids: mocks.individual.uids.concat(UserMocks.userThree.uid),
+            members: mocks.individual.members.concat({
                 uid: UserMocks.userThree.uid,
                 name: UserMocks.userThree.name || '',
             })
@@ -253,33 +260,27 @@ describe('update chat rules', () => {
     });
 
     it('tests adding users w/o uids-members parity', async () => {
-        await successfulUpdate();
+        await assertSucceeds(queries.group.auth3.update({
+            uids: [UserMocks.userFour.uid].concat(mocks.group.uids),
+            members: [{
+                uid: UserMocks.userFour.uid,
+                name: UserMocks.userFour.name,
+            }].concat(mocks.group.members),
+            updated: firebase.firestore.FieldValue.serverTimestamp(),
+        }));
+        await resetFirestore();
         await assertFails(queries.group.auth3.update({
             members: [{
                 uid: UserMocks.userFour.uid,
                 name: UserMocks.userFour.name,
-                // @ts-ignore
-            }].push(...mocks.group.members),
+            }].concat(mocks.group.members),
             updated: firebase.firestore.FieldValue.serverTimestamp(),
         }));
-        await successfulUpdate();
+        await resetFirestore();
         await assertFails(queries.group.auth3.update({
-            uids: [UserMocks.userFour.uid].push(...mocks.group.uids),
+            uids: [UserMocks.userFour.uid].concat(mocks.group.uids),
             updated: firebase.firestore.FieldValue.serverTimestamp(),
         }));
-
-        async function successfulUpdate() {
-            await assertSucceeds(queries.group.auth3.update({
-                uids: [UserMocks.userFour.uid].push(...mocks.group.uids),
-                members: [{
-                    uid: UserMocks.userFour.uid,
-                    name: UserMocks.userFour.name,
-                    // @ts-ignore
-                }].push(...mocks.group.members),
-                updated: firebase.firestore.FieldValue.serverTimestamp(),
-            }));
-            await teardownFirestore();
-        }
     });
 
     it('tests leaving chat w/o uids-members parity', async () => {
@@ -297,6 +298,7 @@ describe('update chat rules', () => {
         }));
 
         async function successfulUpdate() {
+            await resetFirestore();
             await assertSucceeds(queries.group.auth3.update({
                 uids: mocks.group.uids?.filter(uid =>
                     uid !== UserMocks.userThree.uid),
@@ -304,7 +306,7 @@ describe('update chat rules', () => {
                     member.uid !== UserMocks.userThree.uid),
                 updated: firebase.firestore.FieldValue.serverTimestamp(),
             }));
-            await teardownFirestore();
+            await resetFirestore();
         }
     });
 
@@ -369,6 +371,11 @@ describe('update chat rules', () => {
         }));
     });
 
+    async function resetFirestore() {
+        await teardownFirestore();
+        await queries.individual.auth.withConverter(Converters.ChatConverter).set(createChat(mocks.individual));
+        await queries.group.auth3.withConverter(Converters.ChatConverter).set(createChat(mocks.group));
+    }
 })
 
 describe('read chat rules', () => {
@@ -455,9 +462,11 @@ describe('delete chat rules', () => {
     }
 })
 
-function buildQuery(firestore: firebase.firestore.Firestore, id?: string) {
-    return firestore.collection(COLLECTIONS.chats).doc(id)
-        .withConverter(Converters.ChatConverter);
+function buildQuery(firestore: firebase.firestore.Firestore, id?: string, converter = true) {
+    let query: any = firestore.collection(COLLECTIONS.chats);
+    if (id) query = query.doc(id);
+    if (converter) query = query.withConverter(Converters.ChatConverter);
+    return query;
 }
 
 function createChat(chat: ChatInterface) {
