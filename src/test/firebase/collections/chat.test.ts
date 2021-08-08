@@ -5,15 +5,15 @@
 // uses grpc and doesn't work in JSDOM. See more:
 // https://github.com/firebase/firebase-admin-node/issues/1135#issuecomment-765766020
 import firebase from "firebase";
-import {ChatMocks} from "../mocks/chats.mock";
-import {destroyFirebase, initFirebase, setupFirestore, startFirestore, teardownFirestore} from "./utils";
+import {ChatMocks} from "../../mocks/chats.mock";
+import {destroyFirebase, initFirebase, setupFirestore, startFirestore, teardownFirestore} from "../util/utils";
 import {COLLECTIONS} from "util/config";
 import {Converters} from "util/utils";
 import {assertFails, assertSucceeds} from "@firebase/rules-unit-testing";
 import {ChatInterface} from "util/types.distro";
 import _ from "lodash";
-import {Mutable} from "../types";
-import {UserMocks} from "../mocks/user.mock";
+import {Mutable} from "../../types";
+import {UserMocks} from "../../mocks/user.mock";
 
 // Firestore instances
 let firestore: any;
@@ -85,14 +85,20 @@ describe('create chat rules', () => {
     });
 
     it('tests creating group chat', async () => {
-        await assertSucceeds(buildQuery(firestore.firestoreAuth, mocks.group.id)
-            .set(validatedChats.group));
+        await assertSucceeds(queries.individual.set(validatedChats.group));
         await destroyFirebase();
         await assertSucceeds(buildQuery(firestore.firestoreAuth2, mocks.group.id)
             .set(validatedChats.group));
         await destroyFirebase();
         await assertSucceeds(buildQuery(firestore.firestoreAuth3, mocks.group.id)
             .set(validatedChats.group));
+    });
+
+    it('tests creating chat without members', async () => {
+        validatedChats.individual.members = validatedChats.individual.members
+            .filter((member: any) =>
+                member.uid !== UserMocks.defaultUser.uid);
+        await assertFails(queries.individual.set(validatedChats.individual));
     });
 
     it("tests creating chat you're not in", async () => {
@@ -103,7 +109,7 @@ describe('create chat rules', () => {
     });
 
     it('tests creating a chat with <2 members', async () => {
-        validatedChats.group.members = [{
+        validatedChats.group.uids = [{
             uid: UserMocks.defaultUser.uid,
             name: UserMocks.defaultUser.name,
         }]
@@ -209,23 +215,96 @@ describe('update chat rules', () => {
             recentMessages: 'test',
             updated: firebase.firestore.FieldValue.serverTimestamp(),
         }));
+        // Add user to group
         await assertSucceeds(queries.group.auth3.update({
+            uids: [UserMocks.userFour.uid].push(...mocks.group.uids),
             members: [{
                 uid: UserMocks.userFour.uid,
                 name: UserMocks.userFour.name,
                 // @ts-ignore
-            }].push(prunedGroupChat.members),
+            }].push(...mocks.group.members),
             updated: firebase.firestore.FieldValue.serverTimestamp(),
         }));
+        // Leave group
         await assertSucceeds(queries.group.auth3.update({
+            uids: mocks.group.uids?.filter(uid =>
+                uid !== UserMocks.userThree.uid),
             members: mocks.group.members?.filter(member =>
                 member.uid !== UserMocks.userThree.uid),
             updated: firebase.firestore.FieldValue.serverTimestamp(),
         }));
     });
 
+    it('tests adding user to individual chat', async () => {
+        await assertFails(queries.individual.auth.update({
+            uids: mocks.individual.uids.push(UserMocks.userThree.uid),
+            members: mocks.individual.members.push({
+                uid: UserMocks.userThree.uid,
+                name: UserMocks.userThree.name || '',
+            })
+        }));
+    });
+
+    it('tests adding users w/o uids-members parity', async () => {
+        await successfulUpdate();
+        await assertFails(queries.group.auth3.update({
+            members: [{
+                uid: UserMocks.userFour.uid,
+                name: UserMocks.userFour.name,
+                // @ts-ignore
+            }].push(...mocks.group.members),
+            updated: firebase.firestore.FieldValue.serverTimestamp(),
+        }));
+        await successfulUpdate();
+        await assertFails(queries.group.auth3.update({
+            uids: [UserMocks.userFour.uid].push(...mocks.group.uids),
+            updated: firebase.firestore.FieldValue.serverTimestamp(),
+        }));
+
+        async function successfulUpdate() {
+            await assertSucceeds(queries.group.auth3.update({
+                uids: [UserMocks.userFour.uid].push(...mocks.group.uids),
+                members: [{
+                    uid: UserMocks.userFour.uid,
+                    name: UserMocks.userFour.name,
+                    // @ts-ignore
+                }].push(...mocks.group.members),
+                updated: firebase.firestore.FieldValue.serverTimestamp(),
+            }));
+            await destroyFirebase();
+        }
+    });
+
+    it('tests leaving chat w/o uids-members parity', async () => {
+        await successfulUpdate();
+        await assertFails(queries.group.auth3.update({
+            members: mocks.group.members?.filter(member =>
+                member.uid !== UserMocks.userThree.uid),
+            updated: firebase.firestore.FieldValue.serverTimestamp(),
+        }));
+        await successfulUpdate();
+        await assertFails(queries.group.auth3.update({
+            uids: mocks.group.uids?.filter(uid =>
+                uid !== UserMocks.userThree.uid),
+            updated: firebase.firestore.FieldValue.serverTimestamp(),
+        }));
+
+        async function successfulUpdate() {
+            await assertSucceeds(queries.group.auth3.update({
+                uids: mocks.group.uids?.filter(uid =>
+                    uid !== UserMocks.userThree.uid),
+                members: mocks.group.members?.filter(member =>
+                    member.uid !== UserMocks.userThree.uid),
+                updated: firebase.firestore.FieldValue.serverTimestamp(),
+            }));
+            await destroyFirebase();
+        }
+    });
+
     it('tests removing other user', async () => {
         await assertFails(queries.group.auth3.update({
+            uids: mocks.group.uids?.filter(uid =>
+                uid !== UserMocks.userTwo.uid),
             members: mocks.group.members?.filter(member =>
                 member.uid !== UserMocks.userTwo.uid),
             updated: firebase.firestore.FieldValue.serverTimestamp(),
@@ -234,6 +313,8 @@ describe('update chat rules', () => {
 
     it('tests leaving an individual chat', async () => {
         await assertFails(queries.individual.auth.update({
+            uids: mocks.group.uids?.filter(uid =>
+                uid !== UserMocks.userTwo.uid),
             members: mocks.group.members?.filter(member =>
                 member.uid !== UserMocks.userTwo.uid),
             updated: firebase.firestore.FieldValue.serverTimestamp(),
@@ -355,6 +436,7 @@ describe('delete chat rules', () => {
 
     function twoMemberGroup() {
         return buildQuery(firestore.firestoreAdmin, mocks.group.id).update({
+            uids: [UserMocks.defaultUser.uid, UserMocks.userThree],
             members: [{
                 uid: UserMocks.defaultUser.uid,
                 name: UserMocks.defaultUser.name,
@@ -367,7 +449,8 @@ describe('delete chat rules', () => {
 })
 
 function buildQuery(firestore: firebase.firestore.Firestore, id?: string) {
-    return firestore.collection(COLLECTIONS.chats).doc(id).withConverter(Converters.ChatConverter);
+    return firestore.collection(COLLECTIONS.chats).doc(id)
+        .withConverter(Converters.ChatConverter);
 }
 
 function createChat(chat: ChatInterface) {
@@ -378,7 +461,8 @@ function createChat(chat: ChatInterface) {
     return _.clone(tmpDoc);
 }
 
-async function createAndValidateChat(chat: ChatInterface, query: firebase.firestore.DocumentReference) {
+async function createAndValidateChat(chat: ChatInterface,
+                                     query: firebase.firestore.DocumentReference) {
     const testChat = createChat(chat);
 
     // Validate it works

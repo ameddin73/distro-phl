@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-import {setupFirestore, startFirestore, teardownFirestore} from "../utils";
+import {setupFirestore, startFirestore, teardownFirestore} from "./utils";
 import {COLLECTIONS} from "util/config";
 import {PostMocks} from "../../mocks/post.mock";
 import {Mutable} from "../../types";

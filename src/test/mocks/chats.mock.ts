@@ -7,6 +7,7 @@ export namespace ChatMocks {
         individual: true,
         created: new Date('01 Jan 1970 00:00:00 GMT'),
         updated: new Date('01 Jan 1971 00:00:00 GMT'),
+        uids: [UserMocks.defaultUser.uid, UserMocks.userTwo.uid],
         members: [
             {
                 uid: UserMocks.defaultUser.uid,
@@ -25,6 +26,9 @@ export namespace ChatMocks {
         individual: false,
         created: new Date('01 Jan 1970 00:00:00 GMT'),
         updated: new Date('01 Jan 1971 00:00:00 GMT'),
+        uids: [UserMocks.defaultUser.uid,
+            UserMocks.userTwo.uid,
+            UserMocks.userThree.uid],
         members: [
             {
                 uid: UserMocks.defaultUser.uid,

@@ -4,16 +4,16 @@
 // this test has to be run in a node environment because @firebase/rules-testing-library
 // uses grpc and doesn't work in JSDOM. See more:
 // https://github.com/firebase/firebase-admin-node/issues/1135#issuecomment-765766020
-import {destroyFirebase, initFirebase, setupFirestore, startFirestore, teardownFirestore} from "./utils";
+import {destroyFirebase, initFirebase, setupFirestore, startFirestore, teardownFirestore} from "../util/utils";
 import firebase from "firebase";
 import {COLLECTIONS} from "util/config";
 import {Converters} from "util/utils";
 import {firestore as testFirestore} from "firebase-admin";
-import {Mutable} from "../types";
+import {Mutable} from "../../types";
 import {assertFails, assertSucceeds, initializeTestApp} from "@firebase/rules-unit-testing";
 import _ from "lodash";
-import {UserMocks} from "../mocks/user.mock";
-import {PostMocks} from "../mocks/post.mock";
+import {UserMocks} from "../../mocks/user.mock";
+import {PostMocks} from "../../mocks/post.mock";
 import {Post, PostInterface} from "util/types.distro";
 import {firestore} from "firebase-admin/lib/firestore";
 
