@@ -48,7 +48,7 @@ service cloud.firestore {
             allow create: if createChatRules();
             allow update: if updateChatRules();
             allow read: if isMember(resource.data.uids);
-            allow delete: if request.auth.uid == resource.data.uid;
+            allow delete: if isMember(resource.data.uids) && resource.data.uids.size() == 2;
 
             function createChatRules() {
                 let hasAll = request.resource.data.keys().hasAll(["individual" , "created" , "updated" , "uids" , "members" ]);
@@ -100,17 +100,17 @@ service cloud.firestore {
                             && request.resource.data.uids[0] is string
                             && request.resource.data.members is list
                             && request.resource.data.members[0] is map
-                            && validateMember(request.resource.data.members[0])
+                            && validateMembers(request.resource.data.members[0])
                             && request.resource.data.name is string
                             && request.resource.data.recentMessage is string;
                 return hasOnly && types;
             }
 
-            function validateMember(member) {
-                return member.keys().hasOnly(["uid", "name"])
-                       && member.keys().hasAll(["uid", "name"])
-                       && member.uid is string
-                       && member.name is string;
+            function validateMembers(members) {
+                return members.keys().hasOnly(["uid", "name"])
+                       && members.keys().hasAll(["uid", "name"])
+                       && members.uid is string
+                       && members.name is string;
             }
         }
     }
