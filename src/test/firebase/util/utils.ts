@@ -1,11 +1,11 @@
 import firebase from "firebase";
 import {apps, clearFirestoreData, initializeAdminApp, initializeTestApp} from "@firebase/rules-unit-testing";
-import {UserMocks} from "../mocks/user.mock";
+import {UserMocks} from "../../mocks/user.mock";
 import {COLLECTIONS} from "util/config";
-import {PostMocks} from "../mocks/post.mock";
+import {PostMocks} from "../../mocks/post.mock";
 import {ChatInterface, PostInterface} from "util/types.distro";
 import {firestore} from "firebase-admin/lib/firestore";
-import {ChatMocks} from "../mocks/chats.mock";
+import {ChatMocks} from "../../mocks/chats.mock";
 
 const PROJECT_ID = `${process.env.DEMO_PROJECT}`;
 

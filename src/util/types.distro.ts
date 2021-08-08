@@ -83,10 +83,11 @@ export interface ChatInterface {
     readonly created?: Date,
     readonly updated?: Date,
     individual: boolean,
-    members: {
+    uids: string[],
+    readonly members: {
         uid: string,
         name: string,
-    }[],
+    }[];
     name?: string,
     recentMessage?: string,
 }
@@ -96,6 +97,7 @@ export class Chat implements ChatInterface {
     readonly created: Date;
     readonly updated: Date;
     readonly individual: boolean;
+    readonly uids: string[];
     readonly members: {
         uid: string,
         name: string,
@@ -105,11 +107,12 @@ export class Chat implements ChatInterface {
     readonly documentRef;
     readonly messages: firebase.firestore.CollectionReference;
 
-    constructor({id, created, updated, individual, members, name, recentMessage}: Required<ChatInterface>) {
+    constructor({id, created, updated, individual, uids, members, name, recentMessage}: Required<ChatInterface>) {
         this.id = id;
         this.created = created;
         this.updated = updated;
         this.individual = individual;
+        this.uids = uids;
         this.members = members;
         this.name = name;
         this.recentMessage = recentMessage;
@@ -124,7 +127,7 @@ export class Chat implements ChatInterface {
     // Create a message in this chat's collection
     sendMessage = async (message: Message) => {
         // Audience must be same as members
-        if (message.members !== this.members)
+        if (message.uids !== this.uids)
             throw new Error('Mismatched audience for new message.')
 
         await Promise.all([
@@ -141,10 +144,7 @@ export interface MessageInterface {
     readonly id?: string,
     readonly created?: Date,
     author: string,
-    members: {
-        uid: string,
-        name: string,
-    }[],
+    uids: string[],
     text: string,
     postId?: string,
 }
@@ -153,20 +153,17 @@ export class Message implements MessageInterface {
     readonly id: string;
     readonly created: Date;
     readonly author: string;
-    readonly members: {
-        uid: string,
-        name: string,
-    }[];
+    readonly uids: string[];
     readonly text: string;
     readonly postId?: string;
     readonly documentRef;
 
-    constructor({id, created, author, members, text, postId}: Required<MessageInterface>) {
+    constructor({id, created, author, uids, text, postId}: Required<MessageInterface>) {
         this.id = id;
         this.created = created;
         this.author = author;
         this.postId = postId;
-        this.members = members;
+        this.uids = uids;
         this.text = text;
 
         this.documentRef = firebase.app().firestore().collection(COLLECTIONS.messages)

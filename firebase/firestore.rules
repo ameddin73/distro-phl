@@ -8,23 +8,8 @@ service cloud.firestore {
         match /posts/{postId} {
             allow create: if createPostRules();
             allow update: if updatePostRules();
-            allow read: if readPostRules();
+            allow read: if resource.data.active == true || request.auth.uid == resource.data.uid;
             allow delete: if request.auth.uid == resource.data.uid;
-
-            function validatePostFields() {
-                let hasOnly = request.resource.data.keys().hasOnly(["active" , "created" , "description" , "name" , "hasExpiration" , "expires" , "image" , "uid" , "userName"]);
-                let types = request.resource.data.active is bool //
-                            && request.resource.data.created is timestamp //
-                            && request.resource.data.description is string //
-                            && request.resource.data.name is string //
-                            && request.resource.data.hasExpiration is bool //
-                            && ((!request.resource.data.hasExpiration && !("expires" in request.resource.data.keys())) || //
-                                (request.resource.data.expires is timestamp && request.resource.data.expires > request.time)) //
-                            && (!("image" in request.resource.data.keys()) || request.resource.data.image.matches('images/posts/[0-9a-f-.]*.[a-zA-Z.]*')) //
-                            && request.resource.data.uid is string //
-                            && request.auth.token.name == request.resource.data.userName;
-                return hasOnly && types;
-            }
 
             function createPostRules() {
                 let uidEqual = request.auth.uid == request.resource.data.uid;
@@ -43,9 +28,73 @@ service cloud.firestore {
                 return validatePostFields() && uidEqual && hasOnly && activeOnly && updateInactive && hasExpirationOrNoExpires;
             }
 
-            function readPostRules() {
-                let seeActive = resource.data.active == true || request.auth.uid == resource.data.uid;
-                return seeActive;
+            function validatePostFields() {
+                let hasOnly = request.resource.data.keys().hasOnly(["active" , "created" , "description" , "name" , "hasExpiration" , "expires" , "image" , "uid" , "userName"]);
+                let types = request.resource.data.active is bool
+                            && request.resource.data.created is timestamp
+                            && request.resource.data.description is string
+                            && request.resource.data.name is string
+                            && request.resource.data.hasExpiration is bool
+                            && ((!request.resource.data.hasExpiration && !("expires" in request.resource.data.keys())) || //
+                                (request.resource.data.expires is timestamp && request.resource.data.expires > request.time))
+                            && (!("image" in request.resource.data.keys()) || request.resource.data.image.matches('images/posts/[0-9a-f-.]*.[a-zA-Z.]*'))
+                            && request.resource.data.uid is string
+                            && request.auth.token.name == request.resource.data.userName;
+                return hasOnly && types;
+            }
+        }
+
+        match /chats/{chatId} {
+            allow create: if createChatRules();
+            allow update: if updateChatRules();
+            allow read: if isMember(resource.data.uids);
+            allow delete: if request.auth.uid == resource.data.uid;
+
+            function createChatRules() {
+                let uidEqual = request.auth.uid == request.resource.data.uid;
+                let hasAll = request.resource.data.keys() .hasAll(["active" , "created" , "description" , "name" , "hasExpiration" , "uid" , "userName"]);
+                let activeTrue = request.resource.data.active;
+                let createdNow = request.resource.data.created == request.time;
+                return validateChatFields() && uidEqual && hasAll && activeTrue && createdNow;
+            }
+
+            function updateChatRules() {
+                let uidEqual = request.auth.uid == resource.data.uid;
+                let hasOnly = request.resource.data.diff(resource.data) .affectedKeys() .hasOnly(["active" , "description" , "name" , "expires" , "image" , "userName"]);
+                let activeOnly = !request.resource.data.diff(resource.data) .affectedKeys() .hasAny(["active"]) || request.resource.data.diff(resource.data) .affectedKeys() .hasOnly(["active"]);
+                let updateInactive = !request.resource.data.active || !request.resource.data.diff(resource.data) .affectedKeys() .hasAny(["description" , "name" , "expires" , "image" , "userName"]);
+                let hasExpirationOrNoExpires = resource.data.hasExpiration || !request.resource.data.diff(resource.data) .affectedKeys() .hasAny(["expires"]);
+                return validateChatFields() && uidEqual && hasOnly && activeOnly && updateInactive && hasExpirationOrNoExpires;
+            }
+
+            /**
+            Stringify the members list and then split on quotations to match uid
+            since we can't search in a list's objects.
+            */
+            function isMember(uids) {
+                return uids.hasAll([request.auth.uid]);
+            }
+
+            function validateChatFields() {
+                let hasOnly = request.resource.data.keys().hasOnly(["individual" , "created" , "updated" , "uids" , "members" , "name" , "recentMessage"]);
+                let types = request.resource.data.individual is bool
+                            && request.resource.data.created is timestamp
+                            && request.resource.data.updated is timestamp
+                            && request.resource.data.uid is list
+                            && request.resource.data.uid[0] is string
+                            && request.resource.data.members is list
+                            && request.resource.data.meembers[0] is map
+                            && validateMember(request.resource.data.meembers[0])
+                            && request.resource.data.name is string
+                            && request.resource.data.recentMessage is string;
+                return hasOnly && types;
+            }
+
+            function validateMember(member) {
+                return member.keys().hasOnly(["uid", "name"])
+                       && member.keys().hasAll(["uid", "name"])
+                       && member.uid is string
+                       && member.name is string;
             }
         }
     }

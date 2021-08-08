@@ -28,7 +28,7 @@ const Chat = ({id}: { id: string }) => {
         // Build message
         const message: MessageInterface = {
             author: user.uid,
-            audience: chat.members,
+            audience: chat.uids,
             text: body,
         }
 

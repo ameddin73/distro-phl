@@ -43,7 +43,7 @@ const ChatList = () => {
             // Create chat
             const chatRef = await addChat({
                 individual: true,
-                members: [
+                uids: [
                     uid,
                     user.uid,
                 ],

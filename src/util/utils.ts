@@ -121,7 +121,7 @@ export namespace Converters {
         toFirestore(chat: ChatInterface): firebase.firestore.DocumentData {
             return {
                 ...chat,
-                individual: (chat.members.length <= 2),
+                individual: (chat.uids.length <= 2),
                 created: firebase.firestore.FieldValue.serverTimestamp(),
                 updated: firebase.firestore.FieldValue.serverTimestamp(),
             };
