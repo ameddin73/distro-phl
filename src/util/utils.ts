@@ -121,7 +121,7 @@ export namespace Converters {
         toFirestore(chat: ChatInterface): firebase.firestore.DocumentData {
             return {
                 ...chat,
-                individual: (chat.uids.length <= 2),
+                individual: (chat.uids.length === 2),
                 created: firebase.firestore.FieldValue.serverTimestamp(),
                 updated: firebase.firestore.FieldValue.serverTimestamp(),
             };
@@ -130,6 +130,7 @@ export namespace Converters {
             const data = snapshot.data(options);
             data.id = snapshot.id;
             data.created = data.created ? (data.created as firebase.firestore.Timestamp).toDate() : undefined;
+            data.updated = data.updated ? (data.updated as firebase.firestore.Timestamp).toDate() : undefined;
             return new Chat(data as Required<ChatInterface>);
         },
     };

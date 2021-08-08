@@ -9,16 +9,14 @@ import RouterLink from "../../../Common/RouterLink";
 import useInput from "util/hooks/useInput";
 import useFirestoreAdd from "util/hooks/useFirestoreAdd";
 import {useHistory} from "react-router-dom";
+import firebase from "firebase/app";
 
-const ChatList = () => {
-    const {data: user} = useUser();
-    const history = useHistory();
-
+const CList = ({user}: { user: firebase.User }) => {
     // Get user's chats
     const where: FirestoreQueryWhere = {
-        fieldPath: 'members',
+        fieldPath: 'uids',
         opStr: 'array-contains',
-        value: user?.uid || ''
+        value: user.uid
     }
     const query: FirestoreQuery = {
         where: [where],
@@ -29,6 +27,21 @@ const ChatList = () => {
     }
     const {data: chats} = useFirestoreCollectionBuilder(COLLECTIONS.chats,
         query, Converters.ChatConverter)
+
+    return (<>
+        {chats.map((chat: ChatClass) => (
+            <RouterLink key={chat.id} to={`${PATHS.public.chats}/${chat.id}`}>
+                <Button>
+                    {chat.name}
+                </Button>
+            </RouterLink>
+        ))}
+    </>);
+}
+
+const ChatList = () => {
+    const {data: user} = useUser();
+    const history = useHistory();
 
     // New chat state
     const {value: uid, bind: bindUid} = useInput('');
@@ -42,11 +55,17 @@ const ChatList = () => {
         try {
             // Create chat
             const chatRef = await addChat({
-                individual: true,
                 uids: [
-                    uid,
                     user.uid,
+                    uid,
                 ],
+                members: [{
+                    uid: user.uid,
+                    name: user.displayName,
+                }, {
+                    uid: uid,
+                    name: uid,
+                }],
                 name: name,
             } as ChatClass)
 
@@ -59,13 +78,7 @@ const ChatList = () => {
 
     if (!user) return null;
     return (<>
-        {chats.map((chat: ChatClass) => (
-            <RouterLink key={chat.id} to={`${PATHS.public.chats}/${chat.id}`}>
-                <Button>
-                    {chat.name}
-                </Button>
-            </RouterLink>
-        ))}
+        <CList user={user}/>
         <form onSubmit={createChat}>
             <TextField id="uid" label="User" {...bindUid}/>
             <TextField id="name" label="Chat Name" {...bindName}/>

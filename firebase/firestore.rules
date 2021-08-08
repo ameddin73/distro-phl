@@ -50,6 +50,10 @@ service cloud.firestore {
             allow read: if isMember(resource.data.uids);
             allow delete: if isMember(resource.data.uids) && resource.data.uids.size() == 2;
 
+            match /messages/{messageId} {
+                allow read, write: if true;
+            }
+
             function createChatRules() {
                 let hasAll = request.resource.data.keys().hasAll(["individual" , "created" , "updated" , "uids" , "members" ]);
                 let individualRule = (request.resource.data.individual && request.resource.data.uids.size() == 2)
@@ -79,7 +83,7 @@ service cloud.firestore {
                 return request.resource.data.updated == request.time;
             }
             function isMember(uids) {
-                return uids.hasAll([request.auth.uid]);
+                return uids.hasAny([request.auth.uid]);
             }
             function diffHasOnly(fields) {
                 return request.resource.data.diff(resource.data) .affectedKeys() .hasOnly(fields.concat(["updated"]));
@@ -92,7 +96,8 @@ service cloud.firestore {
             }
 
             function validateChatFields() {
-                let hasOnly = request.resource.data.keys().hasOnly(["individual" , "created" , "updated" , "uids" , "members" , "name" , "recentMessage"]);
+                let keys = request.resource.data.keys();
+                let hasOnly = keys.hasOnly(["individual" , "created" , "updated" , "uids" , "members" , "name" , "recentMessage"]);
                 let types = request.resource.data.individual is bool
                             && request.resource.data.created is timestamp
                             && request.resource.data.updated is timestamp
@@ -100,10 +105,10 @@ service cloud.firestore {
                             && request.resource.data.uids[0] is string
                             && request.resource.data.members is list
                             && request.resource.data.members[0] is map
-                            && validateMembers(request.resource.data.members[0])
-                            && request.resource.data.name is string
-                            && request.resource.data.recentMessage is string;
-                return hasOnly && types;
+                            && validateMembers(request.resource.data.members[0]);
+                let optionalTypes = (!keys.hasAny(["name"]) || request.resource.data.name is string)
+                                    && (!keys.hasAny(["recentMessage"]) || request.resource.data.recentMessage is string);
+                return hasOnly && types && optionalTypes;
             }
 
             function validateMembers(members) {

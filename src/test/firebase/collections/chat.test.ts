@@ -155,6 +155,18 @@ describe('create chat rules', () => {
         await assertFails(queries.noConverter.individual.set(validatedChats.noConverter.individual));
     });
 
+    it('tests creating chat without name', async () => {
+        delete validatedChats.individual.name;
+        await assertSucceeds(buildQuery(firestore.firestoreAuth, mocks.individual.id)
+            .set(validatedChats.individual));
+    });
+
+    it('tests creating chat without recentMessage', async () => {
+        delete validatedChats.individual.recentMessage;
+        await assertSucceeds(buildQuery(firestore.firestoreAuth, mocks.individual.id)
+            .set(validatedChats.individual));
+    });
+
     it('tests hasOnly rule', async () => {
         validatedChats.noConverter.individual.test = 'test';
         await assertFails(queries.noConverter.individual.set(validatedChats.noConverter.individual));
@@ -383,7 +395,18 @@ describe('read chat rules', () => {
         firestore = startFirestore();
         await setupFirestore(false, true);
     });
-    afterAll(teardownFirestore);
+    beforeEach(async () => {
+        await setupFirestore(false, true);
+    });
+    afterEach(teardownFirestore);
+
+    it('tests listing chats', async () => {
+        await assertSucceeds(firestore.firestoreAuth.collection(COLLECTIONS.chats)
+            .where('uids', 'array-contains', UserMocks.defaultUser.uid).get());
+        await teardownFirestore();
+        await assertSucceeds(firestore.firestoreAuth.collection(COLLECTIONS.chats)
+            .where('uids', 'array-contains', UserMocks.defaultUser.uid).get());
+    });
 
     it('tests successfully reading individual chat', async () => {
         await assertSucceeds(buildQuery(firestore.firestoreAuth, mocks.individual.id).get())
