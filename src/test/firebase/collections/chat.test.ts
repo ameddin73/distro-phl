@@ -16,16 +16,16 @@ import {Mutable} from "../../types";
 import {UserMocks} from "../../mocks/user.mock";
 
 // Firestore instances
-let firestore: any;
+let firestore: any = {noConverter: {}};
 // Built queries
-let queries: any;
+let queries: any = {noConverter: {}};
 // Mock ChatInterfaces
 const mocks = {
     individual: ChatMocks.individualChat,
     group: ChatMocks.groupChat,
 }
 // Pruned and validated chats
-let validatedChats: any;
+let validatedChats: any = {};
 
 beforeAll(initFirebase);
 afterAll(destroyFirebase);
@@ -51,20 +51,21 @@ describe('testing framework', () => {
 });
 
 describe('create chat rules', () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
         firestore = startFirestore();
         queries.individual = await buildQuery(firestore.firestoreAuth, mocks.individual.id);
         queries.group = await buildQuery(firestore.firestoreAuth, mocks.group.id);
+        queries.noConverter.individual = firestore.firestoreAuth.collection(COLLECTIONS.chats).doc(mocks.individual.id);
+        queries.noConverter.group = firestore.firestoreAuth.collection(COLLECTIONS.chats).doc(mocks.group.id);
+        await setupFirestore(false, false);
+
+        // Create and validate objects for creating
+        await validateChats();
     });
-    beforeEach(async () => {
-        validatedChats.individual = await createAndValidateChat(
-            mocks.individual, queries.individual);
-        validatedChats.group = await createAndValidateChat(
-            mocks.group, queries.group);
-    });
+    afterEach(teardownFirestore);
 
     it('tests un-authed create chat', async () => {
-        await assertFails(buildQuery(firestore.firestoreInstance, mocks.individual.id)
+        await assertFails(buildQuery(firestore.firestore, mocks.individual.id)
             .set(validatedChats.individual));
     });
 
@@ -74,7 +75,7 @@ describe('create chat rules', () => {
     });
 
     it('tests creating individual chat, second user', async () => {
-        await assertSucceeds(buildQuery(firestore.firestore.firestoreAuth2, mocks.individual.id)
+        await assertSucceeds(buildQuery(firestore.firestoreAuth2, mocks.individual.id)
             .set(validatedChats.individual));
     });
 
@@ -86,18 +87,17 @@ describe('create chat rules', () => {
 
     it('tests creating group chat', async () => {
         await assertSucceeds(queries.individual.set(validatedChats.group));
-        await destroyFirebase();
+        await teardownFirestore();
         await assertSucceeds(buildQuery(firestore.firestoreAuth2, mocks.group.id)
             .set(validatedChats.group));
-        await destroyFirebase();
+        await teardownFirestore();
         await assertSucceeds(buildQuery(firestore.firestoreAuth3, mocks.group.id)
             .set(validatedChats.group));
     });
 
     it('tests creating chat without members', async () => {
-        validatedChats.individual.members = validatedChats.individual.members
-            .filter((member: any) =>
-                member.uid !== UserMocks.defaultUser.uid);
+        validatedChats.individual.uids = validatedChats.individual.uids
+            .filter((uid: string) => uid !== UserMocks.defaultUser.uid);
         await assertFails(queries.individual.set(validatedChats.individual));
     });
 
@@ -134,45 +134,52 @@ describe('create chat rules', () => {
         await testInvalidField('recentMessage', false);
 
         async function testInvalidField(field: string, value: any) {
-            // Validate unmodified chats
-            await assertSucceeds(queries.individual.set(validatedChats.individual));
-            await assertSucceeds(queries.group.set(validatedChats.group));
-
             // Invalidate field
-            validatedChats.individual[field] = value;
-            validatedChats.group[field] = value;
+            validatedChats.noConverter.individual[field] = value;
+            validatedChats.noConverter.group[field] = value;
 
             // Assert failures
-            await assertFails(queries.individual.set(validatedChats.individual));
-            await assertFails(queries.group.set(validatedChats.group));
+            await assertFails(queries.noConverter.individual.set(validatedChats.noConverter.individual));
+            await assertFails(queries.noConverter.group.set(validatedChats.noConverter.group));
 
             // Reset Chats
-            validatedChats.individual = await createAndValidateChat(
-                mocks.individual, queries.individual);
-            validatedChats.group = await createAndValidateChat(
-                mocks.group, queries.group);
+            await validateChats();
         }
     });
 
     it('tests hasAll rule', async () => {
-        delete validatedChats.individual.individual;
-        await assertFails(queries.individual.set(validatedChats.individual));
+        delete validatedChats.noConverter.individual.individual;
+        await assertFails(queries.noConverter.individual.set(validatedChats.noConverter.individual));
     });
 
     it('tests hasOnly rule', async () => {
-        validatedChats.individual.test = 'test';
-        await assertFails(queries.individual.set(validatedChats.individual));
+        validatedChats.noConverter.individual.test = 'test';
+        await assertFails(queries.noConverter.individual.set(validatedChats.noConverter.individual));
     });
 
     it('tests createdNow rule', async () => {
-        validatedChats.individual.created = new Date('06 Aug 2021 00:00:00 GMT')
-        await assertFails(queries.individual.set(validatedChats.individual));
+        validatedChats.noConverter.individual.created = new Date('06 Aug 2021 00:00:00 GMT')
+        await assertFails(queries.noConverter.individual.set(validatedChats.noConverter.individual));
     });
 
     it('tests updatedNow rule', async () => {
-        validatedChats.individual.updated = new Date('06 Aug 2021 00:00:00 GMT')
-        await assertFails(queries.individual.set(validatedChats.individual));
+        validatedChats.noConverter.individual.updated = new Date('06 Aug 2021 00:00:00 GMT')
+        await assertFails(queries.noConverter.individual.set(validatedChats.noConverter.individual));
     });
+
+    async function validateChats() {
+        validatedChats.individual = await createAndValidateChat(
+            mocks.individual, queries.individual);
+        validatedChats.group = await createAndValidateChat(
+            mocks.group, queries.group);
+        validatedChats.noConverter = {};
+        validatedChats.noConverter.individual = await createAndValidateNoConverterChat(
+            mocks.individual,
+            firestore.firestoreAuth.collection(COLLECTIONS.chats).doc(mocks.individual.id));
+        validatedChats.noConverter.group = await createAndValidateNoConverterChat(
+            mocks.group,
+            firestore.firestoreAuth.collection(COLLECTIONS.chats).doc(mocks.group.id));
+    }
 });
 
 describe('update chat rules', () => {
@@ -190,7 +197,7 @@ describe('update chat rules', () => {
 
     it('tests un-authed update chat', async () => {
         await assertSucceeds(queries.individual.auth.update({recentMessage: 'test'}));
-        await assertFails(buildQuery(firestore.firestoreInstance, mocks.individual.id)
+        await assertFails(buildQuery(firestore.firestore, mocks.individual.id)
             .update({
                 recentMessage: 'test',
                 updated: firebase.firestore.FieldValue.serverTimestamp(),
@@ -271,7 +278,7 @@ describe('update chat rules', () => {
                 }].push(...mocks.group.members),
                 updated: firebase.firestore.FieldValue.serverTimestamp(),
             }));
-            await destroyFirebase();
+            await teardownFirestore();
         }
     });
 
@@ -297,7 +304,7 @@ describe('update chat rules', () => {
                     member.uid !== UserMocks.userThree.uid),
                 updated: firebase.firestore.FieldValue.serverTimestamp(),
             }));
-            await destroyFirebase();
+            await teardownFirestore();
         }
     });
 
@@ -464,6 +471,21 @@ function createChat(chat: ChatInterface) {
 async function createAndValidateChat(chat: ChatInterface,
                                      query: firebase.firestore.DocumentReference) {
     const testChat = createChat(chat);
+
+    // Validate it works
+    await assertSucceeds(query.set(testChat));
+    await teardownFirestore();
+
+    return testChat;
+}
+
+async function createAndValidateNoConverterChat(chat: ChatInterface,
+                                                query: firebase.firestore.DocumentReference) {
+    const testChat = createChat(chat);
+    // @ts-ignore
+    testChat.created = firebase.firestore.FieldValue.serverTimestamp();
+    // @ts-ignore
+    testChat.updated = firebase.firestore.FieldValue.serverTimestamp();
 
     // Validate it works
     await assertSucceeds(query.set(testChat));
