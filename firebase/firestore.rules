@@ -46,16 +46,17 @@ service cloud.firestore {
 
         match /chats/{chatId} {
             allow create: if createChatRules();
-            allow update: if updateChatRules();
+            allow update: if false; //updateChatRules();
             allow read: if isMember(resource.data.uids);
             allow delete: if request.auth.uid == resource.data.uid;
 
             function createChatRules() {
-                let uidEqual = request.auth.uid == request.resource.data.uid;
-                let hasAll = request.resource.data.keys() .hasAll(["active" , "created" , "description" , "name" , "hasExpiration" , "uid" , "userName"]);
-                let activeTrue = request.resource.data.active;
-                let createdNow = request.resource.data.created == request.time;
-                return validateChatFields() && uidEqual && hasAll && activeTrue && createdNow;
+                let hasAll = request.resource.data.keys().hasAll(["individual" , "created" , "updated" , "uids" , "members" ]);
+                let individualRule = (request.resource.data.individual && request.resource.data.uids.size() == 2)
+                                     || (!request.resource.data.individual && request.resource.data.uids.size() > 2);
+                let createdNow = debug(request.resource.data.created == request.time);
+                return validateChatFields() && isMember(request.resource.data.uids) && updatedNow()
+                       && hasAll && individualRule && createdNow;
             }
 
             function updateChatRules() {
@@ -67,10 +68,9 @@ service cloud.firestore {
                 return validateChatFields() && uidEqual && hasOnly && activeOnly && updateInactive && hasExpirationOrNoExpires;
             }
 
-            /**
-            Stringify the members list and then split on quotations to match uid
-            since we can't search in a list's objects.
-            */
+            function updatedNow() {
+                return request.resource.data.updated == request.time;
+            }
             function isMember(uids) {
                 return uids.hasAll([request.auth.uid]);
             }
@@ -80,11 +80,11 @@ service cloud.firestore {
                 let types = request.resource.data.individual is bool
                             && request.resource.data.created is timestamp
                             && request.resource.data.updated is timestamp
-                            && request.resource.data.uid is list
-                            && request.resource.data.uid[0] is string
+                            && request.resource.data.uids is list
+                            && request.resource.data.uids[0] is string
                             && request.resource.data.members is list
-                            && request.resource.data.meembers[0] is map
-                            && validateMember(request.resource.data.meembers[0])
+                            && request.resource.data.members[0] is map
+                            && validateMember(request.resource.data.members[0])
                             && request.resource.data.name is string
                             && request.resource.data.recentMessage is string;
                 return hasOnly && types;
