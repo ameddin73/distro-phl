@@ -450,7 +450,7 @@ describe('delete chat rules', () => {
 
     function twoMemberGroup() {
         return buildQuery(firestore.firestoreAdmin, mocks.group.id).update({
-            uids: [UserMocks.defaultUser.uid, UserMocks.userThree],
+            uids: [UserMocks.defaultUser.uid, UserMocks.userThree.uid],
             members: [{
                 uid: UserMocks.defaultUser.uid,
                 name: UserMocks.defaultUser.name,
