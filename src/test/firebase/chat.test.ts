@@ -78,6 +78,12 @@ describe('create chat rules', () => {
             .set(validatedChats.individual));
     });
 
+    it('tests cannot create existing individual chat', async () => {
+        const query = buildQuery(firestore.firestoreAuth, mocks.individual.id);
+        await assertSucceeds(query.set(validatedChats.individual));
+        await assertFails(query.set(validatedChats.individual));
+    });
+
     it('tests creating group chat', async () => {
         await assertSucceeds(buildQuery(firestore.firestoreAuth, mocks.group.id)
             .set(validatedChats.group));
@@ -302,6 +308,62 @@ describe('read chat rules', () => {
     it("tests reading group chat you're not in", async () => {
         await assertFails(buildQuery(firestore.firestoreAuth4, mocks.individual.id).get())
     });
+})
+
+describe('delete chat rules', () => {
+    beforeAll(async () => {
+        firestore = startFirestore();
+        queries.individual.auth = await buildQuery(firestore.firestoreAuth, mocks.individual.id);
+        queries.individual.auth3 = await buildQuery(firestore.firestoreAuth3, mocks.individual.id);
+        queries.group.auth3 = await buildQuery(firestore.firestoreAuth3, mocks.group.id);
+        queries.group.auth4 = await buildQuery(firestore.firestoreAuth4, mocks.group.id);
+    });
+    beforeEach(async () => {
+        await setupFirestore(false, true);
+    });
+    afterEach(teardownFirestore);
+
+    it('tests deleting individual chat', async () => {
+        await assertSucceeds(queries.individual.auth.delete());
+    });
+
+    it("tests cannot delete individual chat you're not in", async () => {
+        await assertSucceeds(queries.individual.auth.delete());
+        await setupFirestore(false, true);
+        await assertFails(queries.individual.auth3.delete());
+    });
+
+    it('tests deleting group chat', async () => {
+        await twoMemberGroup();
+        await assertSucceeds(queries.group.auth3.delete());
+    });
+
+    it("tests cannot delete group chat you're not in", async () => {
+        await twoMemberGroup();
+        await assertSucceeds(queries.group.auth3.delete());
+        await setupFirestore(false, true);
+        await twoMemberGroup();
+        await assertFails(queries.group.auth4.delete());
+    });
+
+    it('tests cannot delete group with >2 members', async () => {
+        await twoMemberGroup();
+        await assertSucceeds(queries.group.auth3.delete());
+        await setupFirestore(false, true);
+        await assertFails(queries.group.auth3.delete());
+    });
+
+    function twoMemberGroup() {
+        return buildQuery(firestore.firestoreAdmin, mocks.group.id).update({
+            members: [{
+                uid: UserMocks.defaultUser.uid,
+                name: UserMocks.defaultUser.name,
+            }, {
+                uid: UserMocks.userThree.uid,
+                name: UserMocks.userThree.name,
+            }]
+        });
+    }
 })
 
 function buildQuery(firestore: firebase.firestore.Firestore, id?: string) {
