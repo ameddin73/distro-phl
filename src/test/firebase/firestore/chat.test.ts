@@ -6,7 +6,7 @@
 // https://github.com/firebase/firebase-admin-node/issues/1135#issuecomment-765766020
 import firebase from "firebase";
 import {ChatMocks} from "../../mocks/chats.mock";
-import {destroyFirebase, initFirebase, setupFirestore, startFirestore, teardownFirestore} from "../util/utils";
+import {destroyFirebase, initFirebase, setupFirestore, startFirestore, teardownFirestore} from "../util/util";
 import {COLLECTIONS} from "util/config";
 import {Converters} from "util/utils";
 import {assertFails, assertSucceeds} from "@firebase/rules-unit-testing";
@@ -18,7 +18,7 @@ import {UserMocks} from "../../mocks/user.mock";
 // Firestore instances
 let firestore: any = {noConverter: {}};
 // Built queries
-let queries: any = {
+const queries: any = {
     noConverter: {},
     individual: {},
     group: {}
@@ -29,7 +29,7 @@ const mocks = {
     group: ChatMocks.groupChat,
 }
 // Pruned and validated chats
-let validatedChats: any = {};
+const validatedChats: any = {};
 
 beforeAll(initFirebase);
 afterAll(destroyFirebase);

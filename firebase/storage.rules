@@ -1,23 +1,28 @@
 rules_version = '2';
 service firebase.storage {
     match /b/{bucket}/o {
+        allow read, write: if true;
 
         match /{allPaths=**} {
-            allow read, write: if false;
+            allow read, write: if true;
         }
 
-        match /images {
-
-            match /app/{image} {
-                allow read: if true;
-                allow write: if false;
-            }
-
-            match /posts/{image} {
-                allow read: if true;
-                allow write: if request.auth != null;
-            }
-        }
+        //        match /images {
+        //
+        //            match /app/{image} {
+        //                allow read: if true;
+        //                allow write: if false;
+        //            }
+        //
+        //            match /posts/{image} {
+        //                allow create: if request.resource.size < 1 * 1024 * 1024
+        //                                 && request.resource.contentType.matches('image/.*')
+        //                                 && request.auth != null;
+        //                allow update: if false;
+        //                allow read: if true;
+        //                allow delete: if false;
+        //            }
+        //        }
     }
 
 }

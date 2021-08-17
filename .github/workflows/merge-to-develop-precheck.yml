@@ -24,7 +24,7 @@ jobs:
         with:
           node-version: '16'
       - run: npm install -g firebase-tools && npm ci --ignore-scripts
-      - run: npm run test-firestore
+      - run: npm run test-firebase
         env:
           REACT_APP_FIREBASE_API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY_DEV }}
           REACT_APP_FIREBASE_AUTH_DOMAIN: distro-phl-2a16a.firebaseapp.com
@@ -33,6 +33,7 @@ jobs:
           REACT_APP_FIREBASE_MESSAGING_SENDER_ID: 663261428018
           REACT_APP_FIREBASE_APP_ID: 1:663261428018:web:832445e410cb63da62ff2b
           DEMO_PROJECT: demo-project
+          FIREBASE_STORAGE_EMULATOR_HOST: localhost:9199
   test-react-app:
     runs-on: ubuntu-latest
     steps:

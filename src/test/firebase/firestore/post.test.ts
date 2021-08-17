@@ -4,7 +4,7 @@
 // this test has to be run in a node environment because @firebase/rules-testing-library
 // uses grpc and doesn't work in JSDOM. See more:
 // https://github.com/firebase/firebase-admin-node/issues/1135#issuecomment-765766020
-import {destroyFirebase, initFirebase, setupFirestore, startFirestore, teardownFirestore} from "../util/utils";
+import {destroyFirebase, initFirebase, setupFirestore, startFirestore, teardownFirestore} from "../util/util";
 import firebase from "firebase";
 import {COLLECTIONS} from "util/config";
 import {Converters} from "util/utils";

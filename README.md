@@ -28,9 +28,11 @@ This will start the app and connect to the firebase dev project. Run firestore &
 
 ### Test
 
-**Test firestore rules:**
+**Test Firebase rules:**
 
-#### `npm run test-firestore`
+###### In order to run Storage tests you must first set the environment variable `FIREBASE_STORAGE_EMULATOR_HOST="localhost:9199"`
+
+#### `npm run test-firebase`
 
 **Test React app:**
 
